@@ -1,11 +1,12 @@
-import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import CustomButton from "../components/customButton";
+import { globleStyles } from "../shared/style";
 
 function Home({ navigation }) {
   return (
-    <SafeAreaProvider style={styles.container}>
+    <SafeAreaProvider style={globleStyles.container}>
       <View style={styles.mainTextContainer}>
         <Text style={styles.mainText}>Welcome</Text>
       </View>
@@ -27,12 +28,6 @@ function Home({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "space-between",
-    margin: 32,
-  },
   mainTextContainer: {
     width: "100%",
   },
@@ -45,19 +40,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     marginTop: 20,
-  },
-  button: {
-    backgroundColor: "#000000",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 50,
-    padding: 24,
-    width: 136,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 15,
-  },
+  }
 });
 
 export default Home;

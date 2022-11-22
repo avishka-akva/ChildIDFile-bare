@@ -1,11 +1,16 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet,ScrollView, Text, View } from "react-native";
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import { globleStyles } from "../shared/style";
+
 function PersonalInformation() {
   return (
-    <SafeAreaProvider style={styles.container}>
-      <View>
-        <Text>Personal Information</Text>
-      </View>
+    <SafeAreaProvider style={globleStyles.container}>
+      <ScrollView>
+        <View>
+          <Text>Personal Information</Text>
+        </View>
+      </ScrollView>
     </SafeAreaProvider>
   )
 }
