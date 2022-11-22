@@ -1,5 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+
+import CustomButton from "../components/customButton";
+
 function Home({ navigation }) {
   return (
     <SafeAreaProvider style={styles.container}>
@@ -8,12 +11,16 @@ function Home({ navigation }) {
       </View>
       <View>
         <Image source={require("../assets/homeImage.png")} />
-        <Text style={styles.description}>Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt</Text>
+        <Text style={styles.description}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do
+          eiusmod tempor incididunt
+        </Text>
       </View>
       <View>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Personal Information')}>
-          <Text style={styles.buttonText}>Add Child</Text>
-        </TouchableOpacity>
+        <CustomButton
+          onPress={() => navigation.navigate("Personal Information")}
+          text={"Add Child"}
+        />
       </View>
     </SafeAreaProvider>
   );
