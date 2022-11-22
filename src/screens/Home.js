@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import CustomButton from "../components/customButton";
+import CustomButton from "../components/CustomButton";
 import { globleStyles } from "../shared/style";
 
 function Home({ navigation }) {
@@ -19,7 +19,7 @@ function Home({ navigation }) {
       </View>
       <View>
         <CustomButton
-          onPress={() => navigation.navigate("Personal Information")}
+          onPress={() => navigation.navigate("Add Child")}
           text={"Add Child"}
         />
       </View>
