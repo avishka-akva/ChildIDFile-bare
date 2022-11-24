@@ -1,28 +1,76 @@
-import { StyleSheet, ScrollView, Text, View } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import React, { useState } from "react";
+import { StyleSheet, ScrollView, View } from "react-native";
 import * as Progress from "react-native-progress";
 
 import { globleStyles } from "../shared/style";
+import CustomButton from "../components/CustomButton";
+import PersonalInformation from "./PersonalInformation";
+import PhysicalCharacteristics from "./PhysicalCharacteristics";
 
 function AddChild() {
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+
+  const steps = [
+    {
+      compnent: <PersonalInformation />,
+    },
+    {
+      compnent: <PhysicalCharacteristics />,
+    }
+  ];
+
+  const nextStep = () => {
+    if (currentStepIndex + 1 === steps.length) return;
+    setCurrentStepIndex((previousValue) => ++previousValue);
+  };
+
+  const previosStep = () => {
+    if (!currentStepIndex) return;
+    setCurrentStepIndex((previousValue) => --previousValue);
+  };
+
+  const renderStep = () => {
+    const currentStep = steps[currentStepIndex];
+
+    return currentStep.compnent;
+  };
+
+  const progress = (currentStepIndex + 1) / steps.length ;
+
   return (
-    <SafeAreaProvider style={styles.container}>
-      <ScrollView style={{ width: "100%" }}>
-        <View style={styles.progressBar}>
-          <Progress.Bar
-            progress={0.3}
-            width={null}
-            height={9}
-            color={"#A352EB"}
-            borderColor={"#00000014"}
-            borderRadius={8}
+    <ScrollView
+      style={{ width: "100%", paddingHorizontal: 18, backgroundColor: "#fff" }}
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
+      <View style={styles.progressBar}>
+        <Progress.Bar
+          progress={progress}
+          width={null}
+          height={9}
+          color={"#A352EB"}
+          borderColor={"#00000014"}
+          borderRadius={8}
+        />
+      </View>
+      {renderStep()}
+      <View style={styles.footer}>
+        {currentStepIndex > 0 && (
+          <CustomButton
+            onPress={() => previosStep()}
+            text={"BACK"}
+            buttonStyle={globleStyles.buttonOutLine}
+            color="#000"
           />
-        </View>
-        <View>
-          <Text style={globleStyles.title}>Personal Information</Text>
-        </View>
-      </ScrollView>
-    </SafeAreaProvider>
+        )}
+
+        <View style={styles.divider}></View>
+        <CustomButton
+          onPress={() => nextStep()}
+          text={"NEXT"}
+          buttonStyle={globleStyles.buttonPrimary}
+        />
+      </View>
+    </ScrollView>
   );
 }
 
@@ -31,10 +79,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "space-between",
-    marginHorizontal: 18,
+    backgroundColor: "#fff",
   },
   progressBar: {
     marginVertical: 22,
+  },
+  footer: {
+    flexDirection: "row",
+    marginVertical: 22,
+  },
+  main: {
+    flex: 1,
+  },
+  divider: {
+    flex: 1,
   },
 });
 
