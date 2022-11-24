@@ -5,7 +5,7 @@ import Card from "../components/Card";
 import { globleStyles } from "../shared/style";
 
 function PersonalInformation() {
-  const [text, onChangeText] = useState("Useless Text");
+  const [text, onChangeText] = useState("");
 
   return (
     <View style={styles.main}>
