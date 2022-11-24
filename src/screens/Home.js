@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View, Image } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import CustomButton from "../components/CustomButton";
 import { globleStyles } from "../shared/style";
 
 function Home({ navigation }) {
   return (
-    <SafeAreaProvider style={globleStyles.container}>
+    <SafeAreaView style={globleStyles.container}>
       <View style={styles.mainTextContainer}>
         <Text style={styles.mainText}>Welcome</Text>
       </View>
@@ -23,7 +23,7 @@ function Home({ navigation }) {
           text={"Add Child"}
         />
       </View>
-    </SafeAreaProvider>
+    </SafeAreaView>
   );
 }
 
