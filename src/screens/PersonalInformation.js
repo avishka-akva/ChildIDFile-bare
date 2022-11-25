@@ -1,11 +1,16 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
-import Card from "../components/Card";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { AntDesign } from "@expo/vector-icons";
 
+import Card from "../components/Card";
 import { globleStyles } from "../shared/style";
 
 function PersonalInformation() {
   const [text, onChangeText] = useState("");
+
+  const [date, setDateOfBirth] = useState(new Date(1598051730000));
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   return (
     <View style={styles.main}>
@@ -43,11 +48,25 @@ function PersonalInformation() {
           <Text style={[globleStyles.body, styles.inputLable]}>
             Date of Birth
           </Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeText}
-            value={text}
-          />
+          <View style={[styles.input,styles.datePickerContainer]}>
+            <Text style={styles.datePickerText}>{(date.toISOString().slice(0, 10))}</Text>
+            <TouchableOpacity style={styles.mainContainer} onPress={() => setShowDatePicker(true)}>
+              <AntDesign name="calendar" size={13} color="#707070" />
+            </TouchableOpacity>
+          </View>
+          {showDatePicker && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={date}
+              mode={"date"}
+              is24Hour={true}
+              onChange={(event, selectedDate) => {
+                const currentDate = selectedDate;
+                setShowDatePicker(false);
+                setDateOfBirth(currentDate);
+              }}
+            />
+          )}
         </View>
       </Card>
       <Card>
@@ -68,7 +87,9 @@ function PersonalInformation() {
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={[globleStyles.body, styles.inputLable]}>Zip/Postal Code</Text>
+          <Text style={[globleStyles.body, styles.inputLable]}>
+            Zip/Postal Code
+          </Text>
           <TextInput
             style={styles.input}
             onChangeText={onChangeText}
@@ -76,7 +97,9 @@ function PersonalInformation() {
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={[globleStyles.body, styles.inputLable]}>State/Province/Region</Text>
+          <Text style={[globleStyles.body, styles.inputLable]}>
+            State/Province/Region
+          </Text>
           <TextInput
             style={styles.input}
             onChangeText={onChangeText}
@@ -111,6 +134,8 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 42,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     borderRadius: 3,
     borderWidth: 1,
     borderColor: "#70707014",
@@ -123,6 +148,13 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 3,
   },
+  datePickerContainer: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  datePickerText: {
+    flex: 1
+  }
 });
 
 export default PersonalInformation;
