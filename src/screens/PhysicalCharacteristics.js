@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TextInput } from "react-native";
 import Card from "../components/Card";
+import RadioButtonGroup from "../components/RadioButtonGroup";
 
 import { globleStyles } from "../shared/style";
 
@@ -13,8 +14,27 @@ function PhysicalCharacteristics() {
         Physical Characteristics
       </Text>
       <Card>
+        <View style={[styles.inputContainer, styles.radioContainer]}>
+          <Text style={[globleStyles.body, {marginRight: 20}]}>Gender</Text>
+          <RadioButtonGroup
+            values={[
+              {
+                text: "Male",
+              },
+              {
+                text: "Female",
+              },
+              {
+                text: "Other",
+              },
+            ]}
+            onPress={() => {}}
+          />
+        </View>
         <View style={styles.inputContainer}>
-          <Text style={[globleStyles.body, styles.inputLable]}>Race/Ethnicity</Text>
+          <Text style={[globleStyles.body, styles.inputLable]}>
+            Race/Ethnicity
+          </Text>
           <TextInput
             style={styles.input}
             onChangeText={onChangeText}
@@ -59,6 +79,12 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginBottom: 16,
+  },
+  radioContainer:{
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
+    
   },
   inputLable: {
     marginBottom: 8,
