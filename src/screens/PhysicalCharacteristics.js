@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
-import Card from "../components/Card";
-import RadioButtonGroup from "../components/RadioButtonGroup";
+import { StyleSheet, Text, View } from "react-native";
 
 import { globleStyles } from "../shared/style";
+import Card from "../components/Card";
+import RadioButtonGroup from "../components/RadioButtonGroup";
+import CustomTextInput from "../components/CustomTextInput";
 
 function PhysicalCharacteristics() {
   const [text, onChangeText] = useState("");
@@ -14,8 +15,8 @@ function PhysicalCharacteristics() {
         Physical Characteristics
       </Text>
       <Card>
-        <View style={[styles.inputContainer, styles.radioContainer]}>
-          <Text style={[globleStyles.body, {marginRight: 20}]}>Gender</Text>
+        <View style={[globleStyles.inputContainer, styles.radioContainer]}>
+          <Text style={[globleStyles.body, { marginRight: 20 }]}>Gender</Text>
           <RadioButtonGroup
             values={[
               {
@@ -31,40 +32,27 @@ function PhysicalCharacteristics() {
             onPress={() => {}}
           />
         </View>
-        <View style={styles.inputContainer}>
-          <Text style={[globleStyles.body, styles.inputLable]}>
-            Race/Ethnicity
-          </Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeText}
-            value={text}
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <Text style={[globleStyles.body, styles.inputLable]}>Hair Color</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeText}
-            value={text}
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <Text style={[globleStyles.body, styles.inputLable]}>Eye Color</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeText}
-            value={text}
-          />
-        </View>
-        <View>
-          <Text style={[globleStyles.body, styles.inputLable]}>Height</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeText}
-            value={text}
-          />
-        </View>
+        <CustomTextInput
+          label={"Race/Ethnicity"}
+          value={text}
+          onChangeText={onChangeText}
+        />
+        <CustomTextInput
+          label={"Hair Color"}
+          value={text}
+          onChangeText={onChangeText}
+        />
+        <CustomTextInput
+          label={"Eye Color "}
+          value={text}
+          onChangeText={onChangeText}
+        />
+        <CustomTextInput
+          label={"Height"}
+          value={text}
+          onChangeText={onChangeText}
+          marginBottom={0}
+        />
       </Card>
     </View>
   );
@@ -80,11 +68,10 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginBottom: 16,
   },
-  radioContainer:{
+  radioContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center"
-    
+    alignItems: "center",
   },
   inputLable: {
     marginBottom: 8,

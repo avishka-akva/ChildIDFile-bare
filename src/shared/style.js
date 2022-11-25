@@ -35,4 +35,27 @@ export const globleStyles = StyleSheet.create({
     height: 40,
     width: 117,
   },
+
+  inputContainer: {
+    marginBottom: 16,
+  },
+  inputLable: {
+    marginBottom: 8,
+  },
+  input: {
+    height: 42,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 3,
+    borderWidth: 1,
+    borderColor: "#70707014",
+    shadowColor: "#70707014",
+    shadowOffset: {
+      width: 0,
+      height: 11,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
+  },
 });
