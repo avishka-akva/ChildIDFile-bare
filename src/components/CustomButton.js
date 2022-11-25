@@ -19,8 +19,8 @@ function CustomButton({
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 50,
-              padding: 24,
               width: 136,
+              height: 48
             }
       }
     >
@@ -30,7 +30,7 @@ function CustomButton({
             ? textStyle
             : {
                 color,
-                fontSize: 15,
+                fontSize: 16,
               }
         }
       >
