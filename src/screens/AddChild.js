@@ -6,8 +6,14 @@ import { globleStyles } from "../shared/style";
 import CustomButton from "../components/CustomButton";
 import PersonalInformation from "./PersonalInformation";
 import PhysicalCharacteristics from "./PhysicalCharacteristics";
+import DistinguishingCharacteristics from "./DistinguishingCharacteristics";
+import MedicalInformation from "./MedicalInformation";
+import EmergencyContact from "./EmergencyContact";
+import TrustedContact from "./TrustedContact";
+import UploadPhoto from "./UploadPhoto";
+import Fingerprints from "./Fingerprints";
 
-function AddChild() {
+function AddChild({navigation}) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
   const steps = [
@@ -16,7 +22,25 @@ function AddChild() {
     },
     {
       compnent: <PhysicalCharacteristics />,
-    }
+    },
+    {
+      compnent: <DistinguishingCharacteristics />,
+    },
+    {
+      compnent: <MedicalInformation />,
+    },
+    {
+      compnent: <EmergencyContact />,
+    },
+    {
+      compnent: <TrustedContact />,
+    },
+    {
+      compnent: <UploadPhoto />,
+    },
+    {
+      compnent: <Fingerprints />,
+    },
   ];
 
   const nextStep = () => {
@@ -35,7 +59,7 @@ function AddChild() {
     return currentStep.compnent;
   };
 
-  const progress = (currentStepIndex + 1) / steps.length ;
+  const progress = (currentStepIndex + 1) / steps.length;
 
   return (
     <ScrollView
@@ -62,13 +86,20 @@ function AddChild() {
             color="#000"
           />
         )}
-
         <View style={styles.divider}></View>
-        <CustomButton
-          onPress={() => nextStep()}
-          text={"NEXT"}
-          buttonStyle={globleStyles.buttonPrimary}
-        />
+        {currentStepIndex !== steps.length - 1 ? (
+          <CustomButton
+            onPress={() => nextStep()}
+            text={"NEXT"}
+            buttonStyle={globleStyles.buttonPrimary}
+          />
+        ) : (
+          <CustomButton
+            onPress={() => navigation.goBack()}
+            text={"DONE"}
+            buttonStyle={globleStyles.buttonPrimary}
+          />
+        )}
       </View>
     </ScrollView>
   );
