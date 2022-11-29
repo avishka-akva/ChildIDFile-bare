@@ -3,21 +3,38 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   TouchableOpacity,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { AntDesign } from "@expo/vector-icons";
+import { useSelector, useDispatch } from "react-redux";
 
 import Card from "../components/Card";
 import CustomTextInput from "../components/CustomTextInput";
 import { globleStyles } from "../shared/style";
+import { setFirstName,setLastName,setNickName } from "../redux/childSlice";
 
 function PersonalInformation() {
+  const currentChild = useSelector((state) => state.currentChild);
+  const dispatch = useDispatch();
+
   const [text, onChangeText] = useState("");
 
   const [date, setDateOfBirth] = useState(new Date(1598051730000));
   const [showDatePicker, setShowDatePicker] = useState(false);
+
+
+  const onFirstNameChangeText = (name) => {
+    dispatch(setFirstName(name));
+  }
+
+  const onLastNameChangeText = (name) => {
+    dispatch(setLastName(name));
+  }
+
+  const onNickNameChangeText = (name) => {
+    dispatch(setNickName(name));
+  }
 
   return (
     <View style={styles.main}>
@@ -27,18 +44,18 @@ function PersonalInformation() {
       <Card>
         <CustomTextInput
           label={"First Name"}
-          value={text}
-          onChangeText={onChangeText}
+          value={currentChild?.firstName}
+          onChangeText={onFirstNameChangeText}
         />
         <CustomTextInput
           label={"Last Name"}
-          value={text}
-          onChangeText={onChangeText}
+          value={currentChild?.lastName}
+          onChangeText={onLastNameChangeText}
         />
         <CustomTextInput
           label={"Nickname"}
-          value={text}
-          onChangeText={onChangeText}
+          value={currentChild?.nickName}
+          onChangeText={onNickNameChangeText}
           marginBottom={0}
         />
       </Card>
