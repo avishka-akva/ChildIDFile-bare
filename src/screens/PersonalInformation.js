@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { AntDesign } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,30 +7,55 @@ import { useSelector, useDispatch } from "react-redux";
 import Card from "../components/Card";
 import CustomTextInput from "../components/CustomTextInput";
 import { globleStyles } from "../shared/style";
-import { setFirstName,setLastName,setNickName } from "../redux/childSlice";
+import {
+  setFirstName,
+  setLastName,
+  setNickName,
+  setAddress,
+  setCity,
+  setPostalCode,
+  setProvince,
+  setCountry,
+} from "../redux/childSlice";
 
 function PersonalInformation() {
   const currentChild = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
 
-  const [text, onChangeText] = useState("");
-
   const [date, setDateOfBirth] = useState(new Date(1598051730000));
   const [showDatePicker, setShowDatePicker] = useState(false);
 
+  const onFirstNameChangeText = (value) => {
+    dispatch(setFirstName(value));
+  };
 
-  const onFirstNameChangeText = (name) => {
-    dispatch(setFirstName(name));
-  }
+  const onLastNameChangeText = (value) => {
+    dispatch(setLastName(value));
+  };
 
-  const onLastNameChangeText = (name) => {
-    dispatch(setLastName(name));
-  }
+  const onNickNameChangeText = (value) => {
+    dispatch(setNickName(value));
+  };
 
-  const onNickNameChangeText = (name) => {
-    dispatch(setNickName(name));
-  }
+  const onAddressChangeText = (value) => {
+    dispatch(setAddress(value));
+  };
 
+  const onCityChangeText = (value) => {
+    dispatch(setCity(value));
+  };
+
+  const onPostalCodeChangeText = (value) => {
+    dispatch(setPostalCode(value));
+  };
+
+  const onProvincChangeText = (value) => {
+    dispatch(setProvince(value));
+  };
+
+  const onCountrChangeText = (value) => {
+    dispatch(setCountry(value));
+  };
   return (
     <View style={styles.main}>
       <Text style={[globleStyles.title, styles.title]}>
@@ -91,23 +111,28 @@ function PersonalInformation() {
       <Card>
         <CustomTextInput
           label={"Addresse"}
-          value={text}
-          onChangeText={onChangeText}
+          value={currentChild.address}
+          onChangeText={onAddressChangeText}
+        />
+        <CustomTextInput
+          label={"City"}
+          value={currentChild.city}
+          onChangeText={onCityChangeText}
         />
         <CustomTextInput
           label={"Zip/Postal Code"}
-          value={text}
-          onChangeText={onChangeText}
+          value={currentChild.postalCode}
+          onChangeText={onPostalCodeChangeText}
         />
         <CustomTextInput
           label={"State/Province/Region"}
-          value={text}
-          onChangeText={onChangeText}
+          value={currentChild.province}
+          onChangeText={onProvincChangeText}
         />
         <CustomTextInput
           label={"Country"}
-          value={text}
-          onChangeText={onChangeText}
+          value={currentChild.country}
+          onChangeText={onCountrChangeText}
           marginBottom={0}
         />
       </Card>
