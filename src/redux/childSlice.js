@@ -16,6 +16,8 @@ const todosSlice = createSlice({
     hairColor: "",
     eyeColor: "",
     height: "",
+    specialNeeds: "",
+    otherCharacteristic: "",
   },
   reducers: {
     setFirstName(state, action) {
@@ -57,6 +59,12 @@ const todosSlice = createSlice({
     setHeight(state, action) {
       state.height = action.payload;
     },
+    setSpecialNeeds(state, action) {
+      state.specialNeeds = action.payload;
+    },
+    setOtherCharacteristic(state, action) {
+      state.otherCharacteristic = action.payload;
+    },
   },
 });
 
@@ -74,6 +82,8 @@ export const {
   setHairColor,
   setEyeColor,
   setHeight,
+  setSpecialNeeds,
+  setOtherCharacteristic,
 } = todosSlice.actions;
 
 export default todosSlice.reducer;
