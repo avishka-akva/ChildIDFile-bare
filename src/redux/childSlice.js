@@ -18,6 +18,11 @@ const todosSlice = createSlice({
     height: "",
     specialNeeds: "",
     otherCharacteristic: "",
+    physicianName:"",
+    physicianOffice:"",
+    bloodType:"",
+    allergies:"",
+    medications:"",
   },
   reducers: {
     setFirstName(state, action) {
@@ -65,6 +70,21 @@ const todosSlice = createSlice({
     setOtherCharacteristic(state, action) {
       state.otherCharacteristic = action.payload;
     },
+    setPhysicianName(state, action) {
+      state.physicianName = action.payload;
+    },
+    setPhysicianOffice(state, action) {
+      state.physicianOffice = action.payload;
+    },
+    setBloodType(state, action) {
+      state.bloodType = action.payload;
+    },
+    setAllergies(state, action) {
+      state.allergies = action.payload;
+    },
+    setMedications(state, action) {
+      state.medications = action.payload;
+    },
   },
 });
 
@@ -84,6 +104,11 @@ export const {
   setHeight,
   setSpecialNeeds,
   setOtherCharacteristic,
+  setPhysicianName,
+  setPhysicianOffice,
+  setBloodType,
+  setAllergies,
+  setMedications,
 } = todosSlice.actions;
 
 export default todosSlice.reducer;

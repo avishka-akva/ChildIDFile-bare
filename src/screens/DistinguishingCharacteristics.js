@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import { globleStyles } from "../shared/style";
