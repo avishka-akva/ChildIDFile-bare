@@ -24,7 +24,7 @@ function RadioButtonGroup({ values, onPress, vertical = false }) {
   const [currentSelectedItem, setCurrentSelectedItem] = useState(0);
 
   const _onPress = (index) => {
-    onPress(index);
+    onPress(values[index].value);
     setCurrentSelectedItem(index);
   };
 

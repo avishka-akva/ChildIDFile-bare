@@ -11,6 +11,11 @@ const todosSlice = createSlice({
     postalCode: "",
     province: "",
     country: "",
+    gender: "",
+    race: "",
+    hairColor: "",
+    eyeColor: "",
+    height: "",
   },
   reducers: {
     setFirstName(state, action) {
@@ -37,6 +42,21 @@ const todosSlice = createSlice({
     setCountry(state, action) {
       state.country = action.payload;
     },
+    setGender(state, action) {
+      state.gender = action.payload;
+    },
+    setRace(state, action) {
+      state.race = action.payload;
+    },
+    setHairColor(state, action) {
+      state.hairColor = action.payload;
+    },
+    setEyeColor(state, action) {
+      state.eyeColor = action.payload;
+    },
+    setHeight(state, action) {
+      state.height = action.payload;
+    },
   },
 });
 
@@ -49,6 +69,11 @@ export const {
   setPostalCode,
   setProvince,
   setCountry,
+  setGender,
+  setRace,
+  setHairColor,
+  setEyeColor,
+  setHeight,
 } = todosSlice.actions;
 
 export default todosSlice.reducer;

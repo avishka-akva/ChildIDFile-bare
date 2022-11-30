@@ -1,13 +1,42 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 
 import { globleStyles } from "../shared/style";
 import Card from "../components/Card";
 import RadioButtonGroup from "../components/RadioButtonGroup";
 import CustomTextInput from "../components/CustomTextInput";
+import {
+  setGender,
+  setRace,
+  setHairColor,
+  setEyeColor,
+  setHeight,
+} from "../redux/childSlice";
 
 function PhysicalCharacteristics() {
-  const [text, onChangeText] = useState("");
+  const currentChild = useSelector((state) => state.currentChild);
+  const dispatch = useDispatch();
+
+  const onGenderChange = (value) => {
+    dispatch(setGender(value));
+  };
+
+  const onRaceChange = (value) => {
+    dispatch(setRace(value));
+  };
+
+  const onHairColorChange = (value) => {
+    dispatch(setHairColor(value));
+  };
+
+  const onEyeColorChange = (value) => {
+    dispatch(setEyeColor(value));
+  };
+
+  const onHeightChange = (value) => {
+    dispatch(setHeight(value));
+  };
 
   return (
     <View style={styles.main}>
@@ -21,36 +50,39 @@ function PhysicalCharacteristics() {
             values={[
               {
                 text: "Male",
+                value: "male",
               },
               {
                 text: "Female",
+                value: "female",
               },
               {
                 text: "Other",
+                value: "other",
               },
             ]}
-            onPress={() => {}}
+            onPress={onGenderChange}
           />
         </View>
         <CustomTextInput
           label={"Race/Ethnicity"}
-          value={text}
-          onChangeText={onChangeText}
+          value={currentChild.race}
+          onChangeText={onRaceChange}
         />
         <CustomTextInput
           label={"Hair Color"}
-          value={text}
-          onChangeText={onChangeText}
+          value={currentChild.hairColor}
+          onChangeText={onHairColorChange}
         />
         <CustomTextInput
-          label={"Eye Color "}
-          value={text}
-          onChangeText={onChangeText}
+          label={"Eye Color"}
+          value={currentChild.eyeColor}
+          onChangeText={onEyeColorChange}
         />
         <CustomTextInput
           label={"Height"}
-          value={text}
-          onChangeText={onChangeText}
+          value={currentChild.height}
+          onChangeText={onHeightChange}
           marginBottom={0}
         />
       </Card>
