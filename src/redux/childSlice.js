@@ -16,13 +16,14 @@ const todosSlice = createSlice({
     hairColor: "",
     eyeColor: "",
     height: "",
+    characteristicOptions: [],
     specialNeeds: "",
     otherCharacteristic: "",
-    physicianName:"",
-    physicianOffice:"",
-    bloodType:"",
-    allergies:"",
-    medications:"",
+    physicianName: "",
+    physicianOffice: "",
+    bloodType: "",
+    allergies: "",
+    medications: "",
   },
   reducers: {
     setFirstName(state, action) {
@@ -64,6 +65,14 @@ const todosSlice = createSlice({
     setHeight(state, action) {
       state.height = action.payload;
     },
+    addCharacteristicOption(state, action) {
+      state.characteristicOptions.push(action.payload);
+    },
+    removeCharacteristicOption(state, action) {
+      state.characteristicOptions = state.characteristicOptions.filter(
+        (k) => k !== action.payload
+      );
+    },
     setSpecialNeeds(state, action) {
       state.specialNeeds = action.payload;
     },
@@ -102,6 +111,8 @@ export const {
   setHairColor,
   setEyeColor,
   setHeight,
+  addCharacteristicOption,
+  removeCharacteristicOption,
   setSpecialNeeds,
   setOtherCharacteristic,
   setPhysicianName,
