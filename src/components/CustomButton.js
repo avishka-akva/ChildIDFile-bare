@@ -6,6 +6,7 @@ function CustomButton({
   textStyle,
   buttonStyle,
   backgroundColor = "#000",
+  buttonWidth = 136,
   color = "#fff",
 }) {
   return (
@@ -19,7 +20,7 @@ function CustomButton({
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 50,
-              width: 136,
+              width: buttonWidth,
               height: 48
             }
       }
