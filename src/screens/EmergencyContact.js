@@ -1,13 +1,109 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 
 import Card from "../components/Card";
 import { globleStyles } from "../shared/style";
 import CustomTextInput from "../components/CustomTextInput";
 import CustomButton from "../components/CustomButton";
-
+import {
+  setEmergencyContactValues,
+  addNewEmergencyContact,
+} from "../redux/childSlice";
 function EmergencyContact() {
-  const [text, onChangeText] = useState("");
+  const { emergencyContacts } = useSelector((state) => state.currentChild);
+  const dispatch = useDispatch();
+
+  const onInputChanged = (values) => {
+    dispatch(setEmergencyContactValues(values));
+  };
+
+  const onAddButton = () => {
+    dispatch(addNewEmergencyContact());
+  };
+
+  const viewItem = (index, { name, relationship, cell, home, work, address }) => (
+    <Card key={index}><Text>{name}</Text></Card>
+  )
+
+  const editItem = (
+    index,
+    { name, relationship, cell, home, work, address }
+  ) => {
+    return (
+      <Card key={index}>
+        <CustomTextInput
+          label={"Emergency Contact"}
+          value={name}
+          onChangeText={(value) =>
+            onInputChanged({
+              index,
+              propertyName: "name",
+              value,
+            })
+          }
+        />
+        <CustomTextInput
+          label={"Relationship"}
+          value={relationship}
+          onChangeText={(value) =>
+            onInputChanged({
+              index,
+              propertyName: "relationship",
+              value,
+            })
+          }
+        />
+        <CustomTextInput
+          label={"Cell (Optional)"}
+          value={cell}
+          onChangeText={(value) =>
+            onInputChanged({
+              index,
+              propertyName: "cell",
+              value,
+            })
+          }
+        />
+        <CustomTextInput
+          label={"Home (Optional)"}
+          value={home}
+          onChangeText={(value) =>
+            onInputChanged({
+              index,
+              propertyName: "home",
+              value,
+            })
+          }
+        />
+        <CustomTextInput
+          label={"Work (Optional)"}
+          value={work}
+          onChangeText={(value) =>
+            onInputChanged({
+              index,
+              propertyName: "work",
+              value,
+            })
+          }
+        />
+        <CustomTextInput
+          label={"Address (Optional)"}
+          value={address}
+          onChangeText={(value) =>
+            onInputChanged({
+              index,
+              propertyName: "address",
+              value,
+            })
+          }
+          multiline={true}
+          numberOfLines={4}
+          marginBottom={0}
+        />
+      </Card>
+    );
+  };
 
   return (
     <View style={styles.main}>
@@ -17,45 +113,20 @@ function EmergencyContact() {
         </Text>
         <Text style={styles.added}>1/3 added</Text>
       </View>
-
-      <Card>
-        <CustomTextInput
-          label={"Emergency Contact"}
-          value={text}
-          onChangeText={onChangeText}
+      {emergencyContacts.map((contactItem, index) => {
+        if (emergencyContacts.length - 1 === index) {
+          return editItem(index, contactItem);
+        }
+        return viewItem(index, contactItem);
+      })}
+      <View style={styles.addButtonContainer}>
+        <CustomButton
+          onPress={onAddButton}
+          text={"Add Additional Contacts"}
+          backgroundColor="#A352EB"
+          buttonWidth={"100%"}
         />
-        <CustomTextInput
-          label={"Relationship"}
-          value={text}
-          onChangeText={onChangeText}
-        />
-        <CustomTextInput
-          label={"Cell (Optional)"}
-          value={text}
-          onChangeText={onChangeText}
-        />
-        <CustomTextInput
-          label={"Work (Optional)"}
-          value={text}
-          onChangeText={onChangeText}
-        />
-        <CustomTextInput
-          label={"Address (Optional)"}
-          value={text}
-          onChangeText={onChangeText}
-          multiline={true}
-          numberOfLines={6}
-          marginBottom={0}
-        />
-        <View style={styles.addButtonContainer}>
-          <CustomButton
-            onPress={() => navigation.navigate("Add Child")}
-            text={"Add another details"}
-            backgroundColor="#A352EB"
-            buttonWidth={"100%"}
-          />
-        </View>
-      </Card>
+      </View>
     </View>
   );
 }
@@ -76,8 +147,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   addButtonContainer: {
-    marginTop: 18
-  }
+    marginTop: 18,
+  },
 });
 
 export default EmergencyContact;

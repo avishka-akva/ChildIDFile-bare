@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { EMERGENCY_CONTACT_INIT_OBJ } from "../shared/const";
 
 const todosSlice = createSlice({
   name: "child",
@@ -24,8 +25,21 @@ const todosSlice = createSlice({
     bloodType: "",
     allergies: "",
     medications: "",
+    emergencyContacts: [
+      {
+        ...EMERGENCY_CONTACT_INIT_OBJ,
+      },
+    ],
   },
   reducers: {
+    setEmergencyContactValues(state, action) {
+      const { index, propertyName, value } = action.payload;
+      state.emergencyContacts[index][propertyName] = value;
+    },
+    addNewEmergencyContact(state, action) {
+      if(state.emergencyContacts.length > 3) return;
+      state.emergencyContacts.push({ ...EMERGENCY_CONTACT_INIT_OBJ });
+    },
     setFirstName(state, action) {
       state.firstName = action.payload;
     },
@@ -120,6 +134,8 @@ export const {
   setBloodType,
   setAllergies,
   setMedications,
+  setEmergencyContactValues,
+  addNewEmergencyContact
 } = todosSlice.actions;
 
 export default todosSlice.reducer;

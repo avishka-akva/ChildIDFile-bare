@@ -7,3 +7,12 @@ export const CHARACTERISTICS_OPTIONS = [
   { key: "6", value: "Diary Products" },
   { key: "7", value: "Drinks" },
 ];
+
+export const EMERGENCY_CONTACT_INIT_OBJ = {
+  name: "",
+  relationship: "",
+  cell: "",
+  home: "",
+  work: "",
+  address: "",
+};

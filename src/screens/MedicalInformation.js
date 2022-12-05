@@ -12,8 +12,8 @@ import {
   setAllergies,
   setMedications,
 } from "../redux/childSlice";
+
 function MedicalInformation() {
-  const [text, onChangeText] = useState("");
   const currentChild = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
 
