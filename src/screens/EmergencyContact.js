@@ -11,8 +11,8 @@ import {
   setEmergencyContactValues,
   addNewEmergencyContact,
 } from "../redux/childSlice";
+import { MAXIMUM_EMERGENCY_CONTACT_COUNT } from "../shared/const";
 
-const MAXIMUM_CONTACT_COUNT = 3;
 
 function EmergencyContact() {
   const { emergencyContacts } = useSelector((state) => state.currentChild);
@@ -122,7 +122,7 @@ function EmergencyContact() {
           Emergency Contact Information
         </Text>
         <Text style={styles.added}>
-          {emergencyContacts.length}/{MAXIMUM_CONTACT_COUNT} added
+          {emergencyContacts.length}/{MAXIMUM_EMERGENCY_CONTACT_COUNT} added
         </Text>
       </View>
       {emergencyContacts.map((contactItem, index) => {
@@ -132,7 +132,7 @@ function EmergencyContact() {
         return viewItem(index, contactItem);
       })}
 
-      {emergencyContacts.length < MAXIMUM_CONTACT_COUNT && (
+      {emergencyContacts.length < MAXIMUM_EMERGENCY_CONTACT_COUNT && (
         <View style={styles.addButtonContainer}>
           <CustomButton
             onPress={onAddButton}

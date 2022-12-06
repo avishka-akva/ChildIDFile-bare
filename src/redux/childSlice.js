@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { EMERGENCY_CONTACT_INIT_OBJ } from "../shared/const";
+import {
+  EMERGENCY_CONTACT_INIT_OBJ,
+  MAXIMUM_EMERGENCY_CONTACT_COUNT,
+  TRUSTED_CONTACT_INIT_OBJ,
+  MAXIMUM_TRUSTED_CONTACT_COUNT,
+} from "../shared/const";
 
 const todosSlice = createSlice({
   name: "child",
@@ -30,16 +35,13 @@ const todosSlice = createSlice({
         ...EMERGENCY_CONTACT_INIT_OBJ,
       },
     ],
+    trustedContacts: [
+      {
+        ...TRUSTED_CONTACT_INIT_OBJ,
+      },
+    ],
   },
   reducers: {
-    setEmergencyContactValues(state, action) {
-      const { index, propertyName, value } = action.payload;
-      state.emergencyContacts[index][propertyName] = value;
-    },
-    addNewEmergencyContact(state, action) {
-      if(state.emergencyContacts.length > 3) return;
-      state.emergencyContacts.push({ ...EMERGENCY_CONTACT_INIT_OBJ });
-    },
     setFirstName(state, action) {
       state.firstName = action.payload;
     },
@@ -108,6 +110,23 @@ const todosSlice = createSlice({
     setMedications(state, action) {
       state.medications = action.payload;
     },
+    setEmergencyContactValues(state, action) {
+      const { index, propertyName, value } = action.payload;
+      state.emergencyContacts[index][propertyName] = value;
+    },
+    addNewEmergencyContact(state, action) {
+      if (state.emergencyContacts.length > MAXIMUM_EMERGENCY_CONTACT_COUNT)
+        return;
+      state.emergencyContacts.push({ ...EMERGENCY_CONTACT_INIT_OBJ });
+    },
+    setTrusedContactValues(state, action) {
+      const { index, propertyName, value } = action.payload;
+      state.trustedContacts[index][propertyName] = value;
+    },
+    addNewTrusedContact(state, action) {
+      if (state.trustedContacts.length > MAXIMUM_TRUSTED_CONTACT_COUNT) return;
+      state.trustedContacts.push({ ...TRUSTED_CONTACT_INIT_OBJ });
+    },
   },
 });
 
@@ -135,7 +154,9 @@ export const {
   setAllergies,
   setMedications,
   setEmergencyContactValues,
-  addNewEmergencyContact
+  addNewEmergencyContact,
+  setTrusedContactValues,
+  addNewTrusedContact,
 } = todosSlice.actions;
 
 export default todosSlice.reducer;
