@@ -22,7 +22,9 @@ function Accordion({ title, children }) {
           ]}
         >
           <Text style={styles.title}>{title}</Text>
-          <Icon name="chevron-down" color="#A352EB" size={18} />
+          <View style={styles.backgroundCircle}>
+            <Icon name="chevron-down" color="#A352EB" size={16} />
+          </View>
         </View>
       </TouchableWithoutFeedback>
       {open && <View style={[styles.content, { height }]}>{children}</View>}
@@ -58,6 +60,14 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 8,
     borderBottomRightRadius: 8,
   },
+  backgroundCircle: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#8536CC38",
+    height: 18,
+    width: 18,
+    borderRadius: 9
+  }
 });
 
 export default Accordion;
