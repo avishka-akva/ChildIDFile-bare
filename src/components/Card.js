@@ -1,15 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
 
-function Card({ children }) {
-  return <View style={styles.card}>{children}</View>;
+function Card({ children, style = {} }) {
+  return <View style={[styles.card,style]}>{children}</View>;
 }
 
 const styles = StyleSheet.create({
-  heading: {
-    fontSize: 18,
-    fontWeight: "600",
-    marginBottom: 13,
-  },
   card: {
     backgroundColor: "white",
     borderRadius: 18,

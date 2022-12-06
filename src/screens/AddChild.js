@@ -14,7 +14,7 @@ import UploadPhoto from "./UploadPhoto";
 import Fingerprints from "./Fingerprints";
 
 function AddChild({navigation}) {
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [currentStepIndex, setCurrentStepIndex] = useState(6);
 
   const steps = [
     {
