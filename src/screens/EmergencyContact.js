@@ -6,10 +6,14 @@ import Card from "../components/Card";
 import { globleStyles } from "../shared/style";
 import CustomTextInput from "../components/CustomTextInput";
 import CustomButton from "../components/CustomButton";
+import Accordion from "../components/Accordion";
 import {
   setEmergencyContactValues,
   addNewEmergencyContact,
 } from "../redux/childSlice";
+
+const MAXIMUM_CONTACT_COUNT = 3;
+
 function EmergencyContact() {
   const { emergencyContacts } = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
@@ -22,16 +26,12 @@ function EmergencyContact() {
     dispatch(addNewEmergencyContact());
   };
 
-  const viewItem = (index, { name, relationship, cell, home, work, address }) => (
-    <Card key={index}><Text>{name}</Text></Card>
-  )
-
-  const editItem = (
+  const getForm = (
     index,
     { name, relationship, cell, home, work, address }
   ) => {
     return (
-      <Card key={index}>
+      <>
         <CustomTextInput
           label={"Emergency Contact"}
           value={name}
@@ -101,8 +101,18 @@ function EmergencyContact() {
           numberOfLines={4}
           marginBottom={0}
         />
-      </Card>
+      </>
     );
+  };
+
+  const viewItem = (index, props) => (
+    <Accordion key={index} title={props.name}>
+      {getForm(index, props)}
+    </Accordion>
+  );
+
+  const editItem = (index, props) => {
+    return <Card key={index}>{getForm(index, props)}</Card>;
   };
 
   return (
@@ -111,7 +121,9 @@ function EmergencyContact() {
         <Text style={[globleStyles.title, styles.title]}>
           Emergency Contact Information
         </Text>
-        <Text style={styles.added}>1/3 added</Text>
+        <Text style={styles.added}>
+          {emergencyContacts.length}/{MAXIMUM_CONTACT_COUNT} added
+        </Text>
       </View>
       {emergencyContacts.map((contactItem, index) => {
         if (emergencyContacts.length - 1 === index) {
@@ -119,14 +131,17 @@ function EmergencyContact() {
         }
         return viewItem(index, contactItem);
       })}
-      <View style={styles.addButtonContainer}>
-        <CustomButton
-          onPress={onAddButton}
-          text={"Add Additional Contacts"}
-          backgroundColor="#A352EB"
-          buttonWidth={"100%"}
-        />
-      </View>
+
+      {emergencyContacts.length < MAXIMUM_CONTACT_COUNT && (
+        <View style={styles.addButtonContainer}>
+          <CustomButton
+            onPress={onAddButton}
+            text={"Add Additional Contacts"}
+            backgroundColor="#A352EB"
+            buttonWidth={"100%"}
+          />
+        </View>
+      )}
     </View>
   );
 }
