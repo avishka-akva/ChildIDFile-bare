@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, ScrollView, View, Modal, Text } from "react-native";
 import * as Progress from "react-native-progress";
 import { AntDesign } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 
 import { globleStyles } from "../shared/style";
-import { toggleExit } from "../redux/childSlice";
+import { toggleExit, setUpdate } from "../redux/childSlice";
 import CustomButton from "../components/CustomButton";
 import PersonalInformation from "./PersonalInformation";
 import PhysicalCharacteristics from "./PhysicalCharacteristics";
@@ -63,6 +63,16 @@ function AddChild({ navigation }) {
 
     return currentStep.compnent;
   };
+
+  const onExit = () => {
+    dispatch(toggleExit());
+    dispatch(setUpdate(false));
+    navigation.goBack();
+  };
+
+  useEffect(() => {
+    dispatch(setUpdate(true));
+  },[]);
 
   const progress = (currentStepIndex + 1) / steps.length;
 
@@ -126,10 +136,7 @@ function AddChild({ navigation }) {
             color="#A352EB"
           />
           <CustomButton
-            onPress={() => {
-              dispatch(toggleExit());
-              navigation.goBack();
-            }}
+            onPress={onExit}
             text={"Yes, Save"}
             buttonStyle={[
               globleStyles.buttonPrimary,
