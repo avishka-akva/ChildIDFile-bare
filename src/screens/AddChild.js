@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, ScrollView, View } from "react-native";
+import { StyleSheet, ScrollView, View, Modal, Text } from "react-native";
 import * as Progress from "react-native-progress";
+import { AntDesign } from "@expo/vector-icons";
+import { useSelector, useDispatch } from "react-redux";
 
 import { globleStyles } from "../shared/style";
+import { toggleExit } from "../redux/childSlice";
 import CustomButton from "../components/CustomButton";
 import PersonalInformation from "./PersonalInformation";
 import PhysicalCharacteristics from "./PhysicalCharacteristics";
@@ -12,10 +15,12 @@ import EmergencyContact from "./EmergencyContact";
 import TrustedContact from "./TrustedContact";
 import UploadPhoto from "./UploadPhoto";
 import Fingerprints from "./Fingerprints";
+import CustomModal from "../components/CustomModal";
 
-function AddChild({navigation}) {
-  const [currentStepIndex, setCurrentStepIndex] = useState(6);
-
+function AddChild({ navigation }) {
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const { exit } = useSelector((state) => state.currentChild);
+  const dispatch = useDispatch();
   const steps = [
     {
       compnent: <PersonalInformation />,
@@ -101,6 +106,40 @@ function AddChild({navigation}) {
           />
         )}
       </View>
+      <CustomModal transparent visible={exit}>
+        <Text style={styles.exitModalText}>
+          Are you sure, do you want to exit?
+        </Text>
+        <View style={styles.exitModalIcon}>
+          <AntDesign name="exclamationcircleo" size={54} color="red" />
+        </View>
+        <View style={styles.exitModalFooter}>
+          <CustomButton
+            onPress={() => {
+              dispatch(toggleExit());
+            }}
+            text={"No"}
+            buttonStyle={[
+              globleStyles.buttonOutLine,
+              { borderColor: "#A352EB", width: 116, height: 36 },
+            ]}
+            color="#A352EB"
+          />
+          <CustomButton
+            onPress={() => {
+              dispatch(toggleExit());
+              navigation.goBack();
+            }}
+            text={"Yes, Save"}
+            buttonStyle={[
+              globleStyles.buttonPrimary,
+              { backgroundColor: "#A352EB", width: 116, height: 36 },
+            ]}
+            backgroundColor="#A352EB"
+            color="#FFFFFF"
+          />
+        </View>
+      </CustomModal>
     </ScrollView>
   );
 }
@@ -124,6 +163,19 @@ const styles = StyleSheet.create({
   },
   divider: {
     flex: 1,
+  },
+  exitModalFooter: {
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  exitModalText: {
+    color: "#434343",
+    fontSize: 16,
+  },
+  exitModalIcon: {
+    marginVertical: 33,
   },
 });
 

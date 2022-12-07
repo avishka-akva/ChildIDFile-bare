@@ -9,6 +9,8 @@ import {
 const todosSlice = createSlice({
   name: "child",
   initialState: {
+    edit: true,
+    exit: false,
     firstName: "",
     lastName: "",
     nickName: "",
@@ -42,6 +44,12 @@ const todosSlice = createSlice({
     ],
   },
   reducers: {
+    toggleUpdate(state, action){
+      state.update = !state.update
+    },
+    toggleExit(state, action){
+      state.exit = !state.exit
+    },
     setFirstName(state, action) {
       state.firstName = action.payload;
     },
@@ -131,6 +139,8 @@ const todosSlice = createSlice({
 });
 
 export const {
+  toggleUpdate,
+  toggleExit,
   setFirstName,
   setLastName,
   setNickName,
