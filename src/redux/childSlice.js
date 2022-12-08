@@ -6,7 +6,7 @@ import {
   MAXIMUM_TRUSTED_CONTACT_COUNT,
 } from "../shared/const";
 
-const todosSlice = createSlice({
+const childSlice = createSlice({
   name: "child",
   initialState: {
     edit: false,
@@ -167,6 +167,6 @@ export const {
   addNewEmergencyContact,
   setTrusedContactValues,
   addNewTrusedContact,
-} = todosSlice.actions;
+} = childSlice.actions;
 
-export default todosSlice.reducer;
+export default childSlice.reducer;

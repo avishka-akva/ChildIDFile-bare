@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { globleStyles } from "../shared/style";
 import { toggleExit, setUpdate } from "../redux/childSlice";
+import { addChild } from "../redux/childrenListSlice";
 import CustomButton from "../components/CustomButton";
 import PersonalInformation from "./PersonalInformation";
 import PhysicalCharacteristics from "./PhysicalCharacteristics";
@@ -18,9 +19,11 @@ import Fingerprints from "./Fingerprints";
 import CustomModal from "../components/CustomModal";
 
 function AddChild({ navigation }) {
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const { exit } = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
+  const currentChild = useSelector((state) => state.currentChild);
+
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+
   const steps = [
     {
       compnent: <PersonalInformation />,
@@ -53,6 +56,13 @@ function AddChild({ navigation }) {
     setCurrentStepIndex((previousValue) => ++previousValue);
   };
 
+  const onFinished = () => {
+    const newChild = { ...currentChild };
+    delete newChild.exit;
+    dispatch(addChild(newChild));
+    navigation.navigate("Home");
+  };
+
   const previosStep = () => {
     if (!currentStepIndex) return;
     setCurrentStepIndex((previousValue) => --previousValue);
@@ -67,12 +77,12 @@ function AddChild({ navigation }) {
   const onExit = () => {
     dispatch(toggleExit());
     dispatch(setUpdate(false));
-    navigation.goBack();
+    navigation.navigate("Home");
   };
 
   useEffect(() => {
     dispatch(setUpdate(true));
-  },[]);
+  }, []);
 
   const progress = (currentStepIndex + 1) / steps.length;
 
@@ -110,13 +120,13 @@ function AddChild({ navigation }) {
           />
         ) : (
           <CustomButton
-            onPress={() => navigation.goBack()}
+            onPress={onFinished}
             text={"DONE"}
             buttonStyle={globleStyles.buttonPrimary}
           />
         )}
       </View>
-      <CustomModal transparent visible={exit}>
+      <CustomModal transparent visible={currentChild.exit}>
         <Text style={styles.exitModalText}>
           Are you sure, do you want to exit?
         </Text>

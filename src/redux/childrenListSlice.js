@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const todosSlice = createSlice({
+const childrenListSlice = createSlice({
   name: "childrenList",
   initialState: [],
   reducers: {
@@ -10,6 +10,6 @@ const todosSlice = createSlice({
   },
 });
 
-export const { addChild } = todosSlice.actions;
+export const { addChild } = childrenListSlice.actions;
 
-export default todosSlice.reducer;
+export default childrenListSlice.reducer;
