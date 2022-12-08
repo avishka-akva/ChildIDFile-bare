@@ -5,7 +5,7 @@ export const globleStyles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "space-between",
-    margin: 32,
+    // margin: 32,
   },
   title: {
     color: "#434343",

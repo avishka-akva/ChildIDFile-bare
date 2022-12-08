@@ -1,28 +1,195 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  FlatList,
+  ScrollView,
+  Dimensions,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { Feather, AntDesign, MaterialIcons } from "@expo/vector-icons";
 
 import CustomButton from "../components/CustomButton";
 import { globleStyles } from "../shared/style";
 
+const spacing = 5;
+const width = (Dimensions.get("window").width - 4 * 10) / 2;
+
+function EmptyHomeView() {
+  return (
+    <View style={{ paddingHorizontal: 24 }}>
+      <Image source={require("../assets/homeImage.png")} />
+      <Text style={styles.description}>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt
+      </Text>
+    </View>
+  );
+}
+
 function Home({ navigation }) {
   const childrenList = useSelector((state) => state.childrenList);
+
+  const renderChildItem = ({ item }) => {
+    return (
+      <View
+        key={item.name}
+        style={[
+          styles.item,
+          {
+            padding: 16,
+            borderRadius: 20,
+            width: width,
+            marginVertical: spacing,
+            marginHorizontal: spacing,
+          },
+        ]}
+      >
+        <Image
+          style={styles.itemImage}
+          source={require("../assets/homeImage.png")}
+        />
+        <View style={[styles.itemNameContainer, { marginTop: 14 }]}>
+          <Text style={[styles.itemName, { marginRight: 5, fontSize: 16 }]}>
+            Anna Smith
+          </Text>
+          <MaterialIcons
+            name="edit"
+            size={12}
+            color="#434343"
+            style={{ position: "absolute", right: -12 }}
+          />
+        </View>
+        <Text style={[styles.itemNickName, { fontSize: 14, marginTop: 4 }]}>
+          Anna
+        </Text>
+        <Text style={[styles.itemDescription, { fontSize: 12, marginTop: 4 }]}>
+          Special needs dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod
+        </Text>
+        <CustomButton
+          onPress={() => {}}
+          text={"View"}
+          buttonStyle={[
+            globleStyles.buttonPrimary,
+            {
+              backgroundColor: "#A352EB",
+              width: 80,
+              height: 28,
+              marginTop: 22,
+            },
+          ]}
+          backgroundColor="#A352EB"
+          textStyle={{ fontSize: 10, color: "#FFF" }}
+        />
+        <View style={[styles.itemFooter, { justifyContent: "space-around" }]}>
+          <View style={[styles.iconContainer, { width: 24, height: 24 }]}>
+            <Feather name="external-link" size={12} color="#B6B6B6" />
+          </View>
+          <View style={[styles.iconContainer, { width: 24, height: 24 }]}>
+            <Feather name="download" size={12} color="#B6B6B6" />
+          </View>
+          <View style={[styles.iconContainer, { width: 24, height: 24 }]}>
+            <AntDesign name="delete" size={12} color="#B6B6B6" />
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  const renderSingleColumnItems = () => {
+    return childrenList.map((item) => {
+      return (
+        <View key={item.name} style={styles.item}>
+          <Image
+            style={styles.itemImage}
+            source={require("../assets/homeImage.png")}
+          />
+          <View style={styles.itemNameContainer}>
+            <Text style={styles.itemName}>Anna Smith</Text>
+            <MaterialIcons
+              style={{ position: "absolute", right: -22 }}
+              name="edit"
+              size={14}
+              color="#434343"
+            />
+          </View>
+          <Text style={styles.itemNickName}>Anna</Text>
+          <Text style={styles.itemDescription}>
+            Special needs dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod
+          </Text>
+          <View style={styles.itemFooter}>
+            <View style={styles.iconContainer}>
+              <Feather name="external-link" size={14} color="#B6B6B6" />
+            </View>
+            <View style={styles.iconContainer}>
+              <Feather name="download" size={14} color="#B6B6B6" />
+            </View>
+            <View style={styles.iconContainer}>
+              <AntDesign name="delete" size={14} color="#B6B6B6" />
+            </View>
+            <CustomButton
+              onPress={() => {}}
+              text={"View"}
+              buttonStyle={[
+                globleStyles.buttonPrimary,
+                { backgroundColor: "#A352EB", width: 96, height: 36 },
+              ]}
+              backgroundColor="#A352EB"
+              color="#FFFFFF"
+            />
+          </View>
+        </View>
+      );
+    });
+  };
+
+  useEffect(() => {}, []);
+
   return (
     <SafeAreaView style={globleStyles.container}>
       <View style={styles.mainTextContainer}>
         <Text style={styles.mainText}>Welcome</Text>
-        <View>
-          <Text style={styles.childrenCount}>{childrenList.length}</Text>
-        </View>
+        {childrenList.length > 0 && (
+          <View>
+            <Text style={styles.childrenCount}>{childrenList.length}</Text>
+          </View>
+        )}
       </View>
-      <View>
-        <Image source={require("../assets/homeImage.png")} />
-        <Text style={styles.description}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do
-          eiusmod tempor incididunt
-        </Text>
-      </View>
-      <View>
+      {childrenList.length ? (
+        childrenList.length <= 2 ? (
+          <ScrollView
+            style={{
+              paddingHorizontal: 24,
+            }}
+            contentContainerStyle={{
+              flexGrow: 1,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {renderSingleColumnItems()}
+          </ScrollView>
+        ) : (
+          <View style={styles.childrenListContainer}>
+            <FlatList
+              style={styles.list}
+              data={childrenList}
+              renderItem={renderChildItem}
+              contentContainerStyle={{ justifyContent: "space-around" }}
+              numColumns={2}
+              columnWrapperStyle={{ flexShrink: 1 }}
+            />
+          </View>
+        )
+      ) : (
+        <EmptyHomeView />
+      )}
+      <View style={styles.buttonContainer}>
         <CustomButton
           onPress={() => navigation.navigate("Add Child")}
           text={"Add Child"}
@@ -38,6 +205,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    paddingHorizontal: 24,
+    marginVertical: 24,
   },
   mainText: {
     color: "#000",
@@ -49,9 +218,78 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 20,
   },
+  buttonContainer: {
+    padding: 24,
+  },
   childrenCount: {
     color: "#9B9B9B",
     fontSize: 36,
+  },
+  childrenListContainer: {
+    flex: 1,
+    width: "100%",
+  },
+  list: {
+    paddingHorizontal: 8,
+  },
+  item: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+    borderRadius: 36,
+    padding: 28,
+    marginVertical: 12,
+    marginHorizontal: 6,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 11,
+    },
+    shadowOpacity: 0.55,
+    shadowRadius: 18,
+    elevation: 3,
+  },
+  itemImage: {
+    width: 46,
+    height: 46,
+    borderRadius: 46 / 2,
+    backgroundColor: "blue",
+  },
+  itemNameContainer: {
+    marginTop: 16,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  itemName: {
+    color: "#434343",
+    fontSize: 22,
+  },
+  itemNickName: {
+    color: "#797979",
+    fontSize: 16,
+    marginTop: 8,
+  },
+  itemDescription: {
+    color: "#918F8F",
+    fontSize: 14,
+    marginTop: 8,
+    textAlign: "center",
+  },
+  itemFooter: {
+    width: "90%",
+    marginTop: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  iconContainer: {
+    width: 28,
+    height: 28,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: "#B6B6B6",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
