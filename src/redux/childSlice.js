@@ -42,13 +42,16 @@ const childSlice = createSlice({
         ...TRUSTED_CONTACT_INIT_OBJ,
       },
     ],
+    image1: null,
+    image2: null,
+    fingerPrint: null,
   },
   reducers: {
-    setUpdate(state, action){
-      state.update = !state.update
+    setUpdate(state, action) {
+      state.update = !state.update;
     },
-    toggleExit(state, action){
-      state.exit = !state.exit
+    toggleExit(state, action) {
+      state.exit = !state.exit;
     },
     setFirstName(state, action) {
       state.firstName = action.payload;
@@ -135,6 +138,15 @@ const childSlice = createSlice({
       if (state.trustedContacts.length > MAXIMUM_TRUSTED_CONTACT_COUNT) return;
       state.trustedContacts.push({ ...TRUSTED_CONTACT_INIT_OBJ });
     },
+    setImage1(state, action) {
+      state.image1 = action.payload;
+    },
+    setImage2(state, action) {
+      state.image2 = action.payload;
+    },
+    setFingerPrint(state, action) {
+      state.fingerPrint = action.payload;
+    },
   },
 });
 
@@ -167,6 +179,9 @@ export const {
   addNewEmergencyContact,
   setTrusedContactValues,
   addNewTrusedContact,
+  setImage1,
+  setImage2,
+  setFingerPrint
 } = childSlice.actions;
 
 export default childSlice.reducer;
