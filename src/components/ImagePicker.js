@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -7,9 +7,34 @@ import {
   Image,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 
-function ImagePicker() {
+function ImagePickerUI({image,setImage}) {
   const [selected, setSelected] = useState(false);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      // mediaTypes: ImagePicker.MediaTypeOptions.All,
+      // allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+      base64: true,
+    });
+
+
+    if (!result.assets[0].canceled) {
+      setImage(result.assets[0].base64);
+      setSelected(true);
+    }
+  };
+
+  useEffect(() => {
+    if(image) {
+      setSelected(true);
+    }
+  }, []);
+
   return (
     <View style={styles.main}>
       {selected ? (
@@ -19,10 +44,21 @@ function ImagePicker() {
               <AntDesign name="close" size={12} color="white" />
             </View>
           </TouchableWithoutFeedback>
-          <View style={[styles.container,{height: 263}]}></View>
+          <View style={{ height: 263, borderRadius: 18 }}>
+            <Image
+              style={{
+                width: "100%",
+                height: "100%",
+                borderRadius: 18
+              }}
+              source={{
+                uri: image ? `data:image/jpg;base64,${image}` : null,
+              }}
+            />
+          </View>
         </>
       ) : (
-        <TouchableWithoutFeedback onPress={() => setSelected(true)}>
+        <TouchableWithoutFeedback onPress={() => pickImage()}>
           <View style={styles.container}>
             <Image
               style={styles.image}
@@ -87,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ImagePicker;
+export default ImagePickerUI;
