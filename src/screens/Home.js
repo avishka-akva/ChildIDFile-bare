@@ -36,7 +36,7 @@ function Home({ navigation }) {
   const renderChildItem = ({ item }) => {
     return (
       <View
-        key={item.name}
+        key={item.id}
         style={[
           styles.item,
           {
@@ -54,7 +54,7 @@ function Home({ navigation }) {
         />
         <View style={[styles.itemNameContainer, { marginTop: 14 }]}>
           <Text style={[styles.itemName, { marginRight: 5, fontSize: 16 }]}>
-            Anna Smith
+            {`${item.firstName} ${item.lastName}`}
           </Text>
           <MaterialIcons
             name="edit"
@@ -64,7 +64,7 @@ function Home({ navigation }) {
           />
         </View>
         <Text style={[styles.itemNickName, { fontSize: 14, marginTop: 4 }]}>
-          Anna
+          {item.nickName}
         </Text>
         <Text style={[styles.itemDescription, { fontSize: 12, marginTop: 4 }]}>
           Special needs dolor sit amet, consectetur adipiscing elit, sed do
@@ -103,13 +103,17 @@ function Home({ navigation }) {
   const renderSingleColumnItems = () => {
     return childrenList.map((item) => {
       return (
-        <View key={item.name} style={styles.item}>
+        <View key={item.id} style={styles.item}>
           <Image
             style={styles.itemImage}
-            source={require("../assets/homeImage.png")}
+            source={{
+              uri: `data:image/jpg;base64,${item.image1}`,
+            }}
           />
           <View style={styles.itemNameContainer}>
-            <Text style={styles.itemName}>Anna Smith</Text>
+            <Text
+              style={styles.itemName}
+            >{`${item.firstName} ${item.lastName}`}</Text>
             <MaterialIcons
               style={{ position: "absolute", right: -22 }}
               name="edit"
@@ -117,7 +121,7 @@ function Home({ navigation }) {
               color="#434343"
             />
           </View>
-          <Text style={styles.itemNickName}>Anna</Text>
+          <Text style={styles.itemNickName}>{item.nickName}</Text>
           <Text style={styles.itemDescription}>
             Special needs dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod

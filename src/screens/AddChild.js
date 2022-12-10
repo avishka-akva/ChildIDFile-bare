@@ -3,6 +3,7 @@ import { StyleSheet, ScrollView, View, Modal, Text } from "react-native";
 import * as Progress from "react-native-progress";
 import { AntDesign } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
+import uuid from 'react-native-uuid';
 
 import { globleStyles } from "../shared/style";
 import { toggleExit, setUpdate } from "../redux/childSlice";
@@ -57,7 +58,8 @@ function AddChild({ navigation }) {
   };
 
   const onFinished = () => {
-    const newChild = { ...currentChild };
+    const id = uuid.v4();
+    const newChild = { id, ...currentChild };
     delete newChild.exit;
     dispatch(addChild(newChild));
     navigation.navigate("Home");
