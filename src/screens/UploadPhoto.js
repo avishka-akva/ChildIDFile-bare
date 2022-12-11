@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TextInput } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
-import Card from "../components/Card";
 import ImagePicker from "../components/ImagePicker";
 import { globleStyles } from "../shared/style";
 import {

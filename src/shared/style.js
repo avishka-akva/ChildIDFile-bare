@@ -58,4 +58,17 @@ export const globleStyles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 3,
   },
+  modalFooter: {
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  modalText: {
+    color: "#434343",
+    fontSize: 16,
+  },
+  modalIcon: {
+    marginVertical: 33,
+  },
 });

@@ -7,9 +7,12 @@ const childrenListSlice = createSlice({
     addChild(state, action) {
       state.push(action.payload);
     },
+    deleteChild(state, action) {
+      state.splice(state.findIndex((child) => child.id === action.payload), 1);
+    },
   },
 });
 
-export const { addChild } = childrenListSlice.actions;
+export const { addChild, deleteChild } = childrenListSlice.actions;
 
 export default childrenListSlice.reducer;

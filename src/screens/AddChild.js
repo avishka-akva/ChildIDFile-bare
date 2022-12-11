@@ -129,13 +129,13 @@ function AddChild({ navigation }) {
         )}
       </View>
       <CustomModal transparent visible={currentChild.exit}>
-        <Text style={styles.exitModalText}>
+        <Text style={globleStyles.modalText}>
           Are you sure, do you want to exit?
         </Text>
-        <View style={styles.exitModalIcon}>
+        <View style={globleStyles.modalIcon}>
           <AntDesign name="exclamationcircleo" size={54} color="red" />
         </View>
-        <View style={styles.exitModalFooter}>
+        <View style={globleStyles.modalFooter}>
           <CustomButton
             onPress={() => {
               dispatch(toggleExit());

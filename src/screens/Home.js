@@ -7,13 +7,16 @@ import {
   FlatList,
   ScrollView,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Feather, AntDesign, MaterialIcons } from "@expo/vector-icons";
 
 import CustomButton from "../components/CustomButton";
 import { globleStyles } from "../shared/style";
+import { deleteChild } from "../redux/childrenListSlice";
+import CustomModal from "../components/CustomModal";
 
 const spacing = 5;
 const width = (Dimensions.get("window").width - 4 * 10) / 2;
@@ -32,6 +35,54 @@ function EmptyHomeView() {
 
 function Home({ navigation }) {
   const childrenList = useSelector((state) => state.childrenList);
+  const dispatch = useDispatch();
+
+  const [deleteModelOpen, setDeleteModelOpen] = useState(false);
+  const [selected, setSelected] = useState(null);
+
+  const onDelete = (id) => {
+    setSelected(id);
+    setDeleteModelOpen(true);
+  };
+
+  const DeleteModal = () => {
+    return (
+      <CustomModal transparent visible={deleteModelOpen}>
+        <Text style={globleStyles.modalText}>
+          Are you sure, you want to delete this profile?
+        </Text>
+        <View style={globleStyles.modalIcon}>
+          <AntDesign name="exclamationcircleo" size={54} color="red" />
+        </View>
+        <View style={globleStyles.modalFooter}>
+          <CustomButton
+            onPress={() => {
+              setDeleteModelOpen(false);
+            }}
+            text={"No"}
+            buttonStyle={[
+              globleStyles.buttonOutLine,
+              { borderColor: "#A352EB", width: 116, height: 36 },
+            ]}
+            color="#A352EB"
+          />
+          <CustomButton
+            onPress={() => {
+              dispatch(deleteChild(selected));
+              setDeleteModelOpen(false);
+            }}
+            text={"Yes"}
+            buttonStyle={[
+              globleStyles.buttonPrimary,
+              { backgroundColor: "#A352EB", width: 116, height: 36 },
+            ]}
+            backgroundColor="#A352EB"
+            color="#FFFFFF"
+          />
+        </View>
+      </CustomModal>
+    );
+  };
 
   const renderChildItem = ({ item }) => {
     return (
@@ -127,15 +178,18 @@ function Home({ navigation }) {
             eiusmod
           </Text>
           <View style={styles.itemFooter}>
-            <View style={styles.iconContainer}>
+            <TouchableOpacity style={styles.iconContainer}>
               <Feather name="external-link" size={14} color="#B6B6B6" />
-            </View>
+            </TouchableOpacity>
             <View style={styles.iconContainer}>
               <Feather name="download" size={14} color="#B6B6B6" />
             </View>
-            <View style={styles.iconContainer}>
+            <TouchableOpacity
+              style={styles.iconContainer}
+              onPress={() => onDelete(item.id)}
+            >
               <AntDesign name="delete" size={14} color="#B6B6B6" />
-            </View>
+            </TouchableOpacity>
             <CustomButton
               onPress={() => {}}
               text={"View"}
@@ -199,6 +253,7 @@ function Home({ navigation }) {
           text={"Add Child"}
         />
       </View>
+      <DeleteModal />
     </SafeAreaView>
   );
 }
