@@ -84,6 +84,10 @@ function Home({ navigation }) {
     );
   };
 
+  const onEdit = (id) => {
+    navigation.navigate("Add Child",{childId: id});
+  };
+
   const renderChildItem = ({ item }) => {
     return (
       <View
@@ -137,15 +141,21 @@ function Home({ navigation }) {
           textStyle={{ fontSize: 10, color: "#FFF" }}
         />
         <View style={[styles.itemFooter, { justifyContent: "space-around" }]}>
-          <View style={[styles.iconContainer, { width: 24, height: 24 }]}>
+          <TouchableOpacity
+            style={[styles.iconContainer, { width: 24, height: 24 }]}
+            onPress={() => onEdit(item.id)}
+          >
             <Feather name="external-link" size={12} color="#B6B6B6" />
-          </View>
+          </TouchableOpacity>
           <View style={[styles.iconContainer, { width: 24, height: 24 }]}>
             <Feather name="download" size={12} color="#B6B6B6" />
           </View>
-          <View style={[styles.iconContainer, { width: 24, height: 24 }]}>
+          <TouchableOpacity
+            style={[styles.iconContainer, { width: 24, height: 24 }]}
+            onPress={() => onDelete(item.id)}
+          >
             <AntDesign name="delete" size={12} color="#B6B6B6" />
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -178,7 +188,10 @@ function Home({ navigation }) {
             eiusmod
           </Text>
           <View style={styles.itemFooter}>
-            <TouchableOpacity style={styles.iconContainer}>
+            <TouchableOpacity
+              style={styles.iconContainer}
+              onPress={() => onEdit(item.id)}
+            >
               <Feather name="external-link" size={14} color="#B6B6B6" />
             </TouchableOpacity>
             <View style={styles.iconContainer}>

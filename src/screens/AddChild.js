@@ -3,11 +3,16 @@ import { StyleSheet, ScrollView, View, Modal, Text } from "react-native";
 import * as Progress from "react-native-progress";
 import { AntDesign } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
-import uuid from 'react-native-uuid';
+import uuid from "react-native-uuid";
 
 import { globleStyles } from "../shared/style";
-import { toggleExit, setUpdate } from "../redux/childSlice";
-import { addChild } from "../redux/childrenListSlice";
+import {
+  toggleExit,
+  setUpdate,
+  setChildSlice,
+  cleanChildSlice,
+} from "../redux/childSlice";
+import { addChild, updateChild } from "../redux/childrenListSlice";
 import CustomButton from "../components/CustomButton";
 import PersonalInformation from "./PersonalInformation";
 import PhysicalCharacteristics from "./PhysicalCharacteristics";
@@ -19,9 +24,10 @@ import UploadPhoto from "./UploadPhoto";
 import Fingerprints from "./Fingerprints";
 import CustomModal from "../components/CustomModal";
 
-function AddChild({ navigation }) {
+function AddChild({ navigation, route }) {
   const dispatch = useDispatch();
-  const currentChild = useSelector((state) => state.currentChild);
+  const { currentChild, childrenList } = useSelector((state) => state);
+  const childId = route?.params?.childId;
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
@@ -55,13 +61,22 @@ function AddChild({ navigation }) {
   const nextStep = () => {
     if (currentStepIndex + 1 === steps.length) return;
     setCurrentStepIndex((previousValue) => ++previousValue);
+    if(childId) {
+      dispatch(updateChild({...currentChild, id: childId}));
+    }
   };
 
   const onFinished = () => {
-    const id = uuid.v4();
-    const newChild = { id, ...currentChild };
-    delete newChild.exit;
-    dispatch(addChild(newChild));
+    if(childId) {
+      dispatch(updateChild({...currentChild, id: childId}));
+    } else {
+      const id = uuid.v4();
+      const newChild = { ...currentChild, id };
+      delete newChild.exit;
+      dispatch(addChild(newChild));
+    }
+    
+    dispatch(cleanChildSlice());
     navigation.navigate("Home");
   };
 
@@ -79,11 +94,16 @@ function AddChild({ navigation }) {
   const onExit = () => {
     dispatch(toggleExit());
     dispatch(setUpdate(false));
+    dispatch(cleanChildSlice());
     navigation.navigate("Home");
   };
 
   useEffect(() => {
     dispatch(setUpdate(true));
+    if (childId) {
+      const childObj = childrenList.find((child) => child.id === childId);
+      dispatch(setChildSlice(childObj));
+    }
   }, []);
 
   const progress = (currentStepIndex + 1) / steps.length;

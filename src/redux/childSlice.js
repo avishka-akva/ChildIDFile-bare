@@ -6,47 +6,56 @@ import {
   MAXIMUM_TRUSTED_CONTACT_COUNT,
 } from "../shared/const";
 
+const initialState = {
+  edit: false,
+  exit: false,
+  id: null,
+  firstName: "",
+  lastName: "",
+  nickName: "",
+  address: "",
+  city: "",
+  postalCode: "",
+  province: "",
+  country: "",
+  gender: "",
+  race: "",
+  hairColor: "",
+  eyeColor: "",
+  height: "",
+  characteristicOptions: [],
+  specialNeeds: "",
+  otherCharacteristic: "",
+  physicianName: "",
+  physicianOffice: "",
+  bloodType: "",
+  allergies: "",
+  medications: "",
+  emergencyContacts: [
+    {
+      ...EMERGENCY_CONTACT_INIT_OBJ,
+    },
+  ],
+  trustedContacts: [
+    {
+      ...TRUSTED_CONTACT_INIT_OBJ,
+    },
+  ],
+  image1: null,
+  image2: null,
+  fingerPrint: null,
+};
+
 const childSlice = createSlice({
   name: "child",
-  initialState: {
-    edit: false,
-    exit: false,
-    firstName: "",
-    lastName: "",
-    nickName: "",
-    address: "",
-    city: "",
-    postalCode: "",
-    province: "",
-    country: "",
-    gender: "",
-    race: "",
-    hairColor: "",
-    eyeColor: "",
-    height: "",
-    characteristicOptions: [],
-    specialNeeds: "",
-    otherCharacteristic: "",
-    physicianName: "",
-    physicianOffice: "",
-    bloodType: "",
-    allergies: "",
-    medications: "",
-    emergencyContacts: [
-      {
-        ...EMERGENCY_CONTACT_INIT_OBJ,
-      },
-    ],
-    trustedContacts: [
-      {
-        ...TRUSTED_CONTACT_INIT_OBJ,
-      },
-    ],
-    image1: null,
-    image2: null,
-    fingerPrint: null,
-  },
+  initialState,
   reducers: {
+    cleanChildSlice() {
+      return { ...initialState };
+    },
+    setChildSlice(state, action) {
+      return { ...state, ...action.payload };
+    },
     setUpdate(state, action) {
       state.update = !state.update;
     },
@@ -151,6 +160,8 @@ const childSlice = createSlice({
 });
 
 export const {
+  setChildSlice,
+  cleanChildSlice,
   setUpdate,
   toggleExit,
   setFirstName,
@@ -181,7 +192,7 @@ export const {
   addNewTrusedContact,
   setImage1,
   setImage2,
-  setFingerPrint
+  setFingerPrint,
 } = childSlice.actions;
 
 export default childSlice.reducer;
