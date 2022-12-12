@@ -61,6 +61,7 @@ function PhysicalCharacteristics() {
                 value: "other",
               },
             ]}
+            defaultValue={currentChild.gender}
             onPress={onGenderChange}
           />
         </View>

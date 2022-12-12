@@ -2,7 +2,6 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import React, { useState, useEffect } from "react";
 import { globleStyles } from "../shared/style";
 
-
 function RadioButton({ isChecked, text, onRadioButtonPress }) {
   const _renderCheckedView = () => {
     if (!isChecked) return null;
@@ -20,7 +19,7 @@ function RadioButton({ isChecked, text, onRadioButtonPress }) {
   );
 }
 
-function RadioButtonGroup({ values, onPress, vertical = false }) {
+function RadioButtonGroup({ values, onPress, vertical = false, defaultValue }) {
   const [currentSelectedItem, setCurrentSelectedItem] = useState(0);
 
   const _onPress = (index) => {
@@ -41,6 +40,12 @@ function RadioButtonGroup({ values, onPress, vertical = false }) {
       );
     });
   };
+
+  useEffect(() => {
+    if (defaultValue) {
+      setCurrentSelectedItem(values.findIndex((item) => item.value === defaultValue));
+    }
+  }, []);
   return (
     <View
       style={{
