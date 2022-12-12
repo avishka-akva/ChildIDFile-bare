@@ -7,8 +7,6 @@ import {
 } from "../shared/const";
 
 const initialState = {
-  edit: false,
-  exit: false,
   id: null,
   firstName: "",
   lastName: "",
@@ -55,12 +53,6 @@ const childSlice = createSlice({
     },
     setChildSlice(state, action) {
       return { ...state, ...action.payload };
-    },
-    setUpdate(state, action) {
-      state.update = !state.update;
-    },
-    toggleExit(state, action) {
-      state.exit = !state.exit;
     },
     setFirstName(state, action) {
       state.firstName = action.payload;
@@ -162,8 +154,6 @@ const childSlice = createSlice({
 export const {
   setChildSlice,
   cleanChildSlice,
-  setUpdate,
-  toggleExit,
   setFirstName,
   setLastName,
   setNickName,

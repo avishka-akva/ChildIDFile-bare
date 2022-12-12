@@ -6,12 +6,8 @@ import { useSelector, useDispatch } from "react-redux";
 import uuid from "react-native-uuid";
 
 import { globleStyles } from "../shared/style";
-import {
-  toggleExit,
-  setUpdate,
-  setChildSlice,
-  cleanChildSlice,
-} from "../redux/childSlice";
+import { setChildSlice, cleanChildSlice } from "../redux/childSlice";
+import { toggleExit, setUpdate } from "../redux/childManageSlice";
 import { addChild, updateChild } from "../redux/childrenListSlice";
 import CustomButton from "../components/CustomButton";
 import PersonalInformation from "./PersonalInformation";
@@ -26,7 +22,9 @@ import CustomModal from "../components/CustomModal";
 
 function AddChild({ navigation, route }) {
   const dispatch = useDispatch();
-  const { currentChild, childrenList } = useSelector((state) => state);
+  const { currentChild, childrenList, childManage } = useSelector(
+    (state) => state
+  );
   const childId = route?.params?.childId;
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
@@ -61,21 +59,20 @@ function AddChild({ navigation, route }) {
   const nextStep = () => {
     if (currentStepIndex + 1 === steps.length) return;
     setCurrentStepIndex((previousValue) => ++previousValue);
-    if(childId) {
-      dispatch(updateChild({...currentChild, id: childId}));
+    if (childId) {
+      dispatch(updateChild({ ...currentChild, id: childId }));
     }
   };
 
   const onFinished = () => {
-    if(childId) {
-      dispatch(updateChild({...currentChild, id: childId}));
+    if (childId) {
+      dispatch(updateChild({ ...currentChild, id: childId }));
     } else {
       const id = uuid.v4();
       const newChild = { ...currentChild, id };
-      delete newChild.exit;
       dispatch(addChild(newChild));
     }
-    
+
     dispatch(cleanChildSlice());
     navigation.navigate("Home");
   };
@@ -148,7 +145,7 @@ function AddChild({ navigation, route }) {
           />
         )}
       </View>
-      <CustomModal transparent visible={currentChild.exit}>
+      <CustomModal transparent visible={childManage.exit}>
         <Text style={globleStyles.modalText}>
           Are you sure, do you want to exit?
         </Text>

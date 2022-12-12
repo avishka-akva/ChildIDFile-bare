@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import Home from "./screens/Home";
 import AddChild from "./screens/AddChild";
 import CustomHeader from "./components/CustomHeader";
-import { toggleExit } from "./redux/childSlice";
+import { toggleExit } from "./redux/childManageSlice";
 
 const Stack = createNativeStackNavigator();
 
