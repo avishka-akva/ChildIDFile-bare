@@ -16,7 +16,7 @@ const initialState = {
   postalCode: "",
   province: "",
   country: "",
-  gender: "",
+  gender: "male",
   race: "",
   hairColor: "",
   eyeColor: "",

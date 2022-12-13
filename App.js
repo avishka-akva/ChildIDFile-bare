@@ -1,12 +1,16 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { store } from "./src/redux/store";
-import ChildId from "./src/ChildID"
+import { PersistGate } from "redux-persist/integration/react";
+
+import store, { persistor } from "./src/redux/store";
+import ChildId from "./src/ChildID";
 
 export default function App() {
   return (
     <Provider store={store}>
-      <ChildId />
+      <PersistGate loading={null} persistor={persistor}>
+        <ChildId />
+      </PersistGate>
     </Provider>
   );
 }
