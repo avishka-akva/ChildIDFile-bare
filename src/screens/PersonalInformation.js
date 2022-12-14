@@ -11,6 +11,7 @@ import {
   setFirstName,
   setLastName,
   setNickName,
+  setDateOfBirth,
   setAddress,
   setCity,
   setPostalCode,
@@ -22,7 +23,7 @@ function PersonalInformation() {
   const currentChild = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
 
-  const [date, setDateOfBirth] = useState(new Date(1598051730000));
+  const [date, setDate] = useState(new Date(1598051730000));
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const onFirstNameChangeText = (value) => {
@@ -63,17 +64,17 @@ function PersonalInformation() {
       </Text>
       <Card>
         <CustomTextInput
-          label={"First Name"}
+          label={"First Name *"}
           value={currentChild?.firstName}
           onChangeText={onFirstNameChangeText}
         />
         <CustomTextInput
-          label={"Last Name"}
+          label={"Last Name *"}
           value={currentChild?.lastName}
           onChangeText={onLastNameChangeText}
         />
         <CustomTextInput
-          label={"Nickname"}
+          label={"Nickname *"}
           value={currentChild?.nickName}
           onChangeText={onNickNameChangeText}
           marginBottom={0}
@@ -81,11 +82,11 @@ function PersonalInformation() {
       </Card>
       <Card>
         <Text style={[globleStyles.body, globleStyles.inputLable]}>
-          Date of Birth
+          Date of Birth *
         </Text>
         <View style={[globleStyles.input, styles.datePickerContainer]}>
           <Text style={styles.datePickerText}>
-            {date.toISOString().slice(0, 10)}
+            {currentChild?.dob}
           </Text>
           <TouchableOpacity
             style={styles.mainContainer}
@@ -103,7 +104,8 @@ function PersonalInformation() {
             onChange={(event, selectedDate) => {
               const currentDate = selectedDate;
               setShowDatePicker(false);
-              setDateOfBirth(currentDate);
+              setDate(currentDate);
+              dispatch(setDateOfBirth(currentDate.toISOString().slice(0, 10)));
             }}
           />
         )}

@@ -11,6 +11,7 @@ const initialState = {
   firstName: "",
   lastName: "",
   nickName: "",
+  dob: "",
   address: "",
   city: "",
   postalCode: "",
@@ -62,6 +63,9 @@ const childSlice = createSlice({
     },
     setNickName(state, action) {
       state.nickName = action.payload;
+    },
+    setDateOfBirth(state, action) {
+      state.dob = action.payload;
     },
     setAddress(state, action) {
       state.address = action.payload;
@@ -157,6 +161,7 @@ export const {
   setFirstName,
   setLastName,
   setNickName,
+  setDateOfBirth,
   setAddress,
   setCity,
   setPostalCode,
