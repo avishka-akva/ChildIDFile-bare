@@ -17,6 +17,7 @@ import CustomButton from "../components/CustomButton";
 import { globleStyles } from "../shared/style";
 import { deleteChild } from "../redux/childrenListSlice";
 import CustomModal from "../components/CustomModal";
+import generatePdf from "../shared/pdf";
 
 const spacing = 5;
 const width = (Dimensions.get("window").width - 4 * 10) / 2;
@@ -85,8 +86,13 @@ function Home({ navigation }) {
   };
 
   const onEdit = (id) => {
-    navigation.navigate("Add Child",{childId: id});
+    navigation.navigate("Add Child", { childId: id });
   };
+
+  const onDownloda = (id) => {
+    const child = childrenList.find(childItem => childItem.id === id);
+    generatePdf(child);
+  }
 
   const renderChildItem = ({ item }) => {
     return (
@@ -194,9 +200,12 @@ function Home({ navigation }) {
             >
               <Feather name="external-link" size={14} color="#B6B6B6" />
             </TouchableOpacity>
-            <View style={styles.iconContainer}>
+            <TouchableOpacity
+              style={styles.iconContainer}
+              onPress={() => onDownloda(item.id)}
+            >
               <Feather name="download" size={14} color="#B6B6B6" />
-            </View>
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.iconContainer}
               onPress={() => onDelete(item.id)}
