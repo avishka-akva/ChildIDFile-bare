@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
 import { Feather as Icon } from "@expo/vector-icons";
+import { COLOR } from "../shared/const";
 
 function Accordion({ title, children }) {
   const [open, setOpen] = useState(false);
@@ -23,7 +24,7 @@ function Accordion({ title, children }) {
         >
           <Text style={styles.title}>{title}</Text>
           <View style={styles.backgroundCircle}>
-            <Icon name="chevron-down" color="#A352EB" size={16} />
+            <Icon name="chevron-down" color={COLOR.primary} size={16} />
           </View>
         </View>
       </TouchableWithoutFeedback>

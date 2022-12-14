@@ -1,3 +1,6 @@
+export const COLOR = {
+  primary: "#A352EB"
+};
 export const CHARACTERISTICS_OPTIONS = [
   { key: "1", value: "Mobiles" },
   { key: "2", value: "Appliances" },

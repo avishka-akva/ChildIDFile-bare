@@ -11,7 +11,7 @@ import {
   setEmergencyContactValues,
   addNewEmergencyContact,
 } from "../redux/childSlice";
-import { MAXIMUM_EMERGENCY_CONTACT_COUNT } from "../shared/const";
+import { COLOR, MAXIMUM_EMERGENCY_CONTACT_COUNT } from "../shared/const";
 
 
 function EmergencyContact() {
@@ -137,7 +137,7 @@ function EmergencyContact() {
           <CustomButton
             onPress={onAddButton}
             text={"Add Additional Contacts"}
-            backgroundColor="#A352EB"
+            backgroundColor={COLOR.primary}
             buttonWidth={"100%"}
           />
         </View>

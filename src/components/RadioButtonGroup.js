@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import React, { useState, useEffect } from "react";
 import { globleStyles } from "../shared/style";
+import { COLOR } from "../shared/const";
 
 function RadioButton({ isChecked, text, onRadioButtonPress }) {
   const _renderCheckedView = () => {
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
   radioButtonIconInnerIcon: {
     height: 9,
     width: 9,
-    backgroundColor: "#A352EB",
+    backgroundColor: COLOR.primary,
     borderRadius: 9.0 / 2,
     borderColor: "white",
   },

@@ -19,6 +19,7 @@ import TrustedContact from "./TrustedContact";
 import UploadPhoto from "./UploadPhoto";
 import Fingerprints from "./Fingerprints";
 import CustomModal from "../components/CustomModal";
+import { COLOR } from "../shared/const";
 
 function AddChild({ navigation, route }) {
   const dispatch = useDispatch();
@@ -115,7 +116,7 @@ function AddChild({ navigation, route }) {
           progress={progress}
           width={null}
           height={9}
-          color={"#A352EB"}
+          color={COLOR.primary}
           borderColor={"#00000014"}
           borderRadius={8}
         />
@@ -160,18 +161,18 @@ function AddChild({ navigation, route }) {
             text={"No"}
             buttonStyle={[
               globleStyles.buttonOutLine,
-              { borderColor: "#A352EB", width: 116, height: 36 },
+              { borderColor: COLOR.primary, width: 116, height: 36 },
             ]}
-            color="#A352EB"
+            color={COLOR.primary}
           />
           <CustomButton
             onPress={onExit}
             text={"Yes, Save"}
             buttonStyle={[
               globleStyles.buttonPrimary,
-              { backgroundColor: "#A352EB", width: 116, height: 36 },
+              { backgroundColor: COLOR.primary, width: 116, height: 36 },
             ]}
-            backgroundColor="#A352EB"
+            backgroundColor={COLOR.primary}
             color="#FFFFFF"
           />
         </View>

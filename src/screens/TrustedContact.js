@@ -102,7 +102,7 @@ function TrustedContact() {
           <CustomButton
             onPress={onAddButton}
             text={"Add Additional Contacts"}
-            backgroundColor="#A352EB"
+            backgroundColor={COLOR.primary}
             buttonWidth={"100%"}
           />
         </View>
