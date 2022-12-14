@@ -18,17 +18,40 @@ import { globleStyles } from "../shared/style";
 import { deleteChild } from "../redux/childrenListSlice";
 import CustomModal from "../components/CustomModal";
 import generatePdf from "../shared/pdf";
+import { COLOR } from "../shared/const";
 
 const spacing = 5;
 const width = (Dimensions.get("window").width - 4 * 10) / 2;
 
 function EmptyHomeView() {
+  const style = {
+    color: "#707070",
+    fontSize: 16,
+    marginTop: 28,
+    textAlign: "center",
+  }; 
+
   return (
-    <View style={{ paddingHorizontal: 24 }}>
+    <View
+      style={{
+        paddingHorizontal: 24,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <Image source={require("../assets/homeImage.png")} />
-      <Text style={styles.description}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod
-        tempor incididunt
+      <Text
+        style={style}
+      >
+        ChildIDFile helps you create and store an easily shared file for each of
+        your children. This file will include information law enforcement may
+        find useful in the immediate search for a missing child, to include up
+        to 3 emergency contacts, 10 trusted contacts/locations, and other useful
+        identifyingfeatures.
+      </Text>
+      <Text style={style}>
+        It is up to you how much to save and have ready. The data you enter and
+        file you create lives on your phone or device only.
       </Text>
     </View>
   );
@@ -63,9 +86,9 @@ function Home({ navigation }) {
             text={"No"}
             buttonStyle={[
               globleStyles.buttonOutLine,
-              { borderColor: "#A352EB", width: 116, height: 36 },
+              { borderColor: COLOR.primary, width: 116, height: 36 },
             ]}
-            color="#A352EB"
+            color={COLOR.primary}
           />
           <CustomButton
             onPress={() => {
@@ -75,9 +98,9 @@ function Home({ navigation }) {
             text={"Yes"}
             buttonStyle={[
               globleStyles.buttonPrimary,
-              { backgroundColor: "#A352EB", width: 116, height: 36 },
+              { backgroundColor: COLOR.primary, width: 116, height: 36 },
             ]}
-            backgroundColor="#A352EB"
+            backgroundColor={COLOR.primary}
             color="#FFFFFF"
           />
         </View>
@@ -90,9 +113,9 @@ function Home({ navigation }) {
   };
 
   const onDownloda = (id) => {
-    const child = childrenList.find(childItem => childItem.id === id);
+    const child = childrenList.find((childItem) => childItem.id === id);
     generatePdf(child);
-  }
+  };
 
   const renderChildItem = ({ item }) => {
     return (
@@ -137,13 +160,13 @@ function Home({ navigation }) {
           buttonStyle={[
             globleStyles.buttonPrimary,
             {
-              backgroundColor: "#A352EB",
+              backgroundColor: COLOR.primary,
               width: 80,
               height: 28,
               marginTop: 22,
             },
           ]}
-          backgroundColor="#A352EB"
+          backgroundColor={COLOR.primary}
           textStyle={{ fontSize: 10, color: "#FFF" }}
         />
         <View style={[styles.itemFooter, { justifyContent: "space-around" }]}>
@@ -217,9 +240,9 @@ function Home({ navigation }) {
               text={"View"}
               buttonStyle={[
                 globleStyles.buttonPrimary,
-                { backgroundColor: "#A352EB", width: 96, height: 36 },
+                { backgroundColor: COLOR.primary, width: 96, height: 36 },
               ]}
-              backgroundColor="#A352EB"
+              backgroundColor={COLOR.primary}
               color="#FFFFFF"
             />
           </View>
@@ -272,7 +295,9 @@ function Home({ navigation }) {
       <View style={styles.buttonContainer}>
         <CustomButton
           onPress={() => navigation.navigate("Add Child")}
-          text={"Add Child"}
+          text={"Add Profile"}
+          backgroundColor={COLOR.primary}
+          color="#FFFFFF"
         />
       </View>
       <DeleteModal />
