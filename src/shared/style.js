@@ -22,7 +22,7 @@ export const globleStyles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 24,
     height: 40,
-    width: 117,
+    width: 155,
   },
 
   buttonOutLine: {
@@ -33,7 +33,7 @@ export const globleStyles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: "#000",
     height: 40,
-    width: 117,
+    width: 155,
   },
 
   inputContainer: {

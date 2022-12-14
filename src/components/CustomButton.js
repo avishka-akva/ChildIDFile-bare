@@ -7,7 +7,9 @@ function CustomButton({
   buttonStyle,
   backgroundColor = "#000",
   buttonWidth = 136,
+  buttonHeight = 48,
   color = "#fff",
+  fontSize = 16,
 }) {
   return (
     <TouchableOpacity
@@ -21,7 +23,7 @@ function CustomButton({
               justifyContent: "center",
               borderRadius: 50,
               width: buttonWidth,
-              height: 48
+              height: buttonHeight
             }
       }
     >
@@ -31,7 +33,7 @@ function CustomButton({
             ? textStyle
             : {
                 color,
-                fontSize: 16,
+                fontSize,
               }
         }
       >

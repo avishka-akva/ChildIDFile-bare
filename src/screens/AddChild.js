@@ -126,23 +126,26 @@ function AddChild({ navigation, route }) {
         {currentStepIndex > 0 && (
           <CustomButton
             onPress={() => previosStep()}
-            text={"BACK"}
+            text={"Back to Previous Section"}
             buttonStyle={globleStyles.buttonOutLine}
             color="#000"
+            fontSize={12}
           />
         )}
         <View style={styles.divider}></View>
         {currentStepIndex !== steps.length - 1 ? (
           <CustomButton
             onPress={() => nextStep()}
-            text={"NEXT"}
+            text={"Skip to Next Section"}
             buttonStyle={globleStyles.buttonPrimary}
+            fontSize={12}
           />
         ) : (
           <CustomButton
             onPress={onFinished}
             text={"DONE"}
             buttonStyle={globleStyles.buttonPrimary}
+            fontSize={12}
           />
         )}
       </View>
