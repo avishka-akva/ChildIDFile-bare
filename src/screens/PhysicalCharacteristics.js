@@ -38,6 +38,10 @@ function PhysicalCharacteristics() {
     dispatch(setHeight(value));
   };
 
+  const onWeightChange = (value) => {
+    dispatch(setWeight(value));
+  };
+
   return (
     <View style={styles.main}>
       <Text style={[globleStyles.title, styles.title]}>
@@ -81,9 +85,15 @@ function PhysicalCharacteristics() {
           onChangeText={onEyeColorChange}
         />
         <CustomTextInput
-          label={"Height"}
+          label={"Approximate Height"}
           value={currentChild.height}
           onChangeText={onHeightChange}
+          marginBottom={0}
+        />
+        <CustomTextInput
+          label={"Approximate Weight"}
+          value={currentChild.weight}
+          onChangeText={onWeightChange}
           marginBottom={0}
         />
       </Card>

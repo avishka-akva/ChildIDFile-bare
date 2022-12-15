@@ -21,6 +21,7 @@ const initialState = {
   hairColor: "",
   eyeColor: "",
   height: "",
+  weight: "",
   characteristicOptions: [],
   specialNeeds: "",
   otherCharacteristic: "",
@@ -95,6 +96,9 @@ const childSlice = createSlice({
     },
     setHeight(state, action) {
       state.height = action.payload;
+    },
+    setWeight(state, action) {
+      state.weight = action.payload;
     },
     setCharacteristicOption(state, action) {
       state.characteristicOptions = action.payload;
@@ -181,6 +185,7 @@ export const {
   setHairColor,
   setEyeColor,
   setHeight,
+  setWeight,
   setCharacteristicOption,
   setSpecialNeeds,
   setOtherCharacteristic,

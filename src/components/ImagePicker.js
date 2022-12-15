@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import { COLOR } from "../shared/const";
 
 function ImagePickerUI({image,setImage}) {
   const [selected, setSelected] = useState(false);
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
   },
   close: {
-    backgroundColor: "#A352EB",
+    backgroundColor: COLOR.primary,
     width: 25,
     height: 25,
     borderRadius: 25.0 / 2,
