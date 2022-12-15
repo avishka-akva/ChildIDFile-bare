@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import Card from "../components/Card";
 import { globleStyles } from "../shared/style";
-import CustomTextInput from "../components/CustomTextInput";
 import CustomButton from "../components/CustomButton";
 import Accordion from "../components/Accordion";
 import {
   setTrusedContactValues,
   addNewTrusedContact,
+  removeTrusedContactValues,
 } from "../redux/childSlice";
-import { MAXIMUM_TRUSTED_CONTACT_COUNT } from "../shared/const";
+import { COLOR, MAXIMUM_TRUSTED_CONTACT_COUNT } from "../shared/const";
+import ContactForm from "../components/ContactForm";
 
 function TrustedContact() {
   const { trustedContacts } = useSelector((state) => state.currentChild);
@@ -25,61 +26,36 @@ function TrustedContact() {
     dispatch(addNewTrusedContact());
   };
 
-  const getForm = (
-    index,
-    { name, contactNumber, address }
-  ) => {
-    return (
-      <>
-        <CustomTextInput
-          label={"Name/Location"}
-          value={name}
-          onChangeText={(value) =>
-            onInputChanged({
-              index,
-              propertyName: "name",
-              value,
-            })
-          }
-        />
-        <CustomTextInput
-          label={"Contact Number (Optional)"}
-          value={contactNumber}
-          onChangeText={(value) =>
-            onInputChanged({
-              index,
-              propertyName: "contactNumber",
-              value,
-            })
-          }
-        />
-        <CustomTextInput
-          label={"Address (Optional)"}
-          value={address}
-          onChangeText={(value) =>
-            onInputChanged({
-              index,
-              propertyName: "address",
-              value,
-            })
-          }
-          multiline={true}
-          numberOfLines={4}
-          marginBottom={0}
-        />
-      </>
-    );
+  const onItemsDelete = (name) => {
+    dispatch(removeTrusedContactValues(name));
   };
 
-  const viewItem = (index, props) => (
-    <Accordion key={index} title={props.name}>
-      {getForm(index, props)}
+  const viewItem = (index, values) => (
+    <Accordion
+      key={index}
+      title={values.name}
+      onDelete={() => onItemsDelete(values.name)}
+    >
+      <ContactForm
+        index={index}
+        values={values}
+        onInputChanged={onInputChanged}
+      />
     </Accordion>
   );
 
-  const editItem = (index, props) => {
-    return <Card key={index}>{getForm(index, props)}</Card>;
+  const editItem = (index, values) => {
+    return (
+      <Card key={index}>
+        <ContactForm
+          index={index}
+          values={values}
+          onInputChanged={onInputChanged}
+        />
+      </Card>
+    );
   };
+
   return (
     <View style={styles.main}>
       <View style={styles.titleContainer}>

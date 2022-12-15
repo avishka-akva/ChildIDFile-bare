@@ -1,8 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  EMERGENCY_CONTACT_INIT_OBJ,
+  CONTACT_INIT_OBJ,
   MAXIMUM_EMERGENCY_CONTACT_COUNT,
-  TRUSTED_CONTACT_INIT_OBJ,
   MAXIMUM_TRUSTED_CONTACT_COUNT,
 } from "../shared/const";
 
@@ -32,12 +31,12 @@ const initialState = {
   medications: "",
   emergencyContacts: [
     {
-      ...EMERGENCY_CONTACT_INIT_OBJ,
+      ...CONTACT_INIT_OBJ,
     },
   ],
   trustedContacts: [
     {
-      ...TRUSTED_CONTACT_INIT_OBJ,
+      ...CONTACT_INIT_OBJ,
     },
   ],
   image1: null,
@@ -130,18 +129,33 @@ const childSlice = createSlice({
       const { index, propertyName, value } = action.payload;
       state.emergencyContacts[index][propertyName] = value;
     },
-    addNewEmergencyContact(state, action) {
+    addNewEmergencyContact(state) {
       if (state.emergencyContacts.length > MAXIMUM_EMERGENCY_CONTACT_COUNT)
         return;
-      state.emergencyContacts.push({ ...EMERGENCY_CONTACT_INIT_OBJ });
+      state.emergencyContacts.push({ ...CONTACT_INIT_OBJ });
+    },
+    removeEmergencyContactValues(state, action) {
+      if (state.emergencyContacts.length > 0) {
+        state.emergencyContacts = state.emergencyContacts.filter(
+          (item) => item.name !== action.payload
+        );
+      }
     },
     setTrusedContactValues(state, action) {
       const { index, propertyName, value } = action.payload;
       state.trustedContacts[index][propertyName] = value;
     },
-    addNewTrusedContact(state, action) {
-      if (state.trustedContacts.length > MAXIMUM_TRUSTED_CONTACT_COUNT) return;
-      state.trustedContacts.push({ ...TRUSTED_CONTACT_INIT_OBJ });
+    addNewTrusedContact(state) {
+      if (state.trustedContacts.length < MAXIMUM_TRUSTED_CONTACT_COUNT) {
+        state.trustedContacts.push({ ...CONTACT_INIT_OBJ });
+      }
+    },
+    removeTrusedContactValues(state, action) {
+      if (state.trustedContacts.length > 0) {
+        state.trustedContacts = state.trustedContacts.filter(
+          (item) => item.name !== action.payload
+        );
+      }
     },
     setImage1(state, action) {
       state.image1 = action.payload;
@@ -183,8 +197,10 @@ export const {
   setMedications,
   setEmergencyContactValues,
   addNewEmergencyContact,
+  removeEmergencyContactValues,
   setTrusedContactValues,
   addNewTrusedContact,
+  removeTrusedContactValues,
   setImage1,
   setImage2,
   setFingerPrint,

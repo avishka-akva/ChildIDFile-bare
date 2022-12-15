@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import Card from "../components/Card";
 import { globleStyles } from "../shared/style";
-import CustomTextInput from "../components/CustomTextInput";
 import CustomButton from "../components/CustomButton";
 import Accordion from "../components/Accordion";
 import {
   setEmergencyContactValues,
   addNewEmergencyContact,
+  removeEmergencyContactValues,
 } from "../redux/childSlice";
 import { COLOR, MAXIMUM_EMERGENCY_CONTACT_COUNT } from "../shared/const";
-
+import ContactForm from "../components/ContactForm";
 
 function EmergencyContact() {
   const { emergencyContacts } = useSelector((state) => state.currentChild);
@@ -26,93 +26,34 @@ function EmergencyContact() {
     dispatch(addNewEmergencyContact());
   };
 
-  const getForm = (
-    index,
-    { name, relationship, cell, home, work, address }
-  ) => {
-    return (
-      <>
-        <CustomTextInput
-          label={"Emergency Contact"}
-          value={name}
-          onChangeText={(value) =>
-            onInputChanged({
-              index,
-              propertyName: "name",
-              value,
-            })
-          }
-        />
-        <CustomTextInput
-          label={"Relationship"}
-          value={relationship}
-          onChangeText={(value) =>
-            onInputChanged({
-              index,
-              propertyName: "relationship",
-              value,
-            })
-          }
-        />
-        <CustomTextInput
-          label={"Cell (Optional)"}
-          value={cell}
-          onChangeText={(value) =>
-            onInputChanged({
-              index,
-              propertyName: "cell",
-              value,
-            })
-          }
-        />
-        <CustomTextInput
-          label={"Home (Optional)"}
-          value={home}
-          onChangeText={(value) =>
-            onInputChanged({
-              index,
-              propertyName: "home",
-              value,
-            })
-          }
-        />
-        <CustomTextInput
-          label={"Work (Optional)"}
-          value={work}
-          onChangeText={(value) =>
-            onInputChanged({
-              index,
-              propertyName: "work",
-              value,
-            })
-          }
-        />
-        <CustomTextInput
-          label={"Address (Optional)"}
-          value={address}
-          onChangeText={(value) =>
-            onInputChanged({
-              index,
-              propertyName: "address",
-              value,
-            })
-          }
-          multiline={true}
-          numberOfLines={4}
-          marginBottom={0}
-        />
-      </>
-    );
+  const onItemsDelete = (name) => {
+    dispatch(removeEmergencyContactValues(name));
   };
 
-  const viewItem = (index, props) => (
-    <Accordion key={index} title={props.name}>
-      {getForm(index, props)}
+  const viewItem = (index, values) => (
+    <Accordion
+      key={index}
+      title={values.name}
+      onDelete={() => onItemsDelete(values.name)}
+    >
+      <ContactForm
+        index={index}
+        values={values}
+        onInputChanged={onInputChanged}
+      />
     </Accordion>
   );
 
-  const editItem = (index, props) => {
-    return <Card key={index}>{getForm(index, props)}</Card>;
+  const editItem = (index, values) => {
+    return (
+      <Card key={index}>
+        <ContactForm
+          index={index}
+          values={values}
+          onInputChanged={onInputChanged}
+        />
+      </Card>
+    );
   };
 
   return (
