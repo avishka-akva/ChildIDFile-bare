@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { SelectList } from "react-native-dropdown-select-list";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import SectionedMultiSelect from "react-native-sectioned-multi-select";
 
 import { globleStyles } from "../shared/style";
 import Card from "../components/Card";
@@ -10,16 +10,13 @@ import CustomTextInput from "../components/CustomTextInput";
 import {
   setSpecialNeeds,
   setOtherCharacteristic,
-  addCharacteristicOption,
-  removeCharacteristicOption,
+  setCharacteristicOption,
 } from "../redux/childSlice";
-import { CHARACTERISTICS_OPTIONS } from "../shared/const";
+import { CHARACTERISTICS_OPTIONS, COLOR } from "../shared/const";
 
 function DistinguishingCharacteristics() {
   const currentChild = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
-
-  const [dataOption, setDataOption] = useState(CHARACTERISTICS_OPTIONS);
 
   const onSpecialNeedsChange = (value) => {
     dispatch(setSpecialNeeds(value));
@@ -29,26 +26,11 @@ function DistinguishingCharacteristics() {
     dispatch(setOtherCharacteristic(value));
   };
 
-  const onSelectChange = (key) => {
-    setDataOption((previousValue) =>
-      previousValue.filter((value) => value.key !== key)
-    );
-    dispatch(addCharacteristicOption(key));
+  onSelectedItemsChange = (selectedItems) => {
+    dispatch(setCharacteristicOption(selectedItems));
   };
 
-  const removeSeletedItem = (key) => {
-    const option = CHARACTERISTICS_OPTIONS.find((val) => val.key === key);
-    setDataOption([...dataOption, option]);
-    dispatch(removeCharacteristicOption(key));
-  };
-
-  useEffect(() => {
-    setDataOption(
-      CHARACTERISTICS_OPTIONS.filter(
-        (option) => !currentChild.characteristicOptions.includes(option.key)
-      )
-    );
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <View style={styles.main}>
@@ -58,16 +40,29 @@ function DistinguishingCharacteristics() {
       <Card>
         <View style={{ marginBottom: 16 }}>
           <Text style={[globleStyles.body, globleStyles.inputLable]}>
-            My child wears or has (Select Options)
+            My child wears or has
           </Text>
-          <SelectList
-            setSelected={onSelectChange}
-            data={dataOption}
-            save="key"
-            search={false}
-            boxStyles={globleStyles.input}
+          <SectionedMultiSelect
+            IconRenderer={MaterialIcons}
+            items={CHARACTERISTICS_OPTIONS}
+            uniqueKey="id"
+            subKey="children"
+            selectText="Select Options..."
+            onSelectedItemsChange={onSelectedItemsChange}
+            selectedItems={currentChild.characteristicOptions}
+            hideSearch
+            showDropDowns={false}
+            readOnlyHeadings
+            styles={{ selectToggle: globleStyles.input }}
+            colors={{
+              primary: COLOR.primary,
+              success: COLOR.primary,
+              subText: "#707070",
+              selectToggleTextColor: "#707070",
+              chipColor: COLOR.primary,
+            }}
           />
-          {currentChild.characteristicOptions.length > 0 && (
+          {currentChild.characteristicOptions.length > 0 && false && (
             <View style={styles.optionSelectedContainer}>
               {currentChild.characteristicOptions.map((key) => {
                 const option = CHARACTERISTICS_OPTIONS.find(

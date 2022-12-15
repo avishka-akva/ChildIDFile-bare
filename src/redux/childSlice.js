@@ -96,13 +96,8 @@ const childSlice = createSlice({
     setHeight(state, action) {
       state.height = action.payload;
     },
-    addCharacteristicOption(state, action) {
-      state.characteristicOptions.push(action.payload);
-    },
-    removeCharacteristicOption(state, action) {
-      state.characteristicOptions = state.characteristicOptions.filter(
-        (k) => k !== action.payload
-      );
+    setCharacteristicOption(state, action) {
+      state.characteristicOptions = action.payload;
     },
     setSpecialNeeds(state, action) {
       state.specialNeeds = action.payload;
@@ -186,8 +181,7 @@ export const {
   setHairColor,
   setEyeColor,
   setHeight,
-  addCharacteristicOption,
-  removeCharacteristicOption,
+  setCharacteristicOption,
   setSpecialNeeds,
   setOtherCharacteristic,
   setPhysicianName,

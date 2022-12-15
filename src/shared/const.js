@@ -1,14 +1,35 @@
 export const COLOR = {
-  primary: "#A352EB"
+  primary: "#A352EB",
 };
 export const CHARACTERISTICS_OPTIONS = [
-  { key: "1", value: "Mobiles" },
-  { key: "2", value: "Appliances" },
-  { key: "3", value: "Cameras" },
-  { key: "4", value: "Computers" },
-  { key: "5", value: "Vegetables" },
-  { key: "6", value: "Diary Products" },
-  { key: "7", value: "Drinks" },
+  // this is the parent or 'item'
+  {
+    name: "My child wears or has",
+    id: 0,
+    // these are the children or 'sub items'
+    children: [
+      {
+        name: "Glasses",
+        id: 1,
+      },
+      {
+        name: "Birthmark(s)",
+        id: 2,
+      },
+      {
+        name: "Scar(s)",
+        id: 3,
+      },
+      {
+        name: "Tattoo(s)",
+        id: 4,
+      },
+      {
+        name: "Braces",
+        id: 5,
+      },
+    ],
+  },
 ];
 export const MAXIMUM_EMERGENCY_CONTACT_COUNT = 3;
 
