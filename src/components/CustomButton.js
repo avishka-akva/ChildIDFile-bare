@@ -23,7 +23,7 @@ function CustomButton({
               justifyContent: "center",
               borderRadius: 50,
               width: buttonWidth,
-              height: buttonHeight
+              height: buttonHeight,
             }
       }
     >

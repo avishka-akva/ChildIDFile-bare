@@ -29,7 +29,7 @@ function EmptyHomeView() {
     fontSize: 16,
     marginTop: 28,
     textAlign: "center",
-  }; 
+  };
 
   return (
     <View
@@ -40,9 +40,7 @@ function EmptyHomeView() {
       }}
     >
       <Image source={require("../assets/homeImage.png")} />
-      <Text
-        style={style}
-      >
+      <Text style={style}>
         ChildIDFile helps you create and store an easily shared file for each of
         your children. This file will include information law enforcement may
         find useful in the immediate search for a missing child, to include up
@@ -132,6 +130,13 @@ function Home({ navigation }) {
           },
         ]}
       >
+        {item.incomplete && (
+          <View style={styles.incompleteContainer}>
+            <Text style={[styles.incompleteText, { fontSize: 6 }]}>
+              Incomplete
+            </Text>
+          </View>
+        )}
         <Image
           style={styles.itemImage}
           source={require("../assets/homeImage.png")}
@@ -176,9 +181,14 @@ function Home({ navigation }) {
           >
             <Feather name="external-link" size={12} color="#B6B6B6" />
           </TouchableOpacity>
-          <View style={[styles.iconContainer, { width: 24, height: 24 }]}>
-            <Feather name="download" size={12} color="#B6B6B6" />
-          </View>
+          {!item.incomplete && (
+            <TouchableOpacity
+              style={[styles.iconContainer, { width: 24, height: 24 }]}
+              onPress={() => onDownloda(item.id)}
+            >
+              <Feather name="download" size={12} color="#B6B6B6" />
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             style={[styles.iconContainer, { width: 24, height: 24 }]}
             onPress={() => onDelete(item.id)}
@@ -194,6 +204,11 @@ function Home({ navigation }) {
     return childrenList.map((item) => {
       return (
         <View key={item.id} style={styles.item}>
+          {item.incomplete && (
+            <View style={styles.incompleteContainer}>
+              <Text style={styles.incompleteText}>Incomplete</Text>
+            </View>
+          )}
           <Image
             style={styles.itemImage}
             source={{
@@ -223,12 +238,14 @@ function Home({ navigation }) {
             >
               <Feather name="external-link" size={14} color="#B6B6B6" />
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.iconContainer}
-              onPress={() => onDownloda(item.id)}
-            >
-              <Feather name="download" size={14} color="#B6B6B6" />
-            </TouchableOpacity>
+            {!item.incomplete && (
+              <TouchableOpacity
+                style={styles.iconContainer}
+                onPress={() => onDownloda(item.id)}
+              >
+                <Feather name="download" size={14} color="#B6B6B6" />
+              </TouchableOpacity>
+            )}
             <TouchableOpacity
               style={styles.iconContainer}
               onPress={() => onDelete(item.id)}
@@ -240,9 +257,8 @@ function Home({ navigation }) {
               text={"View"}
               buttonStyle={[
                 globleStyles.buttonPrimary,
-                { backgroundColor: COLOR.primary, width: 96, height: 36 },
+                { backgroundColor: COLOR.primary, width: 96, height: 36, marginRight:0 },
               ]}
-              backgroundColor={COLOR.primary}
               color="#FFFFFF"
             />
           </View>
@@ -386,7 +402,8 @@ const styles = StyleSheet.create({
     marginTop: 12,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
+    paddingRight: 0
   },
   iconContainer: {
     width: 28,
@@ -396,6 +413,19 @@ const styles = StyleSheet.create({
     borderColor: "#B6B6B6",
     alignItems: "center",
     justifyContent: "center",
+  },
+  incompleteContainer: {
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#EA304E",
+    borderRadius: 19,
+    marginBottom: 12,
+  },
+  incompleteText: {
+    color: "#EA304E",
+    fontSize: 8,
+    marginVertical: 3,
+    marginHorizontal: 8,
   },
 });
 

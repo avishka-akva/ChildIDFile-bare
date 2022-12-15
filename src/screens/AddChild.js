@@ -12,7 +12,11 @@ import {
   setUpdate,
   setHederNameShow,
 } from "../redux/childManageSlice";
-import { addChild, updateChild } from "../redux/childrenListSlice";
+import {
+  addChild,
+  updateChild,
+  saveIncompleteChild,
+} from "../redux/childrenListSlice";
 import CustomButton from "../components/CustomButton";
 import PersonalInformation from "./PersonalInformation";
 import PhysicalCharacteristics from "./PhysicalCharacteristics";
@@ -70,12 +74,16 @@ function AddChild({ navigation, route }) {
     }
   };
 
+  const getChildWithId = () => {
+    const id = uuid.v4();
+    return { ...currentChild, id };
+  };
+
   const onFinished = () => {
     if (childId) {
       dispatch(updateChild({ ...currentChild, id: childId }));
     } else {
-      const id = uuid.v4();
-      const newChild = { ...currentChild, id };
+      const newChild = getChildWithId();
       dispatch(addChild(newChild));
     }
 
@@ -99,6 +107,8 @@ function AddChild({ navigation, route }) {
     dispatch(toggleExit());
     dispatch(setUpdate(false));
     dispatch(cleanChildSlice());
+    const newChild = getChildWithId();
+    dispatch(saveIncompleteChild(newChild));
     navigation.navigate("Home");
   };
 

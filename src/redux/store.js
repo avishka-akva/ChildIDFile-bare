@@ -43,7 +43,7 @@ const store = configureStore({
 
 export const persistor = persistStore(store);
 
-// export const store = configureStore({
+// const store = configureStore({
 //   reducer: {
 //     currentChild: childSlice,
 //     childrenList: childrenListSlice,
