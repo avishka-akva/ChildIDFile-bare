@@ -7,7 +7,11 @@ import uuid from "react-native-uuid";
 
 import { globleStyles } from "../shared/style";
 import { setChildSlice, cleanChildSlice } from "../redux/childSlice";
-import { toggleExit, setUpdate, setHederNameShow } from "../redux/childManageSlice";
+import {
+  toggleExit,
+  setUpdate,
+  setHederNameShow,
+} from "../redux/childManageSlice";
 import { addChild, updateChild } from "../redux/childrenListSlice";
 import CustomButton from "../components/CustomButton";
 import PersonalInformation from "./PersonalInformation";
@@ -100,7 +104,7 @@ function AddChild({ navigation, route }) {
 
   useEffect(() => {
     dispatch(setUpdate(true));
-    dispatch(setHederNameShow(false))
+    dispatch(setHederNameShow(false));
     if (childId) {
       const childObj = childrenList.find((child) => child.id === childId);
       dispatch(setChildSlice(childObj));
@@ -110,21 +114,60 @@ function AddChild({ navigation, route }) {
   const progress = (currentStepIndex + 1) / steps.length;
 
   return (
-    <ScrollView
-      style={{ width: "100%", paddingHorizontal: 18, backgroundColor: "#fff" }}
-      contentContainerStyle={{ flexGrow: 1 }}
-    >
-      <View style={styles.progressBar}>
-        <Progress.Bar
-          progress={progress}
-          width={null}
-          height={9}
-          color={COLOR.primary}
-          borderColor={"#00000014"}
-          borderRadius={8}
-        />
-      </View>
-      {renderStep()}
+    <>
+      <ScrollView
+        style={{
+          width: "100%",
+          paddingHorizontal: 18,
+          backgroundColor: "#fff",
+        }}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <View style={styles.progressBar}>
+          <Progress.Bar
+            progress={progress}
+            width={null}
+            height={9}
+            color={COLOR.primary}
+            borderColor={"#00000014"}
+            borderRadius={8}
+          />
+        </View>
+
+        {renderStep()}
+
+        <CustomModal transparent visible={childManage.exit}>
+          <Text style={globleStyles.modalText}>
+            Are you sure, do you want to exit?
+          </Text>
+          <View style={globleStyles.modalIcon}>
+            <AntDesign name="exclamationcircleo" size={54} color="red" />
+          </View>
+          <View style={globleStyles.modalFooter}>
+            <CustomButton
+              onPress={() => {
+                dispatch(toggleExit());
+              }}
+              text={"No"}
+              buttonStyle={[
+                globleStyles.buttonOutLine,
+                { borderColor: COLOR.primary, width: 116, height: 36 },
+              ]}
+              color={COLOR.primary}
+            />
+            <CustomButton
+              onPress={onExit}
+              text={"Yes, Save"}
+              buttonStyle={[
+                globleStyles.buttonPrimary,
+                { backgroundColor: COLOR.primary, width: 116, height: 36 },
+              ]}
+              backgroundColor={COLOR.primary}
+              color="#FFFFFF"
+            />
+          </View>
+        </CustomModal>
+      </ScrollView>
       <View style={styles.footer}>
         {currentStepIndex > 0 && (
           <CustomButton
@@ -152,38 +195,7 @@ function AddChild({ navigation, route }) {
           />
         )}
       </View>
-      <CustomModal transparent visible={childManage.exit}>
-        <Text style={globleStyles.modalText}>
-          Are you sure, do you want to exit?
-        </Text>
-        <View style={globleStyles.modalIcon}>
-          <AntDesign name="exclamationcircleo" size={54} color="red" />
-        </View>
-        <View style={globleStyles.modalFooter}>
-          <CustomButton
-            onPress={() => {
-              dispatch(toggleExit());
-            }}
-            text={"No"}
-            buttonStyle={[
-              globleStyles.buttonOutLine,
-              { borderColor: COLOR.primary, width: 116, height: 36 },
-            ]}
-            color={COLOR.primary}
-          />
-          <CustomButton
-            onPress={onExit}
-            text={"Yes, Save"}
-            buttonStyle={[
-              globleStyles.buttonPrimary,
-              { backgroundColor: COLOR.primary, width: 116, height: 36 },
-            ]}
-            backgroundColor={COLOR.primary}
-            color="#FFFFFF"
-          />
-        </View>
-      </CustomModal>
-    </ScrollView>
+    </>
   );
 }
 
@@ -198,8 +210,10 @@ const styles = StyleSheet.create({
     marginVertical: 22,
   },
   footer: {
+    backgroundColor: "#fff",
     flexDirection: "row",
-    marginVertical: 22,
+    paddingVertical: 22,
+    paddingHorizontal: 18,
   },
   main: {
     flex: 1,
