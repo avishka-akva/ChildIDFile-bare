@@ -41,6 +41,9 @@ function AddChild({ navigation, route }) {
       compnent: <DistinguishingCharacteristics />,
     },
     {
+      compnent: <UploadPhoto />,
+    },
+    {
       compnent: <MedicalInformation />,
     },
     {
@@ -48,9 +51,6 @@ function AddChild({ navigation, route }) {
     },
     {
       compnent: <TrustedContact />,
-    },
-    {
-      compnent: <UploadPhoto />,
     },
     {
       compnent: <Fingerprints />,
