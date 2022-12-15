@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { TouchableOpacity, Text } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import Home from "./screens/Home";
 import AddChild from "./screens/AddChild";
@@ -14,6 +14,7 @@ const Stack = createNativeStackNavigator();
 
 export default function ChildID() {
   const dispatch = useDispatch();
+  const { currentChild, childManage} = useSelector((state) => state);
 
   return (
     <NavigationContainer>
@@ -28,7 +29,7 @@ export default function ChildID() {
           component={AddChild}
           options={({ navigation }) => ({
             headerBackVisible: false,
-            headerTitle: () => <CustomHeader text="Add Child" />,
+            headerTitle: () => <CustomHeader text={`Child Profile${childManage.hederNameShow ? ` - ${currentChild.firstName}` : ""}`} />,
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => {

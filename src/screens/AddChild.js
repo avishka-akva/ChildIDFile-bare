@@ -7,7 +7,7 @@ import uuid from "react-native-uuid";
 
 import { globleStyles } from "../shared/style";
 import { setChildSlice, cleanChildSlice } from "../redux/childSlice";
-import { toggleExit, setUpdate } from "../redux/childManageSlice";
+import { toggleExit, setUpdate, setHederNameShow } from "../redux/childManageSlice";
 import { addChild, updateChild } from "../redux/childrenListSlice";
 import CustomButton from "../components/CustomButton";
 import PersonalInformation from "./PersonalInformation";
@@ -59,6 +59,7 @@ function AddChild({ navigation, route }) {
 
   const nextStep = () => {
     if (currentStepIndex + 1 === steps.length) return;
+    if (currentStepIndex === 0) dispatch(setHederNameShow(true));
     setCurrentStepIndex((previousValue) => ++previousValue);
     if (childId) {
       dispatch(updateChild({ ...currentChild, id: childId }));
@@ -80,6 +81,7 @@ function AddChild({ navigation, route }) {
 
   const previosStep = () => {
     if (!currentStepIndex) return;
+    if (currentStepIndex === 1) dispatch(setHederNameShow(false));
     setCurrentStepIndex((previousValue) => --previousValue);
   };
 
@@ -98,6 +100,7 @@ function AddChild({ navigation, route }) {
 
   useEffect(() => {
     dispatch(setUpdate(true));
+    dispatch(setHederNameShow(false))
     if (childId) {
       const childObj = childrenList.find((child) => child.id === childId);
       dispatch(setChildSlice(childObj));

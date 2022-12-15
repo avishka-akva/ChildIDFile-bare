@@ -45,7 +45,7 @@ function PhysicalCharacteristics() {
       </Text>
       <Card>
         <View style={[globleStyles.inputContainer, styles.radioContainer]}>
-          <Text style={[globleStyles.body, { marginRight: 20 }]}>Gender</Text>
+          <Text style={[globleStyles.body, { marginRight: 20 }]}>Gender *</Text>
           <RadioButtonGroup
             values={[
               {
@@ -57,8 +57,8 @@ function PhysicalCharacteristics() {
                 value: "female",
               },
               {
-                text: "Other",
-                value: "other",
+                text: "X",
+                value: "x",
               },
             ]}
             defaultValue={currentChild.gender}

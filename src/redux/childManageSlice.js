@@ -5,6 +5,7 @@ const childManageSlice = createSlice({
   initialState: {
     edit: false,
     exit: false,
+    hederNameShow: false,
   },
   reducers: {
     setUpdate(state, action) {
@@ -13,9 +14,12 @@ const childManageSlice = createSlice({
     toggleExit(state) {
       state.exit = !state.exit;
     },
+    setHederNameShow(state, action) {
+      state.hederNameShow = action.payload;
+    },
   },
 });
 
-export const { setUpdate, toggleExit } = childManageSlice.actions;
+export const { setUpdate, toggleExit, setHederNameShow } = childManageSlice.actions;
 
 export default childManageSlice.reducer;
