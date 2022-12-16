@@ -12,6 +12,7 @@ import {
   setHairColor,
   setEyeColor,
   setHeight,
+  setWeight
 } from "../redux/childSlice";
 
 function PhysicalCharacteristics() {
