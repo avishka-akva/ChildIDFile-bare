@@ -29,6 +29,7 @@ function EmptyHomeView() {
     fontSize: 16,
     marginTop: 28,
     textAlign: "center",
+    fontFamily: "Segoe-UI",
   };
 
   return (
@@ -47,7 +48,7 @@ function EmptyHomeView() {
         to 3 emergency contacts, 10 trusted contacts/locations, and other useful
         identifyingfeatures.
       </Text>
-      <Text style={style}>
+      <Text style={{ ...style, fontFamily: "SegoeUI-Italic" }}>
         It is up to you how much to save and have ready. The data you enter and
         file you create lives on your phone or device only.
       </Text>
@@ -257,7 +258,12 @@ function Home({ navigation }) {
               text={"View"}
               buttonStyle={[
                 globleStyles.buttonPrimary,
-                { backgroundColor: COLOR.primary, width: 96, height: 36, marginRight:0 },
+                {
+                  backgroundColor: COLOR.primary,
+                  width: 96,
+                  height: 36,
+                  marginRight: 0,
+                },
               ]}
               color="#FFFFFF"
             />
@@ -333,6 +339,7 @@ const styles = StyleSheet.create({
   mainText: {
     color: "#000",
     fontSize: 36,
+    fontFamily: "SegoeUI-SemiBold",
   },
   description: {
     color: "#707070",
@@ -403,7 +410,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    paddingRight: 0
+    paddingRight: 0,
   },
   iconContainer: {
     width: 28,

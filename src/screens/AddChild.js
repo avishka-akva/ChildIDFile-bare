@@ -108,17 +108,19 @@ function AddChild({ navigation, route }) {
     dispatch(setUpdate(false));
     dispatch(cleanChildSlice());
     const newChild = getChildWithId();
-    dispatch(saveIncompleteChild(newChild));
+    if(!childId) {
+      dispatch(saveIncompleteChild(newChild));
+    }
     navigation.navigate("Home");
   };
 
   useEffect(() => {
-    dispatch(setUpdate(true));
     dispatch(setHederNameShow(false));
     if (childId) {
       const childObj = childrenList.find((child) => child.id === childId);
       dispatch(setChildSlice(childObj));
-    }
+      dispatch(setUpdate(true));
+  }
   }, []);
 
   const progress = (currentStepIndex + 1) / steps.length;
