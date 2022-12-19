@@ -2,8 +2,9 @@ import { printToFileAsync } from "expo-print";
 import { shareAsync } from "expo-sharing";
 import { Asset } from "expo-asset";
 import { manipulateAsync } from "expo-image-manipulator";
-import { Platform } from "react-native";
-import { requestPermissionsAsync, createAssetAsync } from "expo-media-library";
+import { Platform, ToastAndroid } from "react-native";
+import * as FileSystem from "expo-file-system";
+import { StorageAccessFramework } from "expo-file-system";
 
 const pdfLogo = Asset.fromModule(require("../assets/pdfLogo.png"));
 
@@ -396,24 +397,53 @@ let generatePdf = async (props) => {
       width: 794,
       height: 1123,
     });
-    await shareAsync(file.uri, { UTI: ".pdf", mimeType: "application/pdf" });
 
-    // const { uri } = await printToFileAsync({
-    //   html,
-    //   base64: false,
-    //   height: 842,
-    //   width: 595,
-    // });
-    // if (Platform.OS === "ios") {
-    //   await shareAsync(file.uri, { UTI: ".pdf", mimeType: "application/pdf" });
-    // } else {
-    //   const permission = await requestPermissionsAsync();
-    //   if (permission.granted) {
-    //     await createAssetAsync(uri);
-    //   }
-    // }
+    if (Platform.OS === "ios") {
+      await shareAsync(file.uri, { UTI: ".pdf", mimeType: "application/pdf" });
+    } else {
+      const downloadDir =
+        StorageAccessFramework.getUriForDirectoryInRoot("Download/ChildId");
+      const permission =
+        await StorageAccessFramework.requestDirectoryPermissionsAsync(
+          downloadDir
+        );
+
+      if (!permission.granted) {
+        return false;
+      }
+
+      const destinationUri = await StorageAccessFramework.createFileAsync(
+        permission.directoryUri,
+        `${props.firstName}_${props.firstName}_${new Date()
+          .toJSON()
+          .slice(0, 10)
+          .replace(/-/g, "_")}`,
+        "application/pdf"
+      );
+
+      const content = await StorageAccessFramework.readAsStringAsync(file.uri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      await StorageAccessFramework.writeAsStringAsync(destinationUri, content, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      ToastAndroid.showWithGravity(
+        "Downloaded to Download/ChildId folder",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
+    }
   } catch (error) {
-    console.error("🚀 ~ file: pdf.js:343 ~ generatePdf ~ error", error);
+    console.error("🚀 ~ file: pdf.js:343 ~ generatePdf ~ error", error.message);
+    if (!Platform.OS === "ios") {
+      ToastAndroid.showWithGravity(
+        error.message,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
+    }
   }
 };
 
