@@ -85,7 +85,7 @@ function PersonalInformation() {
           Date of Birth *
         </Text>
         <View style={[globleStyles.input, styles.datePickerContainer]}>
-          <Text style={styles.datePickerText}>
+          <Text style={[globleStyles.inputText, styles.datePickerText]}>
             {currentChild?.dob}
           </Text>
           <TouchableOpacity
@@ -155,6 +155,8 @@ const styles = StyleSheet.create({
   },
   datePickerText: {
     flex: 1,
+    color: "#868282",
+    fontSize: 14
   },
 });
 

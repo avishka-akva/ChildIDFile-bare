@@ -10,6 +10,7 @@ import { setChildSlice, cleanChildSlice } from "../redux/childSlice";
 import {
   toggleExit,
   setUpdate,
+  setView,
   setHederNameShow,
 } from "../redux/childManageSlice";
 import {
@@ -35,6 +36,7 @@ function AddChild({ navigation, route }) {
     (state) => state
   );
   const childId = route?.params?.childId;
+  const view = route?.params?.view;
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
@@ -106,9 +108,10 @@ function AddChild({ navigation, route }) {
   const onExit = () => {
     dispatch(toggleExit());
     dispatch(setUpdate(false));
+    dispatch(setView(false));
     dispatch(cleanChildSlice());
     const newChild = getChildWithId();
-    if(!childId) {
+    if (!childId) {
       dispatch(saveIncompleteChild(newChild));
     }
     navigation.navigate("Home");
@@ -119,8 +122,12 @@ function AddChild({ navigation, route }) {
     if (childId) {
       const childObj = childrenList.find((child) => child.id === childId);
       dispatch(setChildSlice(childObj));
-      dispatch(setUpdate(true));
-  }
+      if (view) {
+        dispatch(setView(true));
+      } else {
+        dispatch(setUpdate(true));
+      }
+    }
   }, []);
 
   const progress = (currentStepIndex + 1) / steps.length;

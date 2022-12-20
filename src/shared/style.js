@@ -57,6 +57,14 @@ export const globleStyles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 3,
     elevation: 3,
+    fontFamily: "Segoe-UI",
+    color: "#868282",
+    fontSize: 14,
+  },
+  inputText: {
+    fontFamily: "Segoe-UI",
+    color: "#868282",
+    fontSize: 14,   
   },
   modalFooter: {
     flexDirection: "row",

@@ -35,6 +35,7 @@ function ContactForm({ index, onInputChanged, values }) {
       <CustomTextInput
         label={"Primary Phone Number *"}
         value={primaryPhoneNumber}
+        keyboardType="phone-pad"
         onChangeText={(value) =>
           onInputChanged({
             index,
@@ -46,6 +47,7 @@ function ContactForm({ index, onInputChanged, values }) {
       <CustomTextInput
         label={"Secondary Phone Number"}
         value={secondaryPhoneNumber}
+        keyboardType="phone-pad"
         onChangeText={(value) =>
           onInputChanged({
             index,

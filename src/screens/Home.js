@@ -107,8 +107,8 @@ function Home({ navigation }) {
     );
   };
 
-  const onEdit = (id) => {
-    navigation.navigate("Add Child", { childId: id });
+  const onEdit = (id,view = false) => {
+    navigation.navigate("Add Child", { childId: id, view });
   };
 
   const onDownloda = (id) => {
@@ -140,18 +140,27 @@ function Home({ navigation }) {
         )}
         <Image
           style={styles.itemImage}
-          source={require("../assets/homeImage.png")}
+          source={
+            item.image1
+              ? { uri: `data:image/jpg;base64,${item.image1}` }
+              : require("../assets/userImage.png")
+          }
         />
         <View style={[styles.itemNameContainer, { marginTop: 14 }]}>
           <Text style={[styles.itemName, { marginRight: 5, fontSize: 16 }]}>
             {`${item.firstName} ${item.lastName}`}
           </Text>
-          <MaterialIcons
-            name="edit"
-            size={12}
-            color="#434343"
-            style={{ position: "absolute", right: -12 }}
-          />
+          <TouchableOpacity
+            style={{ width: 12, height: 12 }}
+            onPress={() => onEdit(item.id)}
+          >
+            <MaterialIcons
+              name="edit"
+              size={12}
+              color="#434343"
+              style={{ position: "absolute", right: -12 }}
+            />
+          </TouchableOpacity>
         </View>
         <Text style={[styles.itemNickName, { fontSize: 14, marginTop: 4 }]}>
           {item.nickName}
@@ -161,8 +170,8 @@ function Home({ navigation }) {
           eiusmod
         </Text>
         <CustomButton
-          onPress={() => {}}
-          text={"View"}
+          onPress={() => onEdit(item.id,!item.incomplete)}
+          text={item.incomplete ? "Complete" : "View"}
           buttonStyle={[
             globleStyles.buttonPrimary,
             {
@@ -212,20 +221,27 @@ function Home({ navigation }) {
           )}
           <Image
             style={styles.itemImage}
-            source={{
-              uri: `data:image/jpg;base64,${item.image1}`,
-            }}
+            source={
+              item.image1
+                ? { uri: `data:image/jpg;base64,${item.image1}` }
+                : require("../assets/userImage.png")
+            }
           />
           <View style={styles.itemNameContainer}>
             <Text
               style={styles.itemName}
             >{`${item.firstName} ${item.lastName}`}</Text>
-            <MaterialIcons
-              style={{ position: "absolute", right: -22 }}
-              name="edit"
-              size={14}
-              color="#434343"
-            />
+            <TouchableOpacity
+              style={{ width: 14, height: 14 }}
+              onPress={() => onEdit(item.id)}
+            >
+              <MaterialIcons
+                name="edit"
+                size={14}
+                color="#434343"
+                style={{ position: "absolute", right: -12 }}
+              />
+            </TouchableOpacity>
           </View>
           <Text style={styles.itemNickName}>{item.nickName}</Text>
           <Text style={styles.itemDescription}>
@@ -254,8 +270,8 @@ function Home({ navigation }) {
               <AntDesign name="delete" size={14} color="#B6B6B6" />
             </TouchableOpacity>
             <CustomButton
-              onPress={() => {}}
-              text={"View"}
+              onPress={() => onEdit(item.id,!item.incomplete)}
+              text={item.incomplete ? "Complete" : "View"}
               buttonStyle={[
                 globleStyles.buttonPrimary,
                 {
@@ -382,7 +398,8 @@ const styles = StyleSheet.create({
     width: 46,
     height: 46,
     borderRadius: 46 / 2,
-    backgroundColor: "blue",
+    backgroundColor: "#F5F5F5",
+    resizeMode: "center",
   },
   itemNameContainer: {
     marginTop: 16,

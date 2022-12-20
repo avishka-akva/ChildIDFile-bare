@@ -3,13 +3,17 @@ import { createSlice } from "@reduxjs/toolkit";
 const childManageSlice = createSlice({
   name: "childManage",
   initialState: {
+    view: false,
     edit: false,
     exit: false,
     hederNameShow: false,
   },
   reducers: {
     setUpdate(state, action) {
-      state.update = action.payload;
+      state.edit = action.payload;
+    },
+    setView(state, action) {
+      state.view = action.payload;
     },
     toggleExit(state) {
       state.exit = !state.exit;
@@ -20,6 +24,7 @@ const childManageSlice = createSlice({
   },
 });
 
-export const { setUpdate, toggleExit, setHederNameShow } = childManageSlice.actions;
+export const { setUpdate, setView, toggleExit, setHederNameShow } =
+  childManageSlice.actions;
 
 export default childManageSlice.reducer;
