@@ -17,7 +17,7 @@ import {
   addChild,
   updateChild,
   saveIncompleteChild,
-  finishIncompleteChild
+  finishIncompleteChild,
 } from "../redux/childrenListSlice";
 import CustomButton from "../components/CustomButton";
 import PersonalInformation from "./PersonalInformation";
@@ -84,7 +84,11 @@ function AddChild({ navigation, route }) {
 
   const onFinished = () => {
     if (childId) {
-      dispatch(finishIncompleteChild({ ...currentChild, id: childId }));
+      if (currentChild.incomplete) {
+        dispatch(finishIncompleteChild({ ...currentChild, id: childId }));
+      } else {
+        dispatch(updateChild({ ...currentChild, id: childId }));
+      }
     } else {
       const newChild = getChildWithId();
       dispatch(addChild(newChild));
@@ -177,7 +181,7 @@ function AddChild({ navigation, route }) {
             />
             <CustomButton
               onPress={onExit}
-              text={"Yes, Save"}
+              text={view ? "Yes" : "Yes, Save"}
               buttonStyle={[
                 globleStyles.buttonPrimary,
                 { backgroundColor: COLOR.primary, width: 116, height: 36 },

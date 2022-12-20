@@ -125,6 +125,10 @@ const generateHtml = async ({
           padding: 0;
           font-size: 16px;
         }
+        body
+        {
+          font-family: Segoe-UI;
+        }
         header {
           padding: 30px;
           padding-top: 0px;
@@ -138,7 +142,7 @@ const generateHtml = async ({
           width: 50px;
           background-color: #FFFFFF;
           color: #FFFFFF;
-          margin-right: 2px;
+          margin-right: 15px;
           border-radius: 5px;
         }
         .header-title {
@@ -169,7 +173,7 @@ const generateHtml = async ({
           border: 1px solid #707070;
         }
         .name {
-          font-size: 26px;
+          font-size: 28px;
           margin-bottom: 10px;
         }
         .other-details {
@@ -198,6 +202,7 @@ const generateHtml = async ({
         }
         th {
           background-color: #EFEFEF;
+          font-weight: normal;
           color: #434343;
         }
         .fingerprints-image {
@@ -402,7 +407,7 @@ let generatePdf = async (props) => {
       await shareAsync(file.uri, { UTI: ".pdf", mimeType: "application/pdf" });
     } else {
       const downloadDir =
-        StorageAccessFramework.getUriForDirectoryInRoot("Download/ChildId");
+        StorageAccessFramework.getUriForDirectoryInRoot("Download");
       const permission =
         await StorageAccessFramework.requestDirectoryPermissionsAsync(
           downloadDir
@@ -429,8 +434,11 @@ let generatePdf = async (props) => {
         encoding: FileSystem.EncodingType.Base64,
       });
 
+      let newFolder = permission.directoryUri.split("Download");
+      newFolder = newFolder[1].substring(3);
+
       ToastAndroid.showWithGravity(
-        "Downloaded to Download/ChildId folder",
+        `Downloaded to Download/${newFolder} folder`,
         ToastAndroid.SHORT,
         ToastAndroid.CENTER
       );
