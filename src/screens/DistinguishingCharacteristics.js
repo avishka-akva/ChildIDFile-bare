@@ -53,13 +53,27 @@ function DistinguishingCharacteristics() {
             hideSearch
             showDropDowns={false}
             readOnlyHeadings
-            styles={{ selectToggle: globleStyles.input }}
+            styles={{
+              selectToggle: globleStyles.input,
+              chipText: {
+                color: COLOR.white,
+              },
+              chipContainer: {
+                backgroundColor: COLOR.primary,
+                borderColor: COLOR.primary,
+              },
+              chipIcon: {
+                color: COLOR.white,
+              },
+              modalWrapper: {
+                paddingVertical: "60%",
+              }
+            }}
             colors={{
               primary: COLOR.primary,
               success: COLOR.primary,
               subText: "#707070",
               selectToggleTextColor: "#707070",
-              chipColor: COLOR.primary,
             }}
           />
           {currentChild.characteristicOptions.length > 0 && false && (

@@ -1,5 +1,6 @@
 export const COLOR = {
   primary: "#A352EB",
+  white: "#FFFFFF"
 };
 export const CHARACTERISTICS_OPTIONS = [
   // this is the parent or 'item'
