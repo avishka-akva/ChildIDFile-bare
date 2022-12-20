@@ -8,7 +8,15 @@ const childrenListSlice = createSlice({
       state.push(action.payload);
     },
     saveIncompleteChild(state, action) {
-      state.push({ incomplete: true, ...action.payload});
+      state.unshift({ incomplete: true, ...action.payload});
+    },
+    finishIncompleteChild(state, action) {
+      state.splice(
+        state.findIndex((child) => child.id === action.payload.id),
+        1
+      );
+      delete action.payload.incomplete;
+      state.push({...action.payload});
     },
     deleteChild(state, action) {
       state.splice(
@@ -23,6 +31,6 @@ const childrenListSlice = createSlice({
   },
 });
 
-export const { addChild, saveIncompleteChild, deleteChild, updateChild } = childrenListSlice.actions;
+export const { addChild, saveIncompleteChild,finishIncompleteChild, deleteChild, updateChild } = childrenListSlice.actions;
 
 export default childrenListSlice.reducer;

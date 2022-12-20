@@ -17,6 +17,7 @@ import {
   addChild,
   updateChild,
   saveIncompleteChild,
+  finishIncompleteChild
 } from "../redux/childrenListSlice";
 import CustomButton from "../components/CustomButton";
 import PersonalInformation from "./PersonalInformation";
@@ -83,7 +84,7 @@ function AddChild({ navigation, route }) {
 
   const onFinished = () => {
     if (childId) {
-      dispatch(updateChild({ ...currentChild, id: childId }));
+      dispatch(finishIncompleteChild({ ...currentChild, id: childId }));
     } else {
       const newChild = getChildWithId();
       dispatch(addChild(newChild));
@@ -110,8 +111,8 @@ function AddChild({ navigation, route }) {
     dispatch(setUpdate(false));
     dispatch(setView(false));
     dispatch(cleanChildSlice());
-    const newChild = getChildWithId();
     if (!childId) {
+      const newChild = getChildWithId();
       dispatch(saveIncompleteChild(newChild));
     }
     navigation.navigate("Home");
