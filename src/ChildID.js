@@ -6,7 +6,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 
 import Home from "./screens/Home";
-import AddChild from "./screens/AddChild";
+import ChildProfile from "./screens/ChildProfile";
 import CustomHeader from "./components/CustomHeader";
 import { toggleExit } from "./redux/childManageSlice";
 
@@ -25,8 +25,8 @@ export default function ChildID() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Add Child"
-          component={AddChild}
+          name="ChildProfile"
+          component={ChildProfile}
           options={({ navigation }) => ({
             headerBackVisible: false,
             headerTitle: () => <CustomHeader text={`Child Profile${childManage.hederNameShow ? ` - ${currentChild.firstName}` : ""}`} />,

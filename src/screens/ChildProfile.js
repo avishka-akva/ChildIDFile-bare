@@ -37,7 +37,7 @@ import Fingerprints from "./Fingerprints";
 import CustomModal from "../components/CustomModal";
 import { COLOR } from "../shared/const";
 
-function AddChild({ navigation, route }) {
+function ChildProfile({ navigation, route }) {
   const dispatch = useDispatch();
   const { currentChild, childrenList, childManage } = useSelector(
     (state) => state
@@ -282,4 +282,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddChild;
+export default ChildProfile;

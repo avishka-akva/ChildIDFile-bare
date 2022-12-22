@@ -108,7 +108,7 @@ function Home({ navigation }) {
   };
 
   const onEdit = (id, view = false) => {
-    navigation.navigate("Add Child", { childId: id, view });
+    navigation.navigate("ChildProfile", { childId: id, view });
   };
 
   const onDownloda = (id) => {
@@ -342,7 +342,7 @@ function Home({ navigation }) {
       )}
       <View style={styles.buttonContainer}>
         <CustomButton
-          onPress={() => navigation.navigate("Add Child")}
+          onPress={() => navigation.navigate("ChildProfile")}
           text={"Add Profile"}
           backgroundColor={COLOR.primary}
           color="#FFFFFF"
