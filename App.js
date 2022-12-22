@@ -6,6 +6,7 @@ import * as SplashScreen from "expo-splash-screen";
 
 import store, { persistor } from "./src/redux/store";
 import ChildId from "./src/ChildID";
+import { StatusBar } from "expo-status-bar";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,6 +32,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
+        <StatusBar barStyle="dark-content" animated={true} backgroundColor="#FFFFFF"/>
         <ChildId />
       </PersistGate>
     </Provider>
