@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector, useDispatch } from "react-redux";
-import { Feather, AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { Feather, AntDesign, MaterialIcons, Entypo } from "@expo/vector-icons";
 
 import CustomButton from "../components/CustomButton";
 import { globleStyles } from "../shared/style";
@@ -107,7 +107,7 @@ function Home({ navigation }) {
     );
   };
 
-  const onEdit = (id,view = false) => {
+  const onEdit = (id, view = false) => {
     navigation.navigate("Add Child", { childId: id, view });
   };
 
@@ -165,12 +165,17 @@ function Home({ navigation }) {
         <Text style={[styles.itemNickName, { fontSize: 14, marginTop: 4 }]}>
           {item.nickName}
         </Text>
-        <Text style={[styles.itemDescription, { fontSize: 12, marginTop: 4 }]}>
-          Special needs dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod
-        </Text>
+        {!item.incomplete && (
+          <Text
+            style={[styles.itemDescription, { fontSize: 12, marginTop: 4 }]}
+          >
+            Special needs dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod
+          </Text>
+        )}
+
         <CustomButton
-          onPress={() => onEdit(item.id,!item.incomplete)}
+          onPress={() => onEdit(item.id, !item.incomplete)}
           text={item.incomplete ? "Complete" : "View"}
           buttonStyle={[
             globleStyles.buttonPrimary,
@@ -270,7 +275,7 @@ function Home({ navigation }) {
               <AntDesign name="delete" size={14} color="#B6B6B6" />
             </TouchableOpacity>
             <CustomButton
-              onPress={() => onEdit(item.id,!item.incomplete)}
+              onPress={() => onEdit(item.id, !item.incomplete)}
               text={item.incomplete ? "Complete" : "View"}
               buttonStyle={[
                 globleStyles.buttonPrimary,
@@ -295,11 +300,16 @@ function Home({ navigation }) {
     <SafeAreaView style={globleStyles.container}>
       <View style={styles.mainTextContainer}>
         <Text style={styles.mainText}>Welcome</Text>
-        {childrenList.length > 0 && (
-          <View>
+        <View style={styles.mainRight}>
+          {childrenList.length > 0 && (
             <Text style={styles.childrenCount}>{childrenList.length}</Text>
-          </View>
-        )}
+          )}
+          <Entypo
+            name="dots-three-vertical"
+            size={14}
+            color="#434343"
+          />
+        </View>
       </View>
       {childrenList.length ? (
         childrenList.length <= 2 ? (
@@ -350,12 +360,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 24,
-    marginVertical: 24,
+    marginTop: 12,
+    marginBottom: 12,
   },
   mainText: {
     color: "#000",
     fontSize: 36,
     fontFamily: "SegoeUI-SemiBold",
+  },
+  mainRight: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   description: {
     color: "#707070",
@@ -365,10 +381,12 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     padding: 24,
+    paddingVertical: 18,
   },
   childrenCount: {
     color: "#9B9B9B",
     fontSize: 36,
+    marginRight: 12,
   },
   childrenListContainer: {
     flex: 1,
