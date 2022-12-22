@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, ScrollView, View, Modal, Text } from "react-native";
+import {
+  BackHandler,
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+} from "react-native";
 import * as Progress from "react-native-progress";
 import { AntDesign } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -115,7 +121,7 @@ function AddChild({ navigation, route }) {
     dispatch(setUpdate(false));
     dispatch(setView(false));
     dispatch(cleanChildSlice());
-    if (!childId) {
+    if (!childId && currentStepIndex !== 0) {
       const newChild = getChildWithId();
       dispatch(saveIncompleteChild(newChild));
     }
@@ -133,6 +139,16 @@ function AddChild({ navigation, route }) {
         dispatch(setUpdate(true));
       }
     }
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        dispatch(toggleExit());
+        return true;
+      }
+    );
+
+    return () => backHandler.remove();
   }, []);
 
   const progress = (currentStepIndex + 1) / steps.length;
@@ -181,7 +197,7 @@ function AddChild({ navigation, route }) {
             />
             <CustomButton
               onPress={onExit}
-              text={view ? "Yes" : "Yes, Save"}
+              text={view || currentStepIndex === 0 ? "Yes" : "Yes, Save"}
               buttonStyle={[
                 globleStyles.buttonPrimary,
                 { backgroundColor: COLOR.primary, width: 116, height: 36 },
@@ -206,7 +222,13 @@ function AddChild({ navigation, route }) {
         {currentStepIndex !== steps.length - 1 ? (
           <CustomButton
             onPress={() => nextStep()}
-            text={"Skip to Next Section"}
+            text={
+              childId
+                ? view
+                  ? "Continue"
+                  : "Save & Continue"
+                : "Skip to Next Section"
+            }
             buttonStyle={globleStyles.buttonPrimary}
             fontSize={12}
           />
