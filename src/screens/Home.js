@@ -111,9 +111,14 @@ function Home({ navigation }) {
     navigation.navigate("ChildProfile", { childId: id, view });
   };
 
-  const onDownloda = (id) => {
+  const onDownlod = (id) => {
     const child = childrenList.find((childItem) => childItem.id === id);
     generatePdf(child);
+  };
+
+  const onShare = (id) => {
+    const child = childrenList.find((childItem) => childItem.id === id);
+    generatePdf(child, true);
   };
 
   const renderChildItem = ({ item }) => {
@@ -192,14 +197,14 @@ function Home({ navigation }) {
         <View style={[styles.itemFooter, { justifyContent: "space-around" }]}>
           <TouchableOpacity
             style={[styles.iconContainer, { width: 24, height: 24 }]}
-            onPress={() => onEdit(item.id)}
+            onPress={() => onShare(item.id)}
           >
             <Feather name="external-link" size={12} color="#B6B6B6" />
           </TouchableOpacity>
           {!item.incomplete && (
             <TouchableOpacity
               style={[styles.iconContainer, { width: 24, height: 24 }]}
-              onPress={() => onDownloda(item.id)}
+              onPress={() => onDownlod(item.id)}
             >
               <Feather name="download" size={12} color="#B6B6B6" />
             </TouchableOpacity>
@@ -256,14 +261,14 @@ function Home({ navigation }) {
           <View style={styles.itemFooter}>
             <TouchableOpacity
               style={styles.iconContainer}
-              onPress={() => onEdit(item.id)}
+              onPress={() => onShare(item.id)}
             >
               <Feather name="external-link" size={14} color="#B6B6B6" />
             </TouchableOpacity>
             {!item.incomplete && (
               <TouchableOpacity
                 style={styles.iconContainer}
-                onPress={() => onDownloda(item.id)}
+                onPress={() => onDownlod(item.id)}
               >
                 <Feather name="download" size={14} color="#B6B6B6" />
               </TouchableOpacity>
@@ -304,11 +309,7 @@ function Home({ navigation }) {
           {childrenList.length > 0 && (
             <Text style={styles.childrenCount}>{childrenList.length}</Text>
           )}
-          <Entypo
-            name="dots-three-vertical"
-            size={14}
-            color="#434343"
-          />
+          <Entypo name="dots-three-vertical" size={14} color="#434343" />
         </View>
       </View>
       {childrenList.length ? (

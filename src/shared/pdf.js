@@ -5,6 +5,7 @@ import { manipulateAsync } from "expo-image-manipulator";
 import { Platform, ToastAndroid } from "react-native";
 import * as FileSystem from "expo-file-system";
 import { StorageAccessFramework } from "expo-file-system";
+import { CHARACTERISTICS_OPTIONS } from "./const";
 
 const pdfLogo = Asset.fromModule(require("../assets/pdfLogo.png"));
 
@@ -40,6 +41,13 @@ const generateHtml = async ({
   const logo = await manipulateAsync(pdfLogo.localUri ?? pdfLogo.uri, [], {
     base64: true,
   });
+
+  const characteristic = characteristicOptions.map(
+    (option) =>
+      CHARACTERISTICS_OPTIONS[0].children.find((item) => {
+        return item.id === option;
+      }).name
+  );
 
   const getEmergencyContactTable = () => {
     let body = `
@@ -316,7 +324,7 @@ const generateHtml = async ({
               <label>My child wears or has</label> <lable>:</lable> 
             </div>
             <div style="flex:1;">
-              <p class="p-des">${characteristicOptions.join(", ")}</p>
+              <p class="p-des">${characteristic.join(", ")}</p>
             </div>
           </div>
           <div class="row sr-mb">
@@ -392,7 +400,7 @@ const generateHtml = async ({
   `;
 };
 
-let generatePdf = async (props) => {
+let generatePdf = async (props, share = false) => {
   try {
     const html = await generateHtml(props);
 
@@ -403,45 +411,59 @@ let generatePdf = async (props) => {
       height: 1123,
     });
 
-    if (Platform.OS === "ios") {
+    if (share) {
       await shareAsync(file.uri, { UTI: ".pdf", mimeType: "application/pdf" });
     } else {
-      const downloadDir =
-        StorageAccessFramework.getUriForDirectoryInRoot("Download");
-      const permission =
-        await StorageAccessFramework.requestDirectoryPermissionsAsync(
-          downloadDir
+      if (Platform.OS === "ios") {
+        await shareAsync(file.uri, {
+          UTI: ".pdf",
+          mimeType: "application/pdf",
+        });
+      } else {
+        const downloadDir =
+          StorageAccessFramework.getUriForDirectoryInRoot("Download");
+        const permission =
+          await StorageAccessFramework.requestDirectoryPermissionsAsync(
+            downloadDir
+          );
+
+        if (!permission.granted) {
+          return false;
+        }
+
+        const destinationUri = await StorageAccessFramework.createFileAsync(
+          permission.directoryUri,
+          `${props.firstName}_${props.firstName}_${new Date()
+            .toJSON()
+            .slice(0, 10)
+            .replace(/-/g, "_")}`,
+          "application/pdf"
         );
 
-      if (!permission.granted) {
-        return false;
+        const content = await StorageAccessFramework.readAsStringAsync(
+          file.uri,
+          {
+            encoding: FileSystem.EncodingType.Base64,
+          }
+        );
+
+        await StorageAccessFramework.writeAsStringAsync(
+          destinationUri,
+          content,
+          {
+            encoding: FileSystem.EncodingType.Base64,
+          }
+        );
+
+        let newFolder = permission.directoryUri.split("Download");
+        newFolder = newFolder[1].substring(3);
+
+        ToastAndroid.showWithGravity(
+          `Downloaded to Download/${newFolder} folder`,
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
       }
-
-      const destinationUri = await StorageAccessFramework.createFileAsync(
-        permission.directoryUri,
-        `${props.firstName}_${props.firstName}_${new Date()
-          .toJSON()
-          .slice(0, 10)
-          .replace(/-/g, "_")}`,
-        "application/pdf"
-      );
-
-      const content = await StorageAccessFramework.readAsStringAsync(file.uri, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-
-      await StorageAccessFramework.writeAsStringAsync(destinationUri, content, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-
-      let newFolder = permission.directoryUri.split("Download");
-      newFolder = newFolder[1].substring(3);
-
-      ToastAndroid.showWithGravity(
-        `Downloaded to Download/${newFolder} folder`,
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
     }
   } catch (error) {
     console.error("🚀 ~ file: pdf.js:343 ~ generatePdf ~ error", error.message);
