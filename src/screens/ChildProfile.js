@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  BackHandler,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-} from "react-native";
+import { BackHandler, StyleSheet, ScrollView, View, Text } from "react-native";
 import * as Progress from "react-native-progress";
 import { AntDesign } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -50,6 +44,18 @@ function ChildProfile({ navigation, route }) {
   const steps = [
     {
       compnent: <PersonalInformation />,
+      validation: () => {
+        if (
+          currentChild.firstName === "" ||
+          currentChild.lastName === "" ||
+          currentChild.nickName === "" ||
+          currentChild.dob === ""
+        ) {
+          return false;
+        }
+
+        return true;
+      },
     },
     {
       compnent: <PhysicalCharacteristics />,
@@ -76,8 +82,17 @@ function ChildProfile({ navigation, route }) {
 
   const nextStep = () => {
     if (currentStepIndex + 1 === steps.length) return;
+
+    // return if isValid is false
+    if (steps[currentStepIndex].validation) {
+      const isValid = steps[currentStepIndex].validation();
+      if (!isValid) return;
+    }
+
     if (currentStepIndex === 0) dispatch(setHederNameShow(true));
+
     setCurrentStepIndex((previousValue) => ++previousValue);
+
     if (childId) {
       dispatch(updateChild({ ...currentChild, id: childId }));
     }
