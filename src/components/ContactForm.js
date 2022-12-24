@@ -1,6 +1,6 @@
 import CustomTextInput from "./CustomTextInput";
 
-function ContactForm({ index, onInputChanged, values }) {
+function ContactForm({ index, onInputChanged, onBlur, values }) {
   const {
     name,
     relationship,
@@ -20,6 +20,7 @@ function ContactForm({ index, onInputChanged, values }) {
             value,
           })
         }
+        onBlur={onBlur ? onBlur : () => {}}
       />
       <CustomTextInput
         label={"Relationship *"}
@@ -31,6 +32,7 @@ function ContactForm({ index, onInputChanged, values }) {
             value,
           })
         }
+        onBlur={onBlur ? onBlur : () => {}}
       />
       <CustomTextInput
         label={"Primary Phone Number *"}
@@ -43,6 +45,7 @@ function ContactForm({ index, onInputChanged, values }) {
             value,
           })
         }
+        onBlur={onBlur ? onBlur : () => {}}
       />
       <CustomTextInput
         label={"Secondary Phone Number"}
@@ -55,6 +58,7 @@ function ContactForm({ index, onInputChanged, values }) {
             value,
           })
         }
+        onBlur={onBlur ? onBlur : () => {}}
       />
       <CustomTextInput
         label={"Address"}
@@ -69,6 +73,7 @@ function ContactForm({ index, onInputChanged, values }) {
         multiline={true}
         numberOfLines={4}
         marginBottom={0}
+        onBlur={onBlur ? onBlur : () => {}}
       />
     </>
   );

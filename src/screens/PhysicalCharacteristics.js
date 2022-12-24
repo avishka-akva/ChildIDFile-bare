@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -12,15 +12,20 @@ import {
   setHairColor,
   setEyeColor,
   setHeight,
-  setWeight
+  setWeight,
 } from "../redux/childSlice";
 
-function PhysicalCharacteristics() {
+function PhysicalCharacteristics({ index, setEditStartedTrue }) {
   const currentChild = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
 
+  const onBlur = () => {
+    setEditStartedTrue(index);
+  };
+
   const onGenderChange = (value) => {
     dispatch(setGender(value));
+    onBlur();
   };
 
   const onRaceChange = (value) => {
@@ -79,23 +84,27 @@ function PhysicalCharacteristics() {
           label={"Hair Color"}
           value={currentChild.hairColor}
           onChangeText={onHairColorChange}
+          onBlur={onBlur}
         />
         <CustomTextInput
           label={"Eye Color"}
           value={currentChild.eyeColor}
           onChangeText={onEyeColorChange}
+          onBlur={onBlur}
         />
         <CustomTextInput
           label={"Approximate Height"}
           value={currentChild.height}
           onChangeText={onHeightChange}
           marginBottom={0}
+          onBlur={onBlur}
         />
         <CustomTextInput
           label={"Approximate Weight"}
           value={currentChild.weight}
           onChangeText={onWeightChange}
           marginBottom={0}
+          onBlur={onBlur}
         />
       </Card>
     </View>

@@ -9,7 +9,7 @@ import {
   setImage2,
 } from "../redux/childSlice";
 
-function UploadPhoto() {
+function UploadPhoto({ index, setEditStartedTrue }) {
   const { image1,image2 } = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
 

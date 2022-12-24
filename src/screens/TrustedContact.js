@@ -14,7 +14,7 @@ import {
 import { COLOR, MAXIMUM_TRUSTED_CONTACT_COUNT } from "../shared/const";
 import ContactForm from "../components/ContactForm";
 
-function TrustedContact() {
+function TrustedContact({ index, setEditStartedTrue }) {
   const { trustedContacts } = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
 

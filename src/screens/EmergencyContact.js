@@ -14,9 +14,13 @@ import {
 import { COLOR, MAXIMUM_EMERGENCY_CONTACT_COUNT } from "../shared/const";
 import ContactForm from "../components/ContactForm";
 
-function EmergencyContact() {
+function EmergencyContact({ index, setEditStartedTrue }) {
   const { emergencyContacts } = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
+
+  const onBlur = () => {
+    setEditStartedTrue(index);
+  };
 
   const onInputChanged = (values) => {
     dispatch(setEmergencyContactValues(values));
@@ -51,6 +55,7 @@ function EmergencyContact() {
           index={index}
           values={values}
           onInputChanged={onInputChanged}
+          onBlur={onBlur}
         />
       </Card>
     );

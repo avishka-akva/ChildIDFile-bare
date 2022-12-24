@@ -13,9 +13,13 @@ import {
   setMedications,
 } from "../redux/childSlice";
 
-function MedicalInformation() {
+function MedicalInformation({ index, setEditStartedTrue }) {
   const currentChild = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
+
+  const onBlur = () => {
+    setEditStartedTrue(index);
+  };
 
   const onPhysicianNameChange = (value) => {
     dispatch(setPhysicianName(value));
@@ -48,16 +52,19 @@ function MedicalInformation() {
           label={"Physician's Name"}
           value={currentChild.physicianName}
           onChangeText={onPhysicianNameChange}
+          onBlur={onBlur}
         />
         <CustomTextInput
           label={"Office"}
           value={currentChild.physicianOffice}
           onChangeText={onPhysicianOfficeChange}
+          onBlur={onBlur}
         />
         <CustomTextInput
           label={"Blood Type"}
           value={currentChild.bloodType}
           onChangeText={onBloodTypeChange}
+          onBlur={onBlur}
         />
         <CustomTextInput
           label={"Allergies/Conditions"}
@@ -65,6 +72,7 @@ function MedicalInformation() {
           onChangeText={onAllergiesChange}
           multiline={true}
           numberOfLines={4}
+          onBlur={onBlur}
         />
         <CustomTextInput
           label={"Medications"}
@@ -73,6 +81,7 @@ function MedicalInformation() {
           multiline={true}
           numberOfLines={4}
           marginBottom={0}
+          onBlur={onBlur}
         />
       </Card>
     </View>

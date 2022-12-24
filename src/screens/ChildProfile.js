@@ -40,10 +40,35 @@ function ChildProfile({ navigation, route }) {
   const view = route?.params?.view;
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [editStarted, setEditStarted] = useState([
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
+  const setEditStartedTrue = (index) => {
+    if (!editStarted[index]) {
+      setEditStarted((previousValue) => {
+        let newValue = [...previousValue];
+        newValue[index] = true;
+        return newValue;
+      });
+    }
+  };
+
+  const setEditStartedFalse = () => {
+    if (editStarted) {
+      setEditStarted(false);
+    }
+  };
   const steps = [
     {
-      compnent: <PersonalInformation />,
+      compnent: <PersonalInformation index={0} />,
       validation: () => {
         if (
           currentChild.firstName === "" ||
@@ -58,25 +83,67 @@ function ChildProfile({ navigation, route }) {
       },
     },
     {
-      compnent: <PhysicalCharacteristics />,
+      compnent: (
+        <PhysicalCharacteristics
+          index={1}
+          setEditStartedTrue={setEditStartedTrue}
+          setEditStartedFalse={setEditStartedFalse}
+        />
+      ),
     },
     {
-      compnent: <DistinguishingCharacteristics />,
+      compnent: (
+        <DistinguishingCharacteristics
+          index={2}
+          setEditStartedTrue={setEditStartedTrue}
+          setEditStartedFalse={setEditStartedFalse}
+        />
+      ),
     },
     {
-      compnent: <UploadPhoto />,
+      compnent: (
+        <UploadPhoto
+          index={3}
+          setEditStartedTrue={setEditStartedTrue}
+          setEditStartedFalse={setEditStartedFalse}
+        />
+      ),
     },
     {
-      compnent: <MedicalInformation />,
+      compnent: (
+        <MedicalInformation
+          index={4}
+          setEditStartedTrue={setEditStartedTrue}
+          setEditStartedFalse={setEditStartedFalse}
+        />
+      ),
     },
     {
-      compnent: <EmergencyContact />,
+      compnent: (
+        <EmergencyContact
+          index={5}
+          setEditStartedTrue={setEditStartedTrue}
+          setEditStartedFalse={setEditStartedFalse}
+        />
+      ),
     },
     {
-      compnent: <TrustedContact />,
+      compnent: (
+        <TrustedContact
+          index={6}
+          setEditStartedTrue={setEditStartedTrue}
+          setEditStartedFalse={setEditStartedFalse}
+        />
+      ),
     },
     {
-      compnent: <Fingerprints />,
+      compnent: (
+        <Fingerprints
+          index={7}
+          setEditStartedTrue={setEditStartedTrue}
+          setEditStartedFalse={setEditStartedFalse}
+        />
+      ),
     },
   ];
 
@@ -242,6 +309,8 @@ function ChildProfile({ navigation, route }) {
                 ? view
                   ? "Continue"
                   : "Save & Continue"
+                : editStarted[currentStepIndex]
+                ? "Next Section"
                 : "Skip to Next Section"
             }
             buttonStyle={globleStyles.buttonPrimary}

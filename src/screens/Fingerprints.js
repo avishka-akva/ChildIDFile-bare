@@ -9,7 +9,7 @@ import { setFingerPrint } from "../redux/childSlice";
 import Card from "../components/Card";
 import { COLOR } from "../shared/const";
 
-function Fingerprints() {
+function Fingerprints({ index, setEditStartedTrue }) {
   const { fingerPrint } = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
 

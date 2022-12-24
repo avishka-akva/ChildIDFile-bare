@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
@@ -14,9 +14,13 @@ import {
 } from "../redux/childSlice";
 import { CHARACTERISTICS_OPTIONS, COLOR } from "../shared/const";
 
-function DistinguishingCharacteristics() {
+function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
   const currentChild = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
+
+  const onBlur = () => {
+    setEditStartedTrue(index);
+  };
 
   const onSpecialNeedsChange = (value) => {
     dispatch(setSpecialNeeds(value));
@@ -28,9 +32,8 @@ function DistinguishingCharacteristics() {
 
   onSelectedItemsChange = (selectedItems) => {
     dispatch(setCharacteristicOption(selectedItems));
+    onBlur();
   };
-
-  useEffect(() => {}, []);
 
   return (
     <View style={styles.main}>
@@ -76,7 +79,7 @@ function DistinguishingCharacteristics() {
               selectToggleTextColor: "#707070",
             }}
           />
-          {currentChild.characteristicOptions.length > 0 && false && (
+          {/* {currentChild.characteristicOptions.length > 0 && false && (
             <View style={styles.optionSelectedContainer}>
               {currentChild.characteristicOptions.map((key) => {
                 const option = CHARACTERISTICS_OPTIONS.find(
@@ -100,7 +103,7 @@ function DistinguishingCharacteristics() {
                 );
               })}
             </View>
-          )}
+          )} */}
         </View>
         <CustomTextInput
           label={"Special Needs"}
@@ -108,6 +111,7 @@ function DistinguishingCharacteristics() {
           onChangeText={onSpecialNeedsChange}
           multiline={true}
           numberOfLines={6}
+          onBlur={onBlur}
         />
         <CustomTextInput
           label={"Other"}
@@ -116,6 +120,7 @@ function DistinguishingCharacteristics() {
           multiline={true}
           numberOfLines={6}
           marginBottom={0}
+          onBlur={onBlur}
         />
       </Card>
     </View>
