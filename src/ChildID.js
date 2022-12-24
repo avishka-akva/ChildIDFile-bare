@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 
 export default function ChildID() {
   const dispatch = useDispatch();
-  const { currentChild, childManage} = useSelector((state) => state);
+  const { currentChild, childManage } = useSelector((state) => state);
 
   return (
     <NavigationContainer>
@@ -29,12 +29,21 @@ export default function ChildID() {
           component={ChildProfile}
           options={({ navigation }) => ({
             headerBackVisible: false,
-            headerTitle: () => <CustomHeader text={`Child Profile${childManage.hederNameShow ? ` - ${currentChild.firstName}` : ""}`} />,
+            headerTitle: () => (
+              <CustomHeader
+                text={`Child Profile${
+                  childManage.hederNameShow
+                    ? ` - ${currentChild.firstName}`
+                    : ""
+                }`}
+              />
+            ),
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => {
                   dispatch(toggleExit());
                 }}
+                style={{ padding: 10 }}
               >
                 <AntDesign name="close" size={16} color="black" />
               </TouchableOpacity>
