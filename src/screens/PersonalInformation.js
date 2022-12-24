@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { AntDesign } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -84,17 +84,17 @@ function PersonalInformation() {
         <Text style={[globleStyles.body, globleStyles.inputLable]}>
           Date of Birth *
         </Text>
-        <View style={[globleStyles.input, styles.datePickerContainer]}>
-          <Text style={[globleStyles.inputText, styles.datePickerText]}>
-            {currentChild?.dob}
-          </Text>
-          <TouchableOpacity
-            style={styles.mainContainer}
-            onPress={() => setShowDatePicker(true)}
-          >
+        <TouchableWithoutFeedback
+          style={styles.mainContainer}
+          onPress={() => setShowDatePicker(true)}
+        >
+          <View style={[globleStyles.input, styles.datePickerContainer]}>
+            <Text style={[globleStyles.inputText, styles.datePickerText]}>
+              {currentChild?.dob}
+            </Text>
             <AntDesign name="calendar" size={13} color="#707070" />
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableWithoutFeedback>
         {showDatePicker && (
           <DateTimePicker
             testID="dateTimePicker"
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   datePickerText: {
     flex: 1,
     color: "#868282",
-    fontSize: 14
+    fontSize: 14,
   },
 });
 
