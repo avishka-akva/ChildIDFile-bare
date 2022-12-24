@@ -52,7 +52,7 @@ function RadioButtonGroup({ values, onPress, vertical = false, defaultValue }) {
       style={{
         flexDirection: vertical ? "column" : "row",
         alignItems: vertical ? "flex-start" : "center",
-        justifyContent: "space-between",
+        justifyContent: "space-around",
         flex: 1,
       }}
     >
