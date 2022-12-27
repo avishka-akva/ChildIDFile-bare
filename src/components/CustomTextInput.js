@@ -1,4 +1,5 @@
-import { TextInput, Text, View } from "react-native";
+import { useRef, useEffect } from "react";
+import { TextInput, Text, View, Keyboard } from "react-native";
 import { useSelector } from "react-redux";
 import { globleStyles } from "../shared/style";
 
@@ -13,6 +14,23 @@ function CustomTextInput({
 }) {
   const { view } = useSelector((state) => state.childManage);
 
+  const localInputRef = useRef();
+
+  const keyboardDidHideCallback = () => {
+    localInputRef.current.blur?.();
+  };
+
+  useEffect(() => {
+    const keyboardDidHideSubscription = Keyboard.addListener(
+      "keyboardDidHide",
+      keyboardDidHideCallback
+    );
+
+    return () => {
+      keyboardDidHideSubscription?.remove();
+    };
+  }, []);
+
   return (
     <View style={{ marginBottom }}>
       <Text style={[globleStyles.body, globleStyles.inputLable]}>{label}</Text>
@@ -26,6 +44,9 @@ function CustomTextInput({
           value={value}
           multiline
           numberOfLines={numberOfLines}
+          ref={(ref) => {
+            localInputRef && (localInputRef.current = ref);
+          }}
           {...props}
           editable={!view}
         />
@@ -36,6 +57,9 @@ function CustomTextInput({
           value={value}
           editable={!view}
           {...props}
+          ref={(ref) => {
+            localInputRef && (localInputRef.current = ref);
+          }}
         />
       )}
     </View>
