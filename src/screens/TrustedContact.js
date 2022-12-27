@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -11,29 +11,90 @@ import {
   addNewTrusedContact,
   removeTrusedContactValues,
 } from "../redux/childSlice";
-import { COLOR, MAXIMUM_TRUSTED_CONTACT_COUNT } from "../shared/const";
+import {
+  COLOR,
+  CONTACT_INIT_OBJ,
+  MAXIMUM_TRUSTED_CONTACT_COUNT,
+} from "../shared/const";
 import ContactForm from "../components/ContactForm";
 
 function TrustedContact({ index, setEditStartedTrue }) {
-  const { trustedContacts } = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
+  const { trustedContacts } = useSelector((state) => state.currentChild);
 
-  const onInputChanged = (values) => {
-    dispatch(setTrusedContactValues(values));
+  const [openIndex, setOpenIndex] = useState(null);
+  const [contactEditIndex, setContactEditIndex] = useState(null);
+  const [tempTrustedContacts, setTempTrustedContacts] = useState([
+    { ...CONTACT_INIT_OBJ },
+  ]);
+
+  const onInputChanged = ({ index, propertyName, value }) => {
+    try {
+      if (contactEditIndex !== index) setContactEditIndex(index);
+
+      let newTempTrustedContacts = [...tempTrustedContacts];
+      newTempTrustedContacts[index][propertyName] = value;
+      setTempTrustedContacts(newTempTrustedContacts);
+    } catch (error) {
+      console.error("🚀 ~ file: TrustedContact.js:39 ~ ", error);
+    }
   };
 
-  const onAddButton = () => {
-    dispatch(addNewTrusedContact());
+  const onSaveDetails = () => {
+    const index = tempTrustedContacts.length - 1;
+    if (tempTrustedContacts.length > trustedContacts.length) {
+      dispatch(addNewTrusedContact(tempTrustedContacts[index]));
+    } else {
+      dispatch(
+        setTrusedContactValues({
+          index,
+          values: { ...tempTrustedContacts[index] },
+        })
+      );
+    }
+
+    if (tempTrustedContacts.length === MAXIMUM_TRUSTED_CONTACT_COUNT) {
+      setOpenIndex(index);
+    } else {
+      setOpenIndex(null);
+    }
+    setContactEditIndex(null);
+  };
+
+  const onAddAdditional = () => {
+    setTempTrustedContacts([...tempTrustedContacts, { ...CONTACT_INIT_OBJ }]);
+    setContactEditIndex(null);
   };
 
   const onItemsDelete = (name) => {
+    setTempTrustedContacts(
+      tempTrustedContacts.filter((item) => item.name !== name)
+    );
     dispatch(removeTrusedContactValues(name));
   };
 
   const viewItem = (index, values) => (
     <Accordion
       key={index}
+      index={index}
       title={values.name}
+      open={index === openIndex}
+      isEdit={index === contactEditIndex}
+      onSave={() => {
+        dispatch(
+          setTrusedContactValues({
+            index: contactEditIndex,
+            values: { ...tempTrustedContacts[index] },
+          })
+        );
+        setContactEditIndex(null);
+      }}
+      onSaveCancle={() => {
+        setContactEditIndex(null);
+      }}
+      onOpen={(index) => {
+        setOpenIndex(index);
+      }}
       onDelete={() => onItemsDelete(values.name)}
     >
       <ContactForm
@@ -56,6 +117,20 @@ function TrustedContact({ index, setEditStartedTrue }) {
     );
   };
 
+  useEffect(() => {
+    if (trustedContacts.length > 0) {
+      const currentContact = trustedContacts.map((contact) => ({
+        ...contact,
+      }));
+      setTempTrustedContacts(currentContact);
+    }
+  }, []);
+
+  const isSave =
+    tempTrustedContacts.length > trustedContacts.length ||
+    (contactEditIndex !== 0 &&
+      contactEditIndex === tempTrustedContacts.length - 1);
+
   return (
     <View style={styles.main}>
       <View style={styles.titleContainer}>
@@ -66,8 +141,11 @@ function TrustedContact({ index, setEditStartedTrue }) {
           {trustedContacts.length}/{MAXIMUM_TRUSTED_CONTACT_COUNT} added
         </Text>
       </View>
-      {trustedContacts.map((contactItem, index) => {
-        if (trustedContacts.length - 1 === index) {
+      {tempTrustedContacts.map((contactItem, index) => {
+        if (
+          trustedContacts.length < MAXIMUM_TRUSTED_CONTACT_COUNT &&
+          tempTrustedContacts.length - 1 === index
+        ) {
           return editItem(index, contactItem);
         }
         return viewItem(index, contactItem);
@@ -76,8 +154,8 @@ function TrustedContact({ index, setEditStartedTrue }) {
       {trustedContacts.length < MAXIMUM_TRUSTED_CONTACT_COUNT && (
         <View style={styles.addButtonContainer}>
           <CustomButton
-            onPress={onAddButton}
-            text={"Add Additional Contacts"}
+            onPress={isSave ? onSaveDetails : onAddAdditional}
+            text={isSave ? "Save Details" : "Add Additional Contacts"}
             backgroundColor={COLOR.primary}
             buttonWidth={"100%"}
           />

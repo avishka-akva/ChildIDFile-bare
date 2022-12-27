@@ -30,16 +30,8 @@ const initialState = {
   bloodType: "",
   allergies: "",
   medications: "",
-  emergencyContacts: [
-    {
-      ...CONTACT_INIT_OBJ,
-    },
-  ],
-  trustedContacts: [
-    {
-      ...CONTACT_INIT_OBJ,
-    },
-  ],
+  emergencyContacts: [],
+  trustedContacts: [],
   image1: null,
   image2: null,
   fingerPrint: null,
@@ -125,13 +117,13 @@ const childSlice = createSlice({
       state.medications = action.payload;
     },
     setEmergencyContactValues(state, action) {
-      const { index, propertyName, value } = action.payload;
-      state.emergencyContacts[index][propertyName] = value;
+      const { index, values } = action.payload;
+      state.emergencyContacts[index] = { ...values };
     },
-    addNewEmergencyContact(state) {
+    addNewEmergencyContact(state, action) {
       if (state.emergencyContacts.length > MAXIMUM_EMERGENCY_CONTACT_COUNT)
         return;
-      state.emergencyContacts.push({ ...CONTACT_INIT_OBJ });
+      state.emergencyContacts.push({ ...action.payload });
     },
     removeEmergencyContactValues(state, action) {
       if (state.emergencyContacts.length > 0) {
@@ -141,12 +133,12 @@ const childSlice = createSlice({
       }
     },
     setTrusedContactValues(state, action) {
-      const { index, propertyName, value } = action.payload;
-      state.trustedContacts[index][propertyName] = value;
+      const { index, values } = action.payload;
+      state.trustedContacts[index] = values;
     },
-    addNewTrusedContact(state) {
+    addNewTrusedContact(state, action) {
       if (state.trustedContacts.length < MAXIMUM_TRUSTED_CONTACT_COUNT) {
-        state.trustedContacts.push({ ...CONTACT_INIT_OBJ });
+        state.trustedContacts.push({ ...action.payload });
       }
     },
     removeTrusedContactValues(state, action) {

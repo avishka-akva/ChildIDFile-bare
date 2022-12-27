@@ -10,15 +10,27 @@ import { Feather as Icon } from "@expo/vector-icons";
 import { COLOR } from "../shared/const";
 import Card from "./Card";
 
-function Accordion({ title, children, onDelete }) {
-  const [open, setOpen] = useState(false);
-
+function Accordion({
+  index,
+  open,
+  onOpen,
+  title,
+  children,
+  onDelete,
+  isEdit,
+  onSave,
+  onSaveCancle,
+}) {
   const height = open ? "auto" : 0;
   // const bottomRadius = open ? 0 : 8;
   // const borderWidth = open ? 0 : 1;
 
   return !open ? (
-    <TouchableWithoutFeedback onPress={() => setOpen((prev) => !prev)}>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        onOpen(index);
+      }}
+    >
       <View
         style={[
           styles.container,
@@ -46,10 +58,24 @@ function Accordion({ title, children, onDelete }) {
               alignItems: "center",
             }}
           >
-            <TouchableOpacity onPress={() => (onDelete ? onDelete() : null)}>
-              <Text style={styles.headerText}>Delete</Text>
-            </TouchableOpacity>
-            <TouchableWithoutFeedback onPress={() => setOpen((prev) => !prev)}>
+            {isEdit ? (
+              <>
+                <TouchableOpacity onPress={() => (onSave ? onSave() : null)}>
+                  <Text style={styles.headerText}>Save</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => (onSaveCancle ? onSaveCancle() : null)}
+                >
+                  <Text style={styles.headerText}>Cancle</Text>
+                </TouchableOpacity>
+              </>
+            ) : (
+              <TouchableOpacity onPress={() => (onDelete ? onDelete() : null)}>
+                <Text style={styles.headerText}>Delete</Text>
+              </TouchableOpacity>
+            )}
+
+            <TouchableWithoutFeedback onPress={() => onOpen(null)}>
               <View style={styles.backgroundCircle}>
                 <Icon name="chevron-down" color={COLOR.primary} size={16} />
               </View>
