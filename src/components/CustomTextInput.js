@@ -1,7 +1,8 @@
 import { useRef, useEffect } from "react";
 import { TextInput, Text, View, Keyboard } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { globleStyles } from "../shared/style";
+import { setShowFooter } from "../redux/childManageSlice";
 
 function CustomTextInput({
   label,
@@ -12,12 +13,14 @@ function CustomTextInput({
   numberOfLines = 0,
   ...props
 }) {
+  const dispatch = useDispatch();
   const { view } = useSelector((state) => state.childManage);
 
   const localInputRef = useRef();
 
   const keyboardDidHideCallback = () => {
     localInputRef.current.blur?.();
+    dispatch(setShowFooter(true));
   };
 
   useEffect(() => {

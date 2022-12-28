@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { BackHandler, StyleSheet, ScrollView, View, Text } from "react-native";
+import {
+  BackHandler,
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+  Keyboard,
+} from "react-native";
 import * as Progress from "react-native-progress";
 import { AntDesign } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,6 +19,7 @@ import {
   setUpdate,
   setView,
   setHederNameShow,
+  setShowFooter,
 } from "../redux/childManageSlice";
 import {
   addChild,
@@ -230,13 +238,23 @@ function ChildProfile({ navigation, route }) {
       }
     );
 
-    return () => backHandler.remove();
+    const keyboardDidShowSubscription = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        dispatch(setShowFooter(false));
+      }
+    );
+
+    return () => {
+      backHandler.remove();
+      keyboardDidShowSubscription?.remove();
+    };
   }, []);
 
   const progress = (currentStepIndex + 1) / steps.length;
 
   return (
-    <>
+    <View style={{ flex: 1 }}>
       <ScrollView
         style={{
           width: "100%",
@@ -244,6 +262,8 @@ function ChildProfile({ navigation, route }) {
           backgroundColor: "#fff",
         }}
         contentContainerStyle={{ flexGrow: 1 }}
+        // keyboardShouldPersistTaps='always'
+        // keyboardDismissMode="on-drag"
       >
         <View style={styles.progressBar}>
           <Progress.Bar
@@ -290,42 +310,44 @@ function ChildProfile({ navigation, route }) {
           </View>
         </CustomModal>
       </ScrollView>
-      <View style={styles.footer}>
-        {currentStepIndex > 0 && (
-          <CustomButton
-            onPress={() => previosStep()}
-            text={"Back to Previous Section"}
-            buttonStyle={globleStyles.buttonOutLine}
-            color="#000"
-            fontSize={12}
-          />
-        )}
-        <View style={styles.divider}></View>
-        {currentStepIndex !== steps.length - 1 ? (
-          <CustomButton
-            onPress={() => nextStep()}
-            text={
-              childId
-                ? view
-                  ? "Continue"
-                  : "Save & Continue"
-                : editStarted[currentStepIndex]
-                ? "Next Section"
-                : "Skip to Next Section"
-            }
-            buttonStyle={globleStyles.buttonPrimary}
-            fontSize={12}
-          />
-        ) : (
-          <CustomButton
-            onPress={onFinished}
-            text={"DONE"}
-            buttonStyle={globleStyles.buttonPrimary}
-            fontSize={12}
-          />
-        )}
-      </View>
-    </>
+      {childManage.showFooter && (
+        <View style={styles.footer}>
+          {currentStepIndex > 0 && (
+            <CustomButton
+              onPress={() => previosStep()}
+              text={"Back to Previous Section"}
+              buttonStyle={globleStyles.buttonOutLine}
+              color="#000"
+              fontSize={12}
+            />
+          )}
+          <View style={styles.divider}></View>
+          {currentStepIndex !== steps.length - 1 ? (
+            <CustomButton
+              onPress={() => nextStep()}
+              text={
+                childId
+                  ? view
+                    ? "Continue"
+                    : "Save & Continue"
+                  : editStarted[currentStepIndex]
+                  ? "Next Section"
+                  : "Skip to Next Section"
+              }
+              buttonStyle={globleStyles.buttonPrimary}
+              fontSize={12}
+            />
+          ) : (
+            <CustomButton
+              onPress={onFinished}
+              text={"DONE"}
+              buttonStyle={globleStyles.buttonPrimary}
+              fontSize={12}
+            />
+          )}
+        </View>
+      )}
+    </View>
   );
 }
 

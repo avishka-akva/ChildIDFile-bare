@@ -7,6 +7,7 @@ const childManageSlice = createSlice({
     edit: false,
     exit: false,
     hederNameShow: false,
+    showFooter: true,
   },
   reducers: {
     setUpdate(state, action) {
@@ -21,10 +22,13 @@ const childManageSlice = createSlice({
     setHederNameShow(state, action) {
       state.hederNameShow = action.payload;
     },
+    setShowFooter(state, action) {
+      state.showFooter = action.payload;
+    }
   },
 });
 
-export const { setUpdate, setView, toggleExit, setHederNameShow } =
+export const { setUpdate, setView, toggleExit, setHederNameShow, setShowFooter } =
   childManageSlice.actions;
 
 export default childManageSlice.reducer;
