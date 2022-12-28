@@ -35,9 +35,9 @@ function MultiSelect({ options, values = [], onConfirm }) {
         <View style={[globleStyles.input, styles.container]}>
           <View style={{flexDirection:"row"}}>
             <Text style={[globleStyles.body, {marginRight: 8}]}>Select Options...</Text>
-            {selectedOptionIds.length > 0 && (
+            {values.length > 0 && (
               <Text style={globleStyles.body}>
-                ({selectedOptionIds.length}) Selected
+                ({values.length}) Selected
               </Text>
             )}
           </View>

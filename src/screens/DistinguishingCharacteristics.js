@@ -155,18 +155,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     width: "100%",
+    marginTop: 5,
   },
   optionSelectedItems: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 12,
+    padding: 10,
     backgroundColor: "#A352EBC2",
-    margin: 5,
+    margin: 4,
     // width: 1508
     borderRadius: 50,
   },
   optionSelectedItemText: {
-    marginRight: 16,
+    marginRight: 10,
     color: "#FFFFFF",
     fontSize: 12,
   },
