@@ -1,8 +1,31 @@
 export const COLOR = {
   primary: "#A352EB",
-  white: "#FFFFFF"
+  white: "#FFFFFF",
 };
 export const CHARACTERISTICS_OPTIONS = [
+  {
+    name: "Glasses",
+    id: 1,
+  },
+  {
+    name: "Birthmark(s)",
+    id: 2,
+  },
+  {
+    name: "Scar(s)",
+    id: 3,
+  },
+  {
+    name: "Tattoo(s)",
+    id: 4,
+  },
+  {
+    name: "Braces",
+    id: 5,
+  },
+];
+
+export const CHARACTERISTICS_OPTIONS_2 = [
   // this is the parent or 'item'
   {
     name: "My child wears or has",

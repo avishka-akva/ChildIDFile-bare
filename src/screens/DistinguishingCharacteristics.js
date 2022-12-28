@@ -1,8 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
-import SectionedMultiSelect from "react-native-sectioned-multi-select";
+import { AntDesign } from "@expo/vector-icons";
+// MaterialIcons
+// import SectionedMultiSelect from "react-native-sectioned-multi-select";
 
 import { globleStyles } from "../shared/style";
 import Card from "../components/Card";
@@ -12,10 +13,12 @@ import {
   setOtherCharacteristic,
   setCharacteristicOption,
 } from "../redux/childSlice";
-import { CHARACTERISTICS_OPTIONS, COLOR } from "../shared/const";
+import { CHARACTERISTICS_OPTIONS } from "../shared/const";
+import MultiSelect from "../components/MultiSelect";
 
 function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
-  const currentChild = useSelector((state) => state.currentChild);
+  const { characteristicOptions, specialNeeds, otherCharacteristic } =
+    useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
 
   const onBlur = () => {
@@ -30,9 +33,17 @@ function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
     dispatch(setOtherCharacteristic(value));
   };
 
-  onSelectedItemsChange = (selectedItems) => {
+  const onSelectedItemsChange = (selectedItems) => {
     dispatch(setCharacteristicOption(selectedItems));
     onBlur();
+  };
+
+  const removeSeletedItem = (removeId) => {
+    dispatch(
+      setCharacteristicOption(
+        characteristicOptions.filter((id) => id !== removeId)
+      )
+    );
   };
 
   return (
@@ -45,14 +56,14 @@ function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
           <Text style={[globleStyles.body, globleStyles.inputLable]}>
             My child wears or has
           </Text>
-          <SectionedMultiSelect
+          {/* <SectionedMultiSelect
             IconRenderer={MaterialIcons}
             items={CHARACTERISTICS_OPTIONS}
             uniqueKey="id"
             subKey="children"
             selectText="Select Options..."
             onSelectedItemsChange={onSelectedItemsChange}
-            selectedItems={currentChild.characteristicOptions}
+            selectedItems={characteristicOptions}
             hideSearch
             showDropDowns={false}
             readOnlyHeadings
@@ -78,23 +89,29 @@ function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
               subText: "#707070",
               selectToggleTextColor: "#707070",
             }}
+          /> */}
+
+          <MultiSelect
+            options={CHARACTERISTICS_OPTIONS}
+            onConfirm={onSelectedItemsChange}
+            values={characteristicOptions}
           />
-          {/* {currentChild.characteristicOptions.length > 0 && false && (
+          {characteristicOptions.length > 0 && (
             <View style={styles.optionSelectedContainer}>
-              {currentChild.characteristicOptions.map((key) => {
+              {characteristicOptions.map((id) => {
                 const option = CHARACTERISTICS_OPTIONS.find(
-                  (val) => val.key === key
+                  (val) => val.id === id
                 );
                 return (
-                  <View key={key} style={styles.optionSelectedItems}>
+                  <View key={id} style={styles.optionSelectedItems}>
                     <Text
                       style={[globleStyles.body, styles.optionSelectedItemText]}
                     >
-                      {option.value}
+                      {option.name}
                     </Text>
                     <TouchableOpacity
                       onPress={() => {
-                        removeSeletedItem(key);
+                        removeSeletedItem(id);
                       }}
                     >
                       <AntDesign name="close" size={10} color="#FFFFFF" />
@@ -103,11 +120,11 @@ function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
                 );
               })}
             </View>
-          )} */}
+          )}
         </View>
         <CustomTextInput
           label={"Special Needs"}
-          value={currentChild.specialNeeds}
+          value={specialNeeds}
           onChangeText={onSpecialNeedsChange}
           multiline={true}
           numberOfLines={6}
@@ -115,7 +132,7 @@ function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
         />
         <CustomTextInput
           label={"Other"}
-          value={currentChild.otherCharacteristic}
+          value={otherCharacteristic}
           onChangeText={onOtherChange}
           multiline={true}
           numberOfLines={6}

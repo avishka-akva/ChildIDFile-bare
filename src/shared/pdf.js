@@ -44,7 +44,7 @@ const generateHtml = async ({
 
   const characteristic = characteristicOptions.map(
     (option) =>
-      CHARACTERISTICS_OPTIONS[0].children.find((item) => {
+      CHARACTERISTICS_OPTIONS.find((item) => {
         return item.id === option;
       }).name
   );
