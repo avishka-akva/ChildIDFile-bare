@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { useFonts } from "expo-font";
@@ -7,6 +7,7 @@ import * as SplashScreen from "expo-splash-screen";
 import store, { persistor } from "./src/redux/store";
 import ChildId from "./src/ChildID";
 import { StatusBar } from "expo-status-bar";
+import * as LocalAuthentication from "expo-local-authentication";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -17,22 +18,34 @@ export default function App() {
     "SegoeUI-Italic": require("./src/assets/fonts/SegoeUI-Italic.ttf"),
   });
 
+  const [localAuth, setLocalAuth] = useState(false);
+
   const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
+    if (fontsLoaded && localAuth) {
       await SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
+  }, [fontsLoaded, localAuth]);
 
   onLayoutRootView();
 
-  if (!fontsLoaded) {
+  useEffect(() => {
+    async function authenticate() {
+      const result = await LocalAuthentication.authenticateAsync();
+      if (result.success) {
+        setLocalAuth(true);
+      }
+    }
+
+    authenticate();
+  }, []);
+
+  if (!fontsLoaded || !localAuth) {
     return null;
   }
 
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <StatusBar barStyle="dark-content" animated={true} backgroundColor="#FFFFFF"/>
         <ChildId />
       </PersistGate>
     </Provider>
