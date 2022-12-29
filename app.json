@@ -34,6 +34,11 @@
       "eas": {
         "projectId": "d3a63e9d-ae29-40a1-9cc4-8fbdc421a949"
       }
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#FFFFFF",
+      "barStyle":"dark-content",
+      "translucent": false
     }
   }
 }
