@@ -6,7 +6,6 @@ import * as SplashScreen from "expo-splash-screen";
 
 import store, { persistor } from "./src/redux/store";
 import ChildId from "./src/ChildID";
-import { StatusBar } from "expo-status-bar";
 import * as LocalAuthentication from "expo-local-authentication";
 
 SplashScreen.preventAutoHideAsync();

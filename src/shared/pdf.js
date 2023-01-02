@@ -7,8 +7,6 @@ import * as FileSystem from "expo-file-system";
 import { StorageAccessFramework } from "expo-file-system";
 import { CHARACTERISTICS_OPTIONS } from "./const";
 
-const pdfLogo = Asset.fromModule(require("../assets/pdfLogo.png"));
-
 const generateHtml = async ({
   firstName,
   lastName,
@@ -38,19 +36,32 @@ const generateHtml = async ({
   medications,
   fingerPrint,
 }) => {
-  const logo = await manipulateAsync(pdfLogo.localUri ?? pdfLogo.uri, [], {
-    base64: true,
-  });
+  try {
+    const asset = require("../../assets/pdfLogo.png");
+    await Asset.loadAsync(asset);
+    const pdfLogo = Asset.fromModule(asset);
 
-  const characteristic = characteristicOptions.map(
-    (option) =>
-      CHARACTERISTICS_OPTIONS.find((item) => {
-        return item.id === option;
-      }).name
-  );
+    let logoImage = `<img src="${
+      pdfLogo.localUri ?? pdfLogo.uri
+    }" class="logo"/>`;
 
-  const getEmergencyContactTable = () => {
-    let body = `
+    if (Platform.OS === "ios") {
+      const logo = await manipulateAsync(pdfLogo.localUri ?? pdfLogo.uri, [], {
+        base64: true,
+      });
+
+      logoImage = `<img src="data:image/jpeg;base64,${logo.base64}" class="logo"/>`;
+    }
+
+    const characteristic = characteristicOptions.map(
+      (option) =>
+        CHARACTERISTICS_OPTIONS.find((item) => {
+          return item.id === option;
+        }).name
+    );
+
+    const getEmergencyContactTable = () => {
+      let body = `
       <table class="content-mt">
         <thead>
           <tr>
@@ -63,9 +74,9 @@ const generateHtml = async ({
         </thead>
         <tbody>
     `;
-    for (let i = 0; i < emergencyContacts.length; i++) {
-      const element = emergencyContacts[i];
-      body += `
+      for (let i = 0; i < emergencyContacts.length; i++) {
+        const element = emergencyContacts[i];
+        body += `
       <tr>
         <td>${element.name}</td>
         <td>${element.relationship}</td>
@@ -74,17 +85,17 @@ const generateHtml = async ({
         <td>${element.address}</td>
       </tr>
       `;
-    }
+      }
 
-    body += `
+      body += `
         </tbody>
       <table>
     `;
-    return body;
-  };
+      return body;
+    };
 
-  const getTrustedContactTable = () => {
-    let body = `
+    const getTrustedContactTable = () => {
+      let body = `
       <table class="content-mt">
         <thead>
           <tr>
@@ -97,9 +108,9 @@ const generateHtml = async ({
         </thead>
         <tbody>
     `;
-    for (let i = 0; i < trustedContacts.length; i++) {
-      const element = trustedContacts[i];
-      body += `
+      for (let i = 0; i < trustedContacts.length; i++) {
+        const element = trustedContacts[i];
+        body += `
       <tr>
         <td>${element.name}</td>
         <td>${element.relationship}</td>
@@ -108,15 +119,15 @@ const generateHtml = async ({
         <td>${element.address}</td>
       </tr>
       `;
-    }
-    body += `
+      }
+      body += `
         </tbody>
       <table>
     `;
-    return body;
-  };
+      return body;
+    };
 
-  const head = `
+    const head = `
   <head>
     <meta charset="utf-8" />
     <title>My Birth Letter</title>
@@ -243,13 +254,12 @@ const generateHtml = async ({
       </style>
     </head>
   `;
-
-  return `
+    return `
 <html>
   ${head}
   <body>
     <header>
-      <img src="data:image/jpeg;base64,${logo.base64}" class="logo"/>
+      ${logoImage}
       <h1 class="header-title">ChildID App</h1>
     </header>
     <main>
@@ -398,6 +408,9 @@ const generateHtml = async ({
   </body>
 </html>
   `;
+  } catch (error) {
+    throw error;
+  }
 };
 
 let generatePdf = async (props, share = false) => {
@@ -459,7 +472,7 @@ let generatePdf = async (props, share = false) => {
         newFolder = newFolder[1].substring(3);
 
         ToastAndroid.showWithGravity(
-          `Downloaded to Download/${newFolder} folder`,
+          `Saved to Download/${newFolder} folder`,
           ToastAndroid.SHORT,
           ToastAndroid.CENTER
         );
@@ -467,7 +480,7 @@ let generatePdf = async (props, share = false) => {
     }
   } catch (error) {
     console.error("🚀 ~ file: pdf.js:343 ~ generatePdf ~ error", error.message);
-    if (!Platform.OS === "ios") {
+    if (Platform.OS !== "ios") {
       ToastAndroid.showWithGravity(
         error.message,
         ToastAndroid.SHORT,
