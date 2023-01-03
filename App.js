@@ -3,10 +3,11 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import * as LocalAuthentication from "expo-local-authentication";
+import { MenuProvider } from "react-native-popup-menu";
 
 import store, { persistor } from "./src/redux/store";
 import ChildId from "./src/ChildID";
-import * as LocalAuthentication from "expo-local-authentication";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -45,7 +46,9 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <ChildId />
+        <MenuProvider>
+          <ChildId />
+        </MenuProvider>
       </PersistGate>
     </Provider>
   );

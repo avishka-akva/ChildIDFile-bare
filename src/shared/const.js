@@ -66,3 +66,7 @@ export const CONTACT_INIT_OBJ = {
   secondaryPhoneNumber: "",
   address: "",
 };
+
+export  const PRIVACY_POLICY_URL = "https://google.com";
+
+export const TERMS_AND_CONDITION_URL  = "https://google.com";

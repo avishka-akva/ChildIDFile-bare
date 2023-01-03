@@ -8,17 +8,24 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
+  Linking
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector, useDispatch } from "react-redux";
 import { Feather, AntDesign, MaterialIcons, Entypo } from "@expo/vector-icons";
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from "react-native-popup-menu";
 
 import CustomButton from "../components/CustomButton";
 import { globleStyles } from "../shared/style";
 import { deleteChild } from "../redux/childrenListSlice";
 import CustomModal from "../components/CustomModal";
 import generatePdf from "../shared/pdf";
-import { COLOR } from "../shared/const";
+import { COLOR, PRIVACY_POLICY_URL, TERMS_AND_CONDITION_URL } from "../shared/const";
 
 const spacing = 5;
 const width = (Dimensions.get("window").width - 4 * 10) / 2;
@@ -309,7 +316,41 @@ function Home({ navigation }) {
           {childrenList.length > 0 && (
             <Text style={styles.childrenCount}>{childrenList.length}</Text>
           )}
-          <Entypo name="dots-three-vertical" size={14} color="#434343" />
+          <View>
+            <Menu>
+              <MenuTrigger>
+                <Entypo name="dots-three-vertical" size={14} color="#434343" />
+              </MenuTrigger>
+              <MenuOptions customStyles={{ optionsContainer: { width: 180 }, optionWrapper: { padding: 10 } }}>
+                <MenuOption onSelect={async () => {
+                  await Linking.openURL(PRIVACY_POLICY_URL);
+                }}>
+                  <View style={styles.menuOption}>
+                    <Entypo
+                      style={styles.menuOptionIcon}
+                      name="lock"
+                      size={14}
+                      color="#797979"
+                    />
+                    <Text>Privacy Policy</Text>
+                  </View>
+                </MenuOption>
+                <MenuOption onSelect={async () => {
+                  await Linking.openURL(TERMS_AND_CONDITION_URL);
+                }}>
+                  <View style={styles.menuOption}>
+                    <MaterialIcons
+                      style={styles.menuOptionIcon}
+                      name="info"
+                      size={14}
+                      color="#797979"
+                    />
+                    <Text>Terms and Conditions</Text>
+                  </View>
+                </MenuOption>
+              </MenuOptions>
+            </Menu>
+          </View>
         </View>
       </View>
       {childrenList.length ? (
@@ -469,6 +510,13 @@ const styles = StyleSheet.create({
     fontSize: 8,
     marginVertical: 3,
     marginHorizontal: 8,
+  },
+  menuOption: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  menuOptionIcon: {
+    marginRight: 6,
   },
 });
 
