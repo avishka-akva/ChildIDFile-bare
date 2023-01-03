@@ -10,7 +10,7 @@ import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { COLOR } from "../shared/const";
 
-function ImagePickerUI({ image, setImage, view }) {
+function ImagePickerUI({ image, setImage, view, onBlur }) {
   const [selected, setSelected] = useState(false);
 
   const pickImage = async () => {
@@ -28,6 +28,8 @@ function ImagePickerUI({ image, setImage, view }) {
       setImage(result.assets[0].base64);
       setSelected(true);
     }
+
+    if (onBlur) onBlur();
   };
 
   useEffect(() => {
@@ -41,7 +43,12 @@ function ImagePickerUI({ image, setImage, view }) {
       {selected ? (
         <>
           {!view && (
-            <TouchableWithoutFeedback onPress={() => setSelected(false)}>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                setSelected(false);
+                if (onBlur) onBlur();
+              }}
+            >
               <View style={styles.close}>
                 <AntDesign name="close" size={12} color="white" />
               </View>

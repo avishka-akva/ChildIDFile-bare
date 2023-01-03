@@ -14,6 +14,10 @@ function Fingerprints({ index, setEditStartedTrue }) {
   const { view } = useSelector((state) => state.childManage);
   const dispatch = useDispatch();
 
+  const onBlur = () => {
+    setEditStartedTrue(index);
+  };
+
   return (
     <View style={styles.main}>
       <Text style={[globleStyles.title, styles.title]}>Fingerprints</Text>
@@ -24,6 +28,7 @@ function Fingerprints({ index, setEditStartedTrue }) {
         image={fingerPrint}
         setImage={(uri) => dispatch(setFingerPrint(uri))}
         view={view}
+        onBlur={onBlur}
       />
       <Text style={[globleStyles.body, { marginTop: 40 }]}>
         Want to create the image for your child's fingerprints?

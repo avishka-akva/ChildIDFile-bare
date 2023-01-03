@@ -28,6 +28,10 @@ function TrustedContact({ index, setEditStartedTrue }) {
     { ...CONTACT_INIT_OBJ },
   ]);
 
+  const onBlur = () => {
+    setEditStartedTrue(index);
+  };
+
   const onInputChanged = ({ index, propertyName, value }) => {
     try {
       if (contactEditIndex !== index) setContactEditIndex(index);
@@ -112,6 +116,7 @@ function TrustedContact({ index, setEditStartedTrue }) {
           index={index}
           values={values}
           onInputChanged={onInputChanged}
+          onBlur={onBlur}
         />
       </Card>
     );

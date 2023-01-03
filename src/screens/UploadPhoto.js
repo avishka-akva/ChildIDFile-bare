@@ -14,6 +14,10 @@ function UploadPhoto({ index, setEditStartedTrue }) {
   const { view } = useSelector((state) => state.childManage);
   const dispatch = useDispatch();
 
+  const onBlur = () => {
+    setEditStartedTrue(index);
+  };
+
   return (
     <View style={styles.main}>
       <Text style={[globleStyles.title, styles.title]}>Upload Photo</Text>
@@ -21,9 +25,9 @@ function UploadPhoto({ index, setEditStartedTrue }) {
         Remember to use a high-resolution images and update it every 6 months.
       </Text>
 
-      <ImagePicker image={image1} setImage={uri => dispatch(setImage1(uri))} view={view}/>
+      <ImagePicker image={image1} setImage={uri => dispatch(setImage1(uri))} view={view} onBlur={onBlur}/>
 
-      <ImagePicker image={image2} setImage={uri => dispatch(setImage2(uri))} view={view}/>
+      <ImagePicker image={image2} setImage={uri => dispatch(setImage2(uri))} view={view} onBlur={onBlur}/>
 
     </View>
   );
