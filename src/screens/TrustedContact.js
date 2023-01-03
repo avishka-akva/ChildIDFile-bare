@@ -46,6 +46,14 @@ function TrustedContact({ index, setEditStartedTrue }) {
 
   const onSaveDetails = () => {
     const index = tempTrustedContacts.length - 1;
+
+    // validation
+    const { name, relationship, primaryPhoneNumber } =
+      tempTrustedContacts[index];
+    if (!name || !relationship || !primaryPhoneNumber) {
+      return;
+    }
+
     if (tempTrustedContacts.length > trustedContacts.length) {
       dispatch(addNewTrusedContact(tempTrustedContacts[index]));
     } else {

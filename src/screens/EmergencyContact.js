@@ -46,6 +46,14 @@ function EmergencyContact({ index, setEditStartedTrue }) {
 
   const onSaveDetails = () => {
     const index = tempEmergencyContacts.length - 1;
+
+    // validation
+    const { name, relationship, primaryPhoneNumber } =
+      tempEmergencyContacts[index];
+    if (!name || !relationship || !primaryPhoneNumber) {
+      return;
+    }
+
     if (tempEmergencyContacts.length > emergencyContacts.length) {
       dispatch(addNewEmergencyContact(tempEmergencyContacts[index]));
     } else {
