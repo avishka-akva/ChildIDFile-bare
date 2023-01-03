@@ -329,7 +329,9 @@ function ChildProfile({ navigation, route }) {
                 childId
                   ? view
                     ? "Continue"
-                    : "Save & Continue"
+                    : editStarted[currentStepIndex]
+                    ? "Save & Continue"
+                    : "Continue"
                   : editStarted[currentStepIndex]
                   ? "Next Section"
                   : "Skip to Next Section"
