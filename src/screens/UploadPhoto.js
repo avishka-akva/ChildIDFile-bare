@@ -11,6 +11,7 @@ import {
 
 function UploadPhoto({ index, setEditStartedTrue }) {
   const { image1,image2 } = useSelector((state) => state.currentChild);
+  const { view } = useSelector((state) => state.childManage);
   const dispatch = useDispatch();
 
   return (
@@ -20,9 +21,9 @@ function UploadPhoto({ index, setEditStartedTrue }) {
         Remember to use a high-resolution images and update it every 6 months.
       </Text>
 
-      <ImagePicker image={image1} setImage={uri => dispatch(setImage1(uri))}/>
+      <ImagePicker image={image1} setImage={uri => dispatch(setImage1(uri))} view={view}/>
 
-      <ImagePicker image={image2} setImage={uri => dispatch(setImage2(uri))}/>
+      <ImagePicker image={image2} setImage={uri => dispatch(setImage2(uri))} view={view}/>
 
     </View>
   );

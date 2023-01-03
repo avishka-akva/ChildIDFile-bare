@@ -2,8 +2,10 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import React, { useState, useEffect } from "react";
 import { globleStyles } from "../shared/style";
 import { COLOR } from "../shared/const";
+import { useSelector } from "react-redux";
 
 function RadioButton({ isChecked, text, onRadioButtonPress }) {
+
   const _renderCheckedView = () => {
     if (!isChecked) return null;
 
@@ -21,9 +23,11 @@ function RadioButton({ isChecked, text, onRadioButtonPress }) {
 }
 
 function RadioButtonGroup({ values, onPress, vertical = false, defaultValue }) {
+  const { view } = useSelector((state) => state.childManage);
   const [currentSelectedItem, setCurrentSelectedItem] = useState(0);
 
   const _onPress = (index) => {
+    if (view) return;
     onPress(values[index].value);
     setCurrentSelectedItem(index);
   };

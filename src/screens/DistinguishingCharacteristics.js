@@ -19,6 +19,7 @@ import MultiSelect from "../components/MultiSelect";
 function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
   const { characteristicOptions, specialNeeds, otherCharacteristic } =
     useSelector((state) => state.currentChild);
+  const { view } = useSelector((state) => state.childManage);
   const dispatch = useDispatch();
 
   const onBlur = () => {
@@ -95,6 +96,7 @@ function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
             options={CHARACTERISTICS_OPTIONS}
             onConfirm={onSelectedItemsChange}
             values={characteristicOptions}
+            view={view}
           />
           {characteristicOptions.length > 0 && (
             <View style={styles.optionSelectedContainer}>
@@ -111,7 +113,7 @@ function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
                     </Text>
                     <TouchableOpacity
                       onPress={() => {
-                        removeSeletedItem(id);
+                        if (!view) removeSeletedItem(id);
                       }}
                     >
                       <AntDesign name="close" size={10} color="#FFFFFF" />

@@ -10,10 +10,11 @@ import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { COLOR } from "../shared/const";
 
-function ImagePickerUI({image,setImage}) {
+function ImagePickerUI({ image, setImage, view }) {
   const [selected, setSelected] = useState(false);
 
   const pickImage = async () => {
+    if (view) return;
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       // mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -23,7 +24,6 @@ function ImagePickerUI({image,setImage}) {
       base64: true,
     });
 
-
     if (!result.assets[0].canceled) {
       setImage(result.assets[0].base64);
       setSelected(true);
@@ -31,7 +31,7 @@ function ImagePickerUI({image,setImage}) {
   };
 
   useEffect(() => {
-    if(image) {
+    if (image) {
       setSelected(true);
     }
   }, []);
@@ -40,17 +40,20 @@ function ImagePickerUI({image,setImage}) {
     <View style={styles.main}>
       {selected ? (
         <>
-          <TouchableWithoutFeedback onPress={() => setSelected(false)}>
-            <View style={styles.close}>
-              <AntDesign name="close" size={12} color="white" />
-            </View>
-          </TouchableWithoutFeedback>
+          {!view && (
+            <TouchableWithoutFeedback onPress={() => setSelected(false)}>
+              <View style={styles.close}>
+                <AntDesign name="close" size={12} color="white" />
+              </View>
+            </TouchableWithoutFeedback>
+          )}
+
           <View style={{ height: 263, borderRadius: 18 }}>
             <Image
               style={{
                 width: "100%",
                 height: "100%",
-                borderRadius: 18
+                borderRadius: 18,
               }}
               source={{
                 uri: image ? `data:image/jpg;base64,${image}` : null,

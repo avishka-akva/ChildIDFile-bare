@@ -11,6 +11,7 @@ import { COLOR } from "../shared/const";
 
 function Fingerprints({ index, setEditStartedTrue }) {
   const { fingerPrint } = useSelector((state) => state.currentChild);
+  const { view } = useSelector((state) => state.childManage);
   const dispatch = useDispatch();
 
   return (
@@ -22,6 +23,7 @@ function Fingerprints({ index, setEditStartedTrue }) {
       <ImagePickerUI
         image={fingerPrint}
         setImage={(uri) => dispatch(setFingerPrint(uri))}
+        view={view}
       />
       <Text style={[globleStyles.body, { marginTop: 40 }]}>
         Want to create the image for your child's fingerprints?

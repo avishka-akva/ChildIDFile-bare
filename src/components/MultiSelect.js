@@ -12,7 +12,7 @@ import { globleStyles } from "../shared/style";
 import { COLOR } from "../shared/const";
 import CustomButton from "./CustomButton";
 
-function MultiSelect({ options, values = [], onConfirm }) {
+function MultiSelect({ options, values = [], onConfirm, view }) {
   const [visible, setVisible] = useState(false);
   const [selectedOptionIds, setSelectedOptionIds] = useState([]);
 
@@ -31,14 +31,18 @@ function MultiSelect({ options, values = [], onConfirm }) {
 
   return (
     <>
-      <TouchableWithoutFeedback onPress={() => setVisible(true)}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          if (!view) setVisible(true);
+        }}
+      >
         <View style={[globleStyles.input, styles.container]}>
-          <View style={{flexDirection:"row"}}>
-            <Text style={[globleStyles.body, {marginRight: 8}]}>Select Options...</Text>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={[globleStyles.body, { marginRight: 8 }]}>
+              Select Options...
+            </Text>
             {values.length > 0 && (
-              <Text style={globleStyles.body}>
-                ({values.length}) Selected
-              </Text>
+              <Text style={globleStyles.body}>({values.length}) Selected</Text>
             )}
           </View>
           <Icon name="chevron-down" color={"#707070"} size={16} />
