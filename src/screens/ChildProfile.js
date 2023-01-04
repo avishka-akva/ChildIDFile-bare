@@ -265,15 +265,20 @@ function ChildProfile({ navigation, route }) {
         // keyboardShouldPersistTaps='always'
         // keyboardDismissMode="on-drag"
       >
-        <View style={styles.progressBar}>
-          <Progress.Bar
-            progress={progress}
-            width={null}
-            height={9}
-            color={COLOR.primary}
-            borderColor={"#00000014"}
-            borderRadius={8}
-          />
+        <View style={styles.progressBarContainer}>
+          <View style={styles.progressBar}>
+            <Progress.Bar
+              progress={progress}
+              width={null}
+              height={9}
+              color={COLOR.primary}
+              borderColor={"#00000014"}
+              borderRadius={8}
+            />
+          </View>
+          <Text style={styles.progressBarText}>
+            {currentStepIndex + 1}/{steps.length}
+          </Text>
         </View>
 
         {renderStep()}
@@ -360,8 +365,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: "#fff",
   },
-  progressBar: {
+  progressBarContainer: {
+    flexDirection: "row",
     marginVertical: 22,
+    alignItems: "center",
+  },
+  progressBar: {
+    flex: 1,
+  },
+  progressBarText: {
+    marginLeft: 6,
+    fontSize: 12
   },
   footer: {
     backgroundColor: "#fff",
