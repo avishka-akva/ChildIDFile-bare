@@ -11,6 +11,7 @@ function CustomTextInput({
   marginBottom = 16,
   multiline = false,
   numberOfLines = 0,
+  required = false,
   ...props
 }) {
   const dispatch = useDispatch();
@@ -36,7 +37,9 @@ function CustomTextInput({
 
   return (
     <View style={{ marginBottom }}>
-      <Text style={[globleStyles.body, globleStyles.inputLable]}>{label}</Text>
+      <Text style={[globleStyles.body, globleStyles.inputLable]}>
+        {label} {required && <Text style={globleStyles.requiredText}>*</Text>}
+      </Text>
       {multiline ? (
         <TextInput
           style={[

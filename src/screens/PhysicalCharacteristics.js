@@ -55,7 +55,7 @@ function PhysicalCharacteristics({ index, setEditStartedTrue }) {
       </Text>
       <Card>
         <View style={[globleStyles.inputContainer, styles.radioContainer]}>
-          <Text style={[globleStyles.body, { marginRight: 20 }]}>Gender *</Text>
+          <Text style={[globleStyles.body, { marginRight: 20 }]}>Gender <Text style={globleStyles.requiredText}>*</Text></Text>
           <RadioButtonGroup
             values={[
               {

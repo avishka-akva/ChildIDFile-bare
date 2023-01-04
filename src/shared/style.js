@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native";
+import { COLOR } from "./const";
 
 export const globleStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#FFFFFF"
+    backgroundColor: "#FFFFFF",
     // margin: 32,
   },
   title: {
@@ -16,7 +17,9 @@ export const globleStyles = StyleSheet.create({
     color: "#707070",
     fontSize: 14,
   },
-
+  requiredText: {
+    color: COLOR.danger,
+  },
   buttonPrimary: {
     backgroundColor: "#000",
     alignItems: "center",
@@ -65,7 +68,7 @@ export const globleStyles = StyleSheet.create({
   inputText: {
     fontFamily: "Segoe-UI",
     color: "#868282",
-    fontSize: 14,   
+    fontSize: 14,
   },
   modalFooter: {
     flexDirection: "row",

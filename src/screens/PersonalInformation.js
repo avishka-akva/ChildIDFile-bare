@@ -64,17 +64,20 @@ function PersonalInformation() {
       </Text>
       <Card>
         <CustomTextInput
-          label={"First Name *"}
+          label={"First Name"}
+          required
           value={currentChild?.firstName}
           onChangeText={onFirstNameChangeText}
         />
         <CustomTextInput
-          label={"Last Name *"}
+          label={"Last Name"}
+          required
           value={currentChild?.lastName}
           onChangeText={onLastNameChangeText}
         />
         <CustomTextInput
-          label={"Nickname *"}
+          label={"Nickname"}
+          required
           value={currentChild?.nickName}
           onChangeText={onNickNameChangeText}
           marginBottom={0}

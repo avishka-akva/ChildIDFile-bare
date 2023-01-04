@@ -1,6 +1,7 @@
 export const COLOR = {
   primary: "#A352EB",
   white: "#FFFFFF",
+  danger: "#EC7063",
 };
 export const CHARACTERISTICS_OPTIONS = [
   {
@@ -67,6 +68,6 @@ export const CONTACT_INIT_OBJ = {
   address: "",
 };
 
-export  const PRIVACY_POLICY_URL = "https://google.com";
+export const PRIVACY_POLICY_URL = "https://google.com";
 
-export const TERMS_AND_CONDITION_URL  = "https://google.com";
+export const TERMS_AND_CONDITION_URL = "https://google.com";

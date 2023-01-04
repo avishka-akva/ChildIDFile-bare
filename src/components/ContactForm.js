@@ -11,7 +11,8 @@ function ContactForm({ index, onInputChanged, onBlur, values }) {
   return (
     <>
       <CustomTextInput
-        label={"Emergency Contact *"}
+        label={"Emergency Contact"}
+        required
         value={name}
         onChangeText={(value) =>
           onInputChanged({
@@ -23,7 +24,8 @@ function ContactForm({ index, onInputChanged, onBlur, values }) {
         onBlur={onBlur ? onBlur : () => {}}
       />
       <CustomTextInput
-        label={"Relationship *"}
+        label={"Relationship"}
+        required
         value={relationship}
         onChangeText={(value) =>
           onInputChanged({
@@ -35,7 +37,8 @@ function ContactForm({ index, onInputChanged, onBlur, values }) {
         onBlur={onBlur ? onBlur : () => {}}
       />
       <CustomTextInput
-        label={"Primary Phone Number *"}
+        label={"Primary Phone Number "}
+        required
         value={primaryPhoneNumber}
         keyboardType="phone-pad"
         onChangeText={(value) =>
