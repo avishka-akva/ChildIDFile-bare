@@ -5,12 +5,31 @@ import {
   Text,
   TouchableWithoutFeedback,
   Modal,
+  Pressable,
+  BackHandler,
 } from "react-native";
 import { Feather as Icon, AntDesign } from "@expo/vector-icons";
 
 import { globleStyles } from "../shared/style";
 import { COLOR } from "../shared/const";
 import CustomButton from "./CustomButton";
+
+function ModalBottom({ children, visible, setVisible }) {
+  return (
+    <Modal
+      transparent={true}
+      visible={visible}
+      onRequestClose={() => setVisible(false)}
+    >
+      <Pressable
+        style={styles.modalBackground}
+        onPress={() => setVisible(false)}
+      >
+        <View style={styles.modalContainner}>{children}</View>
+      </Pressable>
+    </Modal>
+  );
+}
 
 function MultiSelect({ options, values = [], onConfirm, view }) {
   const [visible, setVisible] = useState(false);
@@ -48,64 +67,56 @@ function MultiSelect({ options, values = [], onConfirm, view }) {
           <Icon name="chevron-down" color={"#707070"} size={16} />
         </View>
       </TouchableWithoutFeedback>
-      <Modal transparent={true} visible={visible}>
-        <View style={styles.modalBackground}>
-          <View style={styles.modalContainner}>
-            <View style={styles.container}>
-              <Text>Select Options...</Text>
-              <TouchableWithoutFeedback onPress={() => setVisible(false)}>
-                <AntDesign name="close" size={16} color="black" />
-              </TouchableWithoutFeedback>
-            </View>
-            <View style={styles.content}>
-              {options?.map((option) => {
-                const isSelected = selectedOptionIds.includes(option.id);
-                return (
-                  <TouchableWithoutFeedback
-                    key={option.id}
-                    onPress={() => onItemPress(option.id)}
-                  >
-                    <View style={styles.item}>
-                      <Text style={globleStyles.body}>{option.name}</Text>
-                      {isSelected && (
-                        <AntDesign
-                          name="check"
-                          size={16}
-                          color={COLOR.primary}
-                        />
-                      )}
-                    </View>
-                  </TouchableWithoutFeedback>
-                );
-              })}
-            </View>
-            <View style={styles.footer}>
-              <CustomButton
-                onPress={() => setVisible(false)}
-                text={"Close"}
-                buttonStyle={[
-                  globleStyles.buttonOutLine,
-                  { borderColor: COLOR.primary, width: 116, height: 36 },
-                ]}
-                color={COLOR.primary}
-              />
-              <CustomButton
-                onPress={() => {
-                  if (onConfirm) onConfirm([...selectedOptionIds]);
-                  setVisible(false);
-                }}
-                text={"Confirm"}
-                buttonStyle={[
-                  globleStyles.buttonPrimary,
-                  { backgroundColor: COLOR.primary, width: 116, height: 36 },
-                ]}
-                backgroundColor={COLOR.primary}
-                color="#FFFFFF"
-              />
-            </View>
-          </View>
+      <ModalBottom visible={visible} setVisible={setVisible}>
+        <View style={styles.container}>
+          <Text>Select Options...</Text>
+          <TouchableWithoutFeedback onPress={() => setVisible(false)}>
+            <AntDesign name="close" size={16} color="black" />
+          </TouchableWithoutFeedback>
         </View>
-      </Modal>
+        <View style={styles.content}>
+          {options?.map((option) => {
+            const isSelected = selectedOptionIds.includes(option.id);
+            return (
+              <TouchableWithoutFeedback
+                key={option.id}
+                onPress={() => onItemPress(option.id)}
+              >
+                <View style={styles.item}>
+                  <Text style={globleStyles.body}>{option.name}</Text>
+                  {isSelected && (
+                    <AntDesign name="check" size={16} color={COLOR.primary} />
+                  )}
+                </View>
+              </TouchableWithoutFeedback>
+            );
+          })}
+        </View>
+        <View style={styles.footer}>
+          <CustomButton
+            onPress={() => setVisible(false)}
+            text={"Close"}
+            buttonStyle={[
+              globleStyles.buttonOutLine,
+              { borderColor: COLOR.primary, width: 116, height: 36 },
+            ]}
+            color={COLOR.primary}
+          />
+          <CustomButton
+            onPress={() => {
+              if (onConfirm) onConfirm([...selectedOptionIds]);
+              setVisible(false);
+            }}
+            text={"Confirm"}
+            buttonStyle={[
+              globleStyles.buttonPrimary,
+              { backgroundColor: COLOR.primary, width: 116, height: 36 },
+            ]}
+            backgroundColor={COLOR.primary}
+            color="#FFFFFF"
+          />
+        </View>
+      </ModalBottom>
     </>
   );
 }
@@ -129,7 +140,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   modalContainner: {
-    width: "100%",
+    width: "96%",
     backgroundColor: "#FFFFFF",
     paddingVertical: 16,
     paddingHorizontal: 28,

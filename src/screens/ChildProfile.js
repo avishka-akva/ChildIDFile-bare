@@ -283,7 +283,13 @@ function ChildProfile({ navigation, route }) {
 
         {renderStep()}
 
-        <CustomModal transparent visible={childManage.exit}>
+        <CustomModal
+          transparent
+          visible={childManage.exit}
+          setVisible={() => {
+            dispatch(toggleExit());
+          }}
+        >
           <Text style={globleStyles.modalText}>
             Are you sure, do you want to exit?
           </Text>
@@ -375,7 +381,7 @@ const styles = StyleSheet.create({
   },
   progressBarText: {
     marginLeft: 6,
-    fontSize: 12
+    fontSize: 12,
   },
   footer: {
     backgroundColor: "#fff",

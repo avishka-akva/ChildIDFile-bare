@@ -1,8 +1,12 @@
 import { StyleSheet, View, Modal } from "react-native";
 
-function CustomModal({ children, transparent, visible }) {
+function CustomModal({ children, transparent, visible, setVisible }) {
   return (
-    <Modal transparent={transparent} visible={visible}>
+    <Modal
+      transparent={transparent}
+      visible={visible}
+      onRequestClose={setVisible}
+    >
       <View style={styles.modalBackground}>
         <View style={styles.modalContainner}>{children}</View>
       </View>

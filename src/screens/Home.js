@@ -81,7 +81,13 @@ function Home({ navigation }) {
 
   const DeleteModal = () => {
     return (
-      <CustomModal transparent visible={deleteModelOpen}>
+      <CustomModal
+        transparent
+        visible={deleteModelOpen}
+        setVisible={() => {
+          setDeleteModelOpen(false);
+        }}
+      >
         <Text style={globleStyles.modalText}>
           Are you sure, you want to delete this profile?
         </Text>
