@@ -112,7 +112,7 @@ function PersonalInformation() {
       </Card>
       <Card>
         <CustomTextInput
-          label={"Addresse"}
+          label={"Address"}
           value={currentChild.address}
           onChangeText={onAddressChangeText}
         />

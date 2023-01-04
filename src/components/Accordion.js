@@ -19,7 +19,7 @@ function Accordion({
   onDelete,
   isEdit,
   onSave,
-  onSaveCancle,
+  onSaveCancel,
 }) {
   const height = open ? "auto" : 0;
   // const bottomRadius = open ? 0 : 8;
@@ -64,9 +64,9 @@ function Accordion({
                   <Text style={styles.headerText}>Save</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => (onSaveCancle ? onSaveCancle() : null)}
+                  onPress={() => (onSaveCancel ? onSaveCancel() : null)}
                 >
-                  <Text style={styles.headerText}>Cancle</Text>
+                  <Text style={styles.headerText}>Cancel</Text>
                 </TouchableOpacity>
               </>
             ) : (

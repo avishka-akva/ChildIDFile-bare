@@ -104,7 +104,7 @@ function EmergencyContact({ index, setEditStartedTrue }) {
         );
         setContactEditIndex(null);
       }}
-      onSaveCancle={() => {
+      onSaveCancel={() => {
         setContactEditIndex(null);
       }}
       onOpen={(index) => {
