@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import ImagePickerUI from "../components/ImagePicker";
-import { AntDesign } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 import { globleStyles } from "../shared/style";
 import { setFingerPrint } from "../redux/childSlice";
@@ -39,7 +39,7 @@ function Fingerprints({ index, setEditStartedTrue }) {
             Download blank PDF Fingerprint Card here to create your own image
           </Text>
           <TouchableOpacity style={styles.iconContainer} onPress={() => {}}>
-            <AntDesign name="delete" size={14} color={COLOR.primary} />
+            <Feather name="download" size={14} color={COLOR.primary} />
           </TouchableOpacity>
         </View>
       </Card>
