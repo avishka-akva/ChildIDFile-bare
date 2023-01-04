@@ -8,7 +8,7 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
-  Linking
+  Linking,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector, useDispatch } from "react-redux";
@@ -25,7 +25,11 @@ import { globleStyles } from "../shared/style";
 import { deleteChild } from "../redux/childrenListSlice";
 import CustomModal from "../components/CustomModal";
 import generatePdf from "../shared/pdf";
-import { COLOR, PRIVACY_POLICY_URL, TERMS_AND_CONDITION_URL } from "../shared/const";
+import {
+  COLOR,
+  PRIVACY_POLICY_URL,
+  TERMS_AND_CONDITION_URL,
+} from "../shared/const";
 
 const spacing = 5;
 const width = (Dimensions.get("window").width - 4 * 10) / 2;
@@ -177,12 +181,11 @@ function Home({ navigation }) {
         <Text style={[styles.itemNickName, { fontSize: 14, marginTop: 4 }]}>
           {item.nickName}
         </Text>
-        {!item.incomplete && (
+        {!item.incomplete && item.specialNeeds && (
           <Text
             style={[styles.itemDescription, { fontSize: 12, marginTop: 4 }]}
           >
-            Special needs dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod
+            {item.specialNeeds}
           </Text>
         )}
 
@@ -261,10 +264,9 @@ function Home({ navigation }) {
             </TouchableOpacity>
           </View>
           <Text style={styles.itemNickName}>{item.nickName}</Text>
-          <Text style={styles.itemDescription}>
-            Special needs dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod
-          </Text>
+          {item.specialNeeds && (
+            <Text style={styles.itemDescription}>{item.specialNeeds}</Text>
+          )}
           <View style={styles.itemFooter}>
             <TouchableOpacity
               style={styles.iconContainer}
@@ -321,10 +323,17 @@ function Home({ navigation }) {
               <MenuTrigger>
                 <Entypo name="dots-three-vertical" size={14} color="#434343" />
               </MenuTrigger>
-              <MenuOptions customStyles={{ optionsContainer: { width: 180 }, optionWrapper: { padding: 10 } }}>
-                <MenuOption onSelect={async () => {
-                  await Linking.openURL(PRIVACY_POLICY_URL);
-                }}>
+              <MenuOptions
+                customStyles={{
+                  optionsContainer: { width: 180 },
+                  optionWrapper: { padding: 10 },
+                }}
+              >
+                <MenuOption
+                  onSelect={async () => {
+                    await Linking.openURL(PRIVACY_POLICY_URL);
+                  }}
+                >
                   <View style={styles.menuOption}>
                     <Entypo
                       style={styles.menuOptionIcon}
@@ -335,9 +344,11 @@ function Home({ navigation }) {
                     <Text>Privacy Policy</Text>
                   </View>
                 </MenuOption>
-                <MenuOption onSelect={async () => {
-                  await Linking.openURL(TERMS_AND_CONDITION_URL);
-                }}>
+                <MenuOption
+                  onSelect={async () => {
+                    await Linking.openURL(TERMS_AND_CONDITION_URL);
+                  }}
+                >
                   <View style={styles.menuOption}>
                     <MaterialIcons
                       style={styles.menuOptionIcon}
