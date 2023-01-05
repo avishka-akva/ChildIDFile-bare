@@ -19,12 +19,16 @@ import {
   setCountry,
 } from "../redux/childSlice";
 
-function PersonalInformation() {
+function PersonalInformation({setEditStartedTrue}) {
   const currentChild = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
 
   const [date, setDate] = useState(new Date(1598051730000));
   const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const onBlur = () => {
+    setEditStartedTrue();
+  };
 
   const onFirstNameChangeText = (value) => {
     dispatch(setFirstName(value));
@@ -68,12 +72,14 @@ function PersonalInformation() {
           required
           value={currentChild?.firstName}
           onChangeText={onFirstNameChangeText}
+          onBlur={onBlur}
         />
         <CustomTextInput
           label={"Last Name"}
           required
           value={currentChild?.lastName}
           onChangeText={onLastNameChangeText}
+          onBlur={onBlur}
         />
         <CustomTextInput
           label={"Nickname"}
@@ -81,6 +87,7 @@ function PersonalInformation() {
           value={currentChild?.nickName}
           onChangeText={onNickNameChangeText}
           marginBottom={0}
+          onBlur={onBlur}
         />
       </Card>
       <Card>
@@ -109,6 +116,7 @@ function PersonalInformation() {
               setShowDatePicker(false);
               setDate(currentDate);
               dispatch(setDateOfBirth(currentDate.toISOString().slice(0, 10)));
+              onBlur()
             }}
           />
         )}
@@ -118,27 +126,32 @@ function PersonalInformation() {
           label={"Address"}
           value={currentChild.address}
           onChangeText={onAddressChangeText}
+          onBlur={onBlur}
         />
         <CustomTextInput
           label={"City"}
           value={currentChild.city}
           onChangeText={onCityChangeText}
+          onBlur={onBlur}
         />
         <CustomTextInput
           label={"Zip/Postal Code"}
           value={currentChild.postalCode}
           onChangeText={onPostalCodeChangeText}
+          onBlur={onBlur}
         />
         <CustomTextInput
           label={"State/Province/Region"}
           value={currentChild.province}
           onChangeText={onProvincChangeText}
+          onBlur={onBlur}
         />
         <CustomTextInput
           label={"Country"}
           value={currentChild.country}
           onChangeText={onCountrChangeText}
           marginBottom={0}
+          onBlur={onBlur}
         />
       </Card>
     </View>

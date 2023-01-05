@@ -48,24 +48,11 @@ function ChildProfile({ navigation, route }) {
   const view = route?.params?.view;
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [editStarted, setEditStarted] = useState([
-    true,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
+  const [editStarted, setEditStarted] = useState(true);
 
   const setEditStartedTrue = (index) => {
-    if (!editStarted[index]) {
-      setEditStarted((previousValue) => {
-        let newValue = [...previousValue];
-        newValue[index] = true;
-        return newValue;
-      });
+    if (!editStarted) {
+      setEditStarted(true);
     }
   };
 
@@ -76,7 +63,13 @@ function ChildProfile({ navigation, route }) {
   };
   const steps = [
     {
-      compnent: <PersonalInformation index={0} />,
+      compnent: (
+        <PersonalInformation
+          index={0}
+          setEditStartedTrue={setEditStartedTrue}
+          setEditStartedFalse={setEditStartedFalse}
+        />
+      ),
       validation: () => {
         if (
           currentChild.firstName === "" ||
@@ -155,24 +148,6 @@ function ChildProfile({ navigation, route }) {
     },
   ];
 
-  const nextStep = () => {
-    if (currentStepIndex + 1 === steps.length) return;
-
-    // return if isValid is false
-    if (steps[currentStepIndex].validation) {
-      const isValid = steps[currentStepIndex].validation();
-      if (!isValid) return;
-    }
-
-    if (currentStepIndex === 0) dispatch(setHederNameShow(true));
-
-    setCurrentStepIndex((previousValue) => ++previousValue);
-
-    if (childId) {
-      dispatch(updateChild({ ...currentChild, id: childId }));
-    }
-  };
-
   const getChildWithId = () => {
     const id = uuid.v4();
     return { ...currentChild, id };
@@ -192,6 +167,26 @@ function ChildProfile({ navigation, route }) {
 
     dispatch(cleanChildSlice());
     navigation.navigate("Home");
+  };
+
+  const nextStep = () => {
+    if (currentStepIndex + 1 === steps.length) return;
+
+    // return if isValid is false
+    if (steps[currentStepIndex].validation) {
+      const isValid = steps[currentStepIndex].validation();
+      if (!isValid) return;
+    }
+
+    setEditStartedFalse();
+
+    if (currentStepIndex === 0) dispatch(setHederNameShow(true));
+
+    setCurrentStepIndex((previousValue) => ++previousValue);
+
+    if (childId) {
+      dispatch(updateChild({ ...currentChild, id: childId }));
+    }
   };
 
   const previosStep = () => {
@@ -227,6 +222,7 @@ function ChildProfile({ navigation, route }) {
         dispatch(setView(true));
       } else {
         dispatch(setUpdate(true));
+        setEditStartedFalse();
       }
     }
 
@@ -262,7 +258,7 @@ function ChildProfile({ navigation, route }) {
           backgroundColor: "#fff",
         }}
         contentContainerStyle={{ flexGrow: 1 }}
-        keyboardShouldPersistTaps='handled'
+        keyboardShouldPersistTaps="handled"
         // keyboardDismissMode="on-drag"
       >
         <View style={styles.progressBarContainer}>
@@ -340,11 +336,11 @@ function ChildProfile({ navigation, route }) {
                 childId
                   ? view
                     ? "Continue"
-                    : editStarted[currentStepIndex]
+                    : editStarted
                     ? "Save & Continue"
                     : "Continue"
-                  : editStarted[currentStepIndex]
-                  ? "Next Section"
+                  : editStarted
+                  ? "Save & Proceed"
                   : "Skip to Next Section"
               }
               buttonStyle={globleStyles.buttonPrimary}

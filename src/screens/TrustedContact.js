@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   addButtonContainer: {
-    marginTop: 18,
+    marginVertical: 4,
   },
 });
 

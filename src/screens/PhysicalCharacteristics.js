@@ -79,6 +79,7 @@ function PhysicalCharacteristics({ index, setEditStartedTrue }) {
           label={"Race/Ethnicity"}
           value={currentChild.race}
           onChangeText={onRaceChange}
+          onBlur={onBlur}
         />
         <CustomTextInput
           label={"Hair Color"}
