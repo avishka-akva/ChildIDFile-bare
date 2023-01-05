@@ -11,16 +11,19 @@ import {
   addNewEmergencyContact,
   removeEmergencyContactValues,
 } from "../redux/childSlice";
+import { setEmergencyContactsError } from "../redux/childManageSlice";
 import {
   COLOR,
   CONTACT_INIT_OBJ,
   MAXIMUM_EMERGENCY_CONTACT_COUNT,
 } from "../shared/const";
 import ContactForm from "../components/ContactForm";
+import CustomModal from "../components/CustomModal";
 
 function EmergencyContact({ index, setEditStartedTrue }) {
   const dispatch = useDispatch();
   const { emergencyContacts } = useSelector((state) => state.currentChild);
+  const { emergencyContactsError } = useSelector((state) => state.childManage);
 
   const [openIndex, setOpenIndex] = useState(null);
   const [contactEditIndex, setContactEditIndex] = useState(null);
@@ -30,6 +33,10 @@ function EmergencyContact({ index, setEditStartedTrue }) {
 
   const onBlur = () => {
     setEditStartedTrue(index);
+  };
+
+  const onErrorModelColse = () => {
+    dispatch(setEmergencyContactsError(false));
   };
 
   const onInputChanged = ({ index, propertyName, value }) => {
@@ -177,6 +184,38 @@ function EmergencyContact({ index, setEditStartedTrue }) {
           />
         </View>
       )}
+      <CustomModal
+        visible={emergencyContactsError}
+        setVisible={onErrorModelColse}
+      >
+        <Text
+          style={{
+            fontSize: 16,
+            color: "#434343",
+            textAlign: "center",
+          }}
+        >
+          Please Add one or up to 3 Emergency Contacts (Parents/Guardians)
+        </Text>
+        <Text
+          style={{
+            fontSize: 14,
+            color: "#434343",
+            textAlign: "center",
+            marginVertical: 14
+          }}
+        >
+          In the next section, you can add up to 10 additional Trusted Contacts
+          or Locations where your child may be
+        </Text>
+        <CustomButton
+          onPress={onErrorModelColse}
+          text={"Continue"}
+          backgroundColor={COLOR.primary}
+          buttonWidth={130}
+          buttonHeight={40}
+        />
+      </CustomModal>
     </View>
   );
 }

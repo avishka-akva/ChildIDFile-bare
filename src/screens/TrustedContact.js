@@ -11,16 +11,19 @@ import {
   addNewTrusedContact,
   removeTrusedContactValues,
 } from "../redux/childSlice";
+import { setTrustedContactsError } from "../redux/childManageSlice";
 import {
   COLOR,
   CONTACT_INIT_OBJ,
   MAXIMUM_TRUSTED_CONTACT_COUNT,
 } from "../shared/const";
 import ContactForm from "../components/ContactForm";
+import CustomModal from "../components/CustomModal";
 
 function TrustedContact({ index, setEditStartedTrue }) {
   const dispatch = useDispatch();
   const { trustedContacts } = useSelector((state) => state.currentChild);
+  const { trustedContactsError } = useSelector((state) => state.childManage);
 
   const [openIndex, setOpenIndex] = useState(null);
   const [contactEditIndex, setContactEditIndex] = useState(null);
@@ -30,6 +33,10 @@ function TrustedContact({ index, setEditStartedTrue }) {
 
   const onBlur = () => {
     setEditStartedTrue(index);
+  };
+
+  const onErrorModelColse = () => {
+    dispatch(setTrustedContactsError(false));
   };
 
   const onInputChanged = ({ index, propertyName, value }) => {
@@ -174,6 +181,29 @@ function TrustedContact({ index, setEditStartedTrue }) {
           />
         </View>
       )}
+
+      <CustomModal
+        visible={trustedContactsError}
+        setVisible={onErrorModelColse}
+      >
+        <Text
+          style={{
+            fontSize: 16,
+            color: "#434343",
+            textAlign: "center",
+            marginVertical: 24
+          }}
+        >
+          Please Add one or up to 10 Trusted Contacts
+        </Text>
+        <CustomButton
+          onPress={onErrorModelColse}
+          text={"Continue"}
+          backgroundColor={COLOR.primary}
+          buttonWidth={130}
+          buttonHeight={40}
+        />
+      </CustomModal>
     </View>
   );
 }

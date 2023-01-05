@@ -1,6 +1,6 @@
 import { StyleSheet, View, Modal } from "react-native";
 
-function CustomModal({ children, transparent, visible, setVisible }) {
+function CustomModal({ children, transparent = true, visible, setVisible }) {
   return (
     <Modal
       transparent={transparent}

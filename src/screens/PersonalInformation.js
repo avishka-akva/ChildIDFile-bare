@@ -19,7 +19,7 @@ import {
   setCountry,
 } from "../redux/childSlice";
 
-function PersonalInformation({setEditStartedTrue}) {
+function PersonalInformation({setEditStartedTrue, validate}) {
   const currentChild = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
 
@@ -70,6 +70,7 @@ function PersonalInformation({setEditStartedTrue}) {
         <CustomTextInput
           label={"First Name"}
           required
+          error={validate("firstName")}
           value={currentChild?.firstName}
           onChangeText={onFirstNameChangeText}
           onBlur={onBlur}
@@ -77,6 +78,7 @@ function PersonalInformation({setEditStartedTrue}) {
         <CustomTextInput
           label={"Last Name"}
           required
+          error={validate("lastName")}
           value={currentChild?.lastName}
           onChangeText={onLastNameChangeText}
           onBlur={onBlur}
@@ -84,6 +86,7 @@ function PersonalInformation({setEditStartedTrue}) {
         <CustomTextInput
           label={"Nickname"}
           required
+          error={validate("nickName")}
           value={currentChild?.nickName}
           onChangeText={onNickNameChangeText}
           marginBottom={0}

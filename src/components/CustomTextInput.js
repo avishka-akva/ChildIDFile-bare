@@ -1,8 +1,9 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { TextInput, Text, View, Keyboard } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { globleStyles } from "../shared/style";
 import { setShowFooter } from "../redux/childManageSlice";
+import { COLOR } from "../shared/const";
 
 function CustomTextInput({
   label,
@@ -12,16 +13,29 @@ function CustomTextInput({
   multiline = false,
   numberOfLines = 0,
   required = false,
+  onBlur,
+  error = false,
   ...props
 }) {
   const dispatch = useDispatch();
   const { view } = useSelector((state) => state.childManage);
+
+  const [_error, setError] = useState(false);
 
   const localInputRef = useRef();
 
   const keyboardDidHideCallback = () => {
     localInputRef.current.blur?.();
     dispatch(setShowFooter(true));
+  };
+
+  const _onBlur = () => {
+    if (onBlur) onBlur();
+    if (required && value === "") {
+      setError(true);
+    } else if (_error) {
+      setError(false);
+    }
   };
 
   useEffect(() => {
@@ -34,6 +48,14 @@ function CustomTextInput({
       keyboardDidHideSubscription?.remove();
     };
   }, []);
+
+  useEffect(() => {
+    if (error && !_error) {
+      setError(true);
+    }
+  }, [error]);
+
+  const errorStyles = _error ? { borderColor: COLOR.danger } : {};
 
   return (
     <View style={{ marginBottom }}>
@@ -55,10 +77,11 @@ function CustomTextInput({
           }}
           {...props}
           editable={!view}
+          onBlur={_onBlur}
         />
       ) : (
         <TextInput
-          style={globleStyles.input}
+          style={[globleStyles.input, errorStyles]}
           onChangeText={onChangeText}
           value={value}
           editable={!view}
@@ -66,7 +89,13 @@ function CustomTextInput({
           ref={(ref) => {
             localInputRef && (localInputRef.current = ref);
           }}
+          onBlur={_onBlur}
         />
+      )}
+      {_error && (
+        <Text style={{ color: COLOR.danger, fontSize: 10 }}>
+          This feild is required
+        </Text>
       )}
     </View>
   );

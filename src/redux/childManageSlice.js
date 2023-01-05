@@ -8,6 +8,8 @@ const childManageSlice = createSlice({
     exit: false,
     hederNameShow: false,
     showFooter: true,
+    emergencyContactsError: false,
+    trustedContactsError: false,
   },
   reducers: {
     setUpdate(state, action) {
@@ -24,11 +26,24 @@ const childManageSlice = createSlice({
     },
     setShowFooter(state, action) {
       state.showFooter = action.payload;
-    }
+    },
+    setEmergencyContactsError(state, action) {
+      state.emergencyContactsError = action.payload;
+    },
+    setTrustedContactsError(state, action) {
+      state.trustedContactsError = action.payload;
+    },
   },
 });
 
-export const { setUpdate, setView, toggleExit, setHederNameShow, setShowFooter } =
-  childManageSlice.actions;
+export const {
+  setUpdate,
+  setView,
+  toggleExit,
+  setHederNameShow,
+  setShowFooter,
+  setEmergencyContactsError,
+  setTrustedContactsError
+} = childManageSlice.actions;
 
 export default childManageSlice.reducer;

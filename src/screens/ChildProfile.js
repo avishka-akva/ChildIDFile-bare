@@ -20,6 +20,8 @@ import {
   setView,
   setHederNameShow,
   setShowFooter,
+  setEmergencyContactsError,
+  setTrustedContactsError,
 } from "../redux/childManageSlice";
 import {
   addChild,
@@ -50,6 +52,8 @@ function ChildProfile({ navigation, route }) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [editStarted, setEditStarted] = useState(true);
 
+  const [errorList, setErrorList] = useState([]);
+
   const setEditStartedTrue = (index) => {
     if (!editStarted) {
       setEditStarted(true);
@@ -61,6 +65,15 @@ function ChildProfile({ navigation, route }) {
       setEditStarted(false);
     }
   };
+
+  const addNameToErrorList = (name) => {
+    setErrorList((previousValue) => [...previousValue, name]);
+  };
+
+  const getFeildValidation = (name) => {
+    return errorList.includes(name);
+  };
+
   const steps = [
     {
       compnent: (
@@ -68,6 +81,7 @@ function ChildProfile({ navigation, route }) {
           index={0}
           setEditStartedTrue={setEditStartedTrue}
           setEditStartedFalse={setEditStartedFalse}
+          validate={getFeildValidation}
         />
       ),
       validation: () => {
@@ -77,9 +91,13 @@ function ChildProfile({ navigation, route }) {
           currentChild.nickName === "" ||
           currentChild.dob === ""
         ) {
+          if (!currentChild.firstName) addNameToErrorList("firstName");
+          if (!currentChild.lastName) addNameToErrorList("lastName");
+          if (!currentChild.nickName) addNameToErrorList("nickName");
           return false;
         }
 
+        if (errorList.length) setErrorList([]);
         return true;
       },
     },
@@ -127,6 +145,14 @@ function ChildProfile({ navigation, route }) {
           setEditStartedFalse={setEditStartedFalse}
         />
       ),
+      validation: () => {
+        if (currentChild.emergencyContacts.length === 0) {
+          dispatch(setEmergencyContactsError(true));
+          return false;
+        }
+
+        return true;
+      },
     },
     {
       compnent: (
@@ -136,6 +162,13 @@ function ChildProfile({ navigation, route }) {
           setEditStartedFalse={setEditStartedFalse}
         />
       ),
+      validation: () => {
+        if (currentChild.trustedContacts.length === 0) {
+          dispatch(setTrustedContactsError(true));
+          return false;
+        }
+        return true;
+      },
     },
     {
       compnent: (
