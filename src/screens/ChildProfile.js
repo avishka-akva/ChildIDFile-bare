@@ -262,7 +262,7 @@ function ChildProfile({ navigation, route }) {
           backgroundColor: "#fff",
         }}
         contentContainerStyle={{ flexGrow: 1 }}
-        // keyboardShouldPersistTaps='always'
+        keyboardShouldPersistTaps='handled'
         // keyboardDismissMode="on-drag"
       >
         <View style={styles.progressBarContainer}>
