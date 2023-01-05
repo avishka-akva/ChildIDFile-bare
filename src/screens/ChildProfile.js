@@ -47,7 +47,7 @@ function ChildProfile({ navigation, route }) {
     (state) => state
   );
   const childId = route?.params?.childId;
-  const view = route?.params?.view;
+  const _view = route?.params?.view;
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [editStarted, setEditStarted] = useState(true);
@@ -251,7 +251,7 @@ function ChildProfile({ navigation, route }) {
     if (childId) {
       const childObj = childrenList.find((child) => child.id === childId);
       dispatch(setChildSlice(childObj));
-      if (view) {
+      if (_view) {
         dispatch(setView(true));
       } else {
         dispatch(setUpdate(true));
@@ -339,7 +339,7 @@ function ChildProfile({ navigation, route }) {
             />
             <CustomButton
               onPress={onExit}
-              text={view || currentStepIndex === 0 ? "Yes" : "Yes, Save"}
+              text={childManage.view || currentStepIndex === 0 ? "Yes" : "Yes, Save"}
               buttonStyle={[
                 globleStyles.buttonPrimary,
                 { backgroundColor: COLOR.primary, width: 116, height: 36 },
@@ -367,7 +367,7 @@ function ChildProfile({ navigation, route }) {
               onPress={() => nextStep()}
               text={
                 childId
-                  ? view
+                  ? childManage.view
                     ? "Continue"
                     : editStarted
                     ? "Save & Continue"
