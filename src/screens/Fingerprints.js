@@ -29,6 +29,7 @@ function Fingerprints({ index, setEditStartedTrue }) {
         setImage={(uri) => dispatch(setFingerPrint(uri))}
         view={view}
         onBlur={onBlur}
+        description="Upload a fingerPrint image of your child"
       />
       <Text style={[globleStyles.body, { marginTop: 40 }]}>
         Want to create the image for your child's fingerprints?

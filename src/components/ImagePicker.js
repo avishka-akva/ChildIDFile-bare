@@ -10,7 +10,7 @@ import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { COLOR } from "../shared/const";
 
-function ImagePickerUI({ image, setImage, view, onBlur }) {
+function ImagePickerUI({ image, setImage, view, description="", onBlur }) {
   const [selected, setSelected] = useState(false);
 
   const pickImage = async () => {
@@ -76,7 +76,7 @@ function ImagePickerUI({ image, setImage, view, onBlur }) {
               source={require("../assets/ImageAddIcon.png")}
             />
             <Text style={styles.text}>
-              Upload close up face image of your child
+              {description}
             </Text>
           </View>
         </TouchableWithoutFeedback>
