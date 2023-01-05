@@ -39,14 +39,6 @@ function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
     onBlur();
   };
 
-  const removeSeletedItem = (removeId) => {
-    dispatch(
-      setCharacteristicOption(
-        characteristicOptions.filter((id) => id !== removeId)
-      )
-    );
-  };
-
   return (
     <View style={styles.main}>
       <Text style={[globleStyles.title, styles.title]}>
@@ -57,72 +49,12 @@ function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
           <Text style={[globleStyles.body, globleStyles.inputLable]}>
             My child wears or has
           </Text>
-          {/* <SectionedMultiSelect
-            IconRenderer={MaterialIcons}
-            items={CHARACTERISTICS_OPTIONS}
-            uniqueKey="id"
-            subKey="children"
-            selectText="Select Options..."
-            onSelectedItemsChange={onSelectedItemsChange}
-            selectedItems={characteristicOptions}
-            hideSearch
-            showDropDowns={false}
-            readOnlyHeadings
-            styles={{
-              selectToggle: globleStyles.input,
-              chipText: {
-                color: COLOR.white,
-              },
-              chipContainer: {
-                backgroundColor: COLOR.primary,
-                borderColor: COLOR.primary,
-              },
-              chipIcon: {
-                color: COLOR.white,
-              },
-              modalWrapper: {
-                paddingVertical: "60%",
-              }
-            }}
-            colors={{
-              primary: COLOR.primary,
-              success: COLOR.primary,
-              subText: "#707070",
-              selectToggleTextColor: "#707070",
-            }}
-          /> */}
-
           <MultiSelect
             options={CHARACTERISTICS_OPTIONS}
-            onConfirm={onSelectedItemsChange}
+            onItemChanged={onSelectedItemsChange}
             values={characteristicOptions}
             view={view}
           />
-          {characteristicOptions.length > 0 && (
-            <View style={styles.optionSelectedContainer}>
-              {characteristicOptions.map((id) => {
-                const option = CHARACTERISTICS_OPTIONS.find(
-                  (val) => val.id === id
-                );
-                return (
-                  <View key={id} style={styles.optionSelectedItems}>
-                    <Text
-                      style={[globleStyles.body, styles.optionSelectedItemText]}
-                    >
-                      {option.name}
-                    </Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (!view) removeSeletedItem(id);
-                      }}
-                    >
-                      <AntDesign name="close" size={10} color="#FFFFFF" />
-                    </TouchableOpacity>
-                  </View>
-                );
-              })}
-            </View>
-          )}
         </View>
         <CustomTextInput
           label={"Special Needs"}
@@ -152,26 +84,6 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: 12,
-  },
-  optionSelectedContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    width: "100%",
-    marginTop: 5,
-  },
-  optionSelectedItems: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10,
-    backgroundColor: "#A352EBC2",
-    margin: 4,
-    // width: 1508
-    borderRadius: 50,
-  },
-  optionSelectedItemText: {
-    marginRight: 10,
-    color: "#FFFFFF",
-    fontSize: 12,
   },
 });
 

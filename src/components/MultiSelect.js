@@ -4,9 +4,9 @@ import {
   View,
   Text,
   TouchableWithoutFeedback,
+  TouchableOpacity,
   Modal,
   Pressable,
-  BackHandler,
 } from "react-native";
 import { Feather as Icon, AntDesign } from "@expo/vector-icons";
 
@@ -14,47 +14,77 @@ import { globleStyles } from "../shared/style";
 import { COLOR } from "../shared/const";
 import CustomButton from "./CustomButton";
 
-function ModalBottom({ children, visible, setVisible }) {
+function ModalBottom({ children, visible, onClose }) {
   return (
     <Modal
       transparent={true}
       visible={visible}
-      onRequestClose={() => setVisible(false)}
+      onRequestClose={() => onClose()}
     >
-      <Pressable
-        style={styles.modalBackground}
-        onPress={() => setVisible(false)}
-      >
+      <Pressable style={styles.modalBackground} onPress={() => onClose()}>
         <View style={styles.modalContainner}>{children}</View>
       </Pressable>
     </Modal>
   );
 }
 
-function MultiSelect({ options, values = [], onConfirm, view }) {
+function OptionChip({ name, onRemove }) {
+  return (
+    <View style={styles.optionSelectedItems}>
+      <Text style={[globleStyles.body, styles.optionSelectedItemText]}>
+        {name}
+      </Text>
+      <TouchableOpacity style={styles.optionClose} onPress={onRemove}>
+        <AntDesign name="close" size={10} color="#FFFFFF" />
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+function MultiSelect({ options, values = [], onItemChanged, view }) {
   const [visible, setVisible] = useState(false);
-  const [selectedOptionIds, setSelectedOptionIds] = useState([]);
+  const [tempSelectedOptionIds, setTempSelectedOptionIds] = useState([]);
 
   const onItemPress = (id) => {
-    const isSelected = selectedOptionIds.includes(id);
+    const isSelected = tempSelectedOptionIds.includes(id);
     if (isSelected) {
-      setSelectedOptionIds(selectedOptionIds.filter((itemId) => id !== itemId));
+      setTempSelectedOptionIds(
+        tempSelectedOptionIds.filter((itemId) => id !== itemId)
+      );
     } else {
-      setSelectedOptionIds([...selectedOptionIds, id]);
+      setTempSelectedOptionIds([...tempSelectedOptionIds, id]);
     }
   };
 
+  const onOpen = () => {
+    if (view) return;
+
+    setVisible(true);
+    if (values.length) setTempSelectedOptionIds([...values]);
+  };
+
+  const onClose = () => {
+    setVisible(false);
+    setTempSelectedOptionIds([]);
+  };
+
+  const onPressConfirm = () => {
+    onItemChanged([...tempSelectedOptionIds]);
+    setVisible(false);
+  };
+
+  const removeSeletedItem = (removeId) => {
+    if (view) return;
+    onItemChanged(values.filter((id) => id !== removeId));
+  };
+
   useEffect(() => {
-    setSelectedOptionIds([...values]);
+    setTempSelectedOptionIds([...values]);
   }, [values]);
 
   return (
     <>
-      <TouchableWithoutFeedback
-        onPress={() => {
-          if (!view) setVisible(true);
-        }}
-      >
+      <TouchableWithoutFeedback onPress={onOpen}>
         <View style={[globleStyles.input, styles.container]}>
           <View style={{ flexDirection: "row" }}>
             <Text style={[globleStyles.body, { marginRight: 8 }]}>
@@ -67,16 +97,30 @@ function MultiSelect({ options, values = [], onConfirm, view }) {
           <Icon name="chevron-down" color={"#707070"} size={16} />
         </View>
       </TouchableWithoutFeedback>
-      <ModalBottom visible={visible} setVisible={setVisible}>
+      {values.length > 0 && (
+        <View style={styles.optionSelectedContainer}>
+          {values.map((id) => {
+            const option = options.find((val) => val.id === id);
+            return (
+              <OptionChip
+                key={id}
+                name={option.name}
+                onRemove={() => removeSeletedItem(id)}
+              />
+            );
+          })}
+        </View>
+      )}
+      <ModalBottom visible={visible} onClose={onClose}>
         <View style={styles.container}>
           <Text>Select Options...</Text>
-          <TouchableWithoutFeedback onPress={() => setVisible(false)}>
+          <TouchableWithoutFeedback onPress={onClose}>
             <AntDesign name="close" size={16} color="black" />
           </TouchableWithoutFeedback>
         </View>
         <View style={styles.content}>
           {options?.map((option) => {
-            const isSelected = selectedOptionIds.includes(option.id);
+            const isSelected = tempSelectedOptionIds.includes(option.id);
             return (
               <TouchableWithoutFeedback
                 key={option.id}
@@ -94,7 +138,7 @@ function MultiSelect({ options, values = [], onConfirm, view }) {
         </View>
         <View style={styles.footer}>
           <CustomButton
-            onPress={() => setVisible(false)}
+            onPress={onClose}
             text={"Close"}
             buttonStyle={[
               globleStyles.buttonOutLine,
@@ -103,10 +147,7 @@ function MultiSelect({ options, values = [], onConfirm, view }) {
             color={COLOR.primary}
           />
           <CustomButton
-            onPress={() => {
-              if (onConfirm) onConfirm([...selectedOptionIds]);
-              setVisible(false);
-            }}
+            onPress={onPressConfirm}
             text={"Confirm"}
             buttonStyle={[
               globleStyles.buttonPrimary,
@@ -132,7 +173,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
   },
-
   modalBackground: {
     flex: 1,
     backgroundColor: "#00000026",
@@ -156,6 +196,29 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 8,
   },
+  optionSelectedContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    width: "100%",
+    marginTop: 5,
+  },
+  optionSelectedItems: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 10,
+    backgroundColor: "#A352EBC2",
+    margin: 4,
+    borderRadius: 25,
+  },
+  optionSelectedItemText: {
+    marginLeft: 12,
+    marginRight: 5,
+    color: "#FFFFFF",
+    fontSize: 12,
+  },
+  optionClose: {
+    marginRight: 12
+  }
 });
 
 export default MultiSelect;
