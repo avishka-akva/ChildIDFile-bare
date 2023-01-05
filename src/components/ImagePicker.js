@@ -10,7 +10,14 @@ import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { COLOR } from "../shared/const";
 
-function ImagePickerUI({ image, setImage, view, description="", onBlur }) {
+function ImagePickerUI({
+  image,
+  setImage,
+  view,
+  description = "",
+  onBlur,
+  aspectRatio = [4, 4],
+}) {
   const [selected, setSelected] = useState(false);
 
   const pickImage = async () => {
@@ -19,7 +26,7 @@ function ImagePickerUI({ image, setImage, view, description="", onBlur }) {
     let result = await ImagePicker.launchImageLibraryAsync({
       // mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 4],
+      aspect: aspectRatio,
       quality: 1,
       base64: true,
     });
@@ -75,9 +82,7 @@ function ImagePickerUI({ image, setImage, view, description="", onBlur }) {
               style={styles.image}
               source={require("../assets/ImageAddIcon.png")}
             />
-            <Text style={styles.text}>
-              {description}
-            </Text>
+            <Text style={styles.text}>{description}</Text>
           </View>
         </TouchableWithoutFeedback>
       )}

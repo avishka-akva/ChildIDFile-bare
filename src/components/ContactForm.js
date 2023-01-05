@@ -11,7 +11,7 @@ function ContactForm({ index, onInputChanged, onBlur, values }) {
   return (
     <>
       <CustomTextInput
-        label={"Emergency Contact"}
+        label={"Contact Name"}
         required
         value={name}
         onChangeText={(value) =>
