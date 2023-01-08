@@ -13,20 +13,7 @@ import { Feather as Icon, AntDesign } from "@expo/vector-icons";
 import { globleStyles } from "../shared/style";
 import { COLOR } from "../shared/const";
 import CustomButton from "./CustomButton";
-
-function ModalBottom({ children, visible, onClose }) {
-  return (
-    <Modal
-      transparent={true}
-      visible={visible}
-      onRequestClose={() => onClose()}
-    >
-      <Pressable style={styles.modalBackground} onPress={() => onClose()}>
-        <View style={styles.modalContainner}>{children}</View>
-      </Pressable>
-    </Modal>
-  );
-}
+import CustomModalBottom from "./CustomModalBottom";
 
 function OptionChip({ name, onRemove }) {
   return (
@@ -111,7 +98,7 @@ function MultiSelect({ options, values = [], onItemChanged, view }) {
           })}
         </View>
       )}
-      <ModalBottom visible={visible} onClose={onClose}>
+      <CustomModalBottom visible={visible} onClose={onClose} roundRadius>
         <View style={styles.container}>
           <Text>Select Options...</Text>
           <TouchableWithoutFeedback onPress={onClose}>
@@ -157,7 +144,7 @@ function MultiSelect({ options, values = [], onItemChanged, view }) {
             color="#FFFFFF"
           />
         </View>
-      </ModalBottom>
+      </CustomModalBottom>
     </>
   );
 }
@@ -217,8 +204,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   optionClose: {
-    marginRight: 12
-  }
+    marginRight: 12,
+  },
 });
 
 export default MultiSelect;
