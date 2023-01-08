@@ -5,10 +5,12 @@ import {
   View,
   TouchableWithoutFeedback,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { COLOR } from "../shared/const";
+import CustomModalBottom from "./CustomModalBottom";
 
 function ImagePickerUI({
   image,
@@ -19,24 +21,70 @@ function ImagePickerUI({
   aspectRatio = [4, 4],
 }) {
   const [selected, setSelected] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-  const pickImage = async () => {
+  const pickImageFromGallary = async () => {
     if (view) return;
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      // mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: aspectRatio,
-      quality: 1,
-      base64: true,
-    });
+    try {
+      // No permissions request is necessary for launching the image library
+      let result = await ImagePicker.launchImageLibraryAsync({
+        // mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: aspectRatio,
+        quality: 1,
+        base64: true,
+      });
 
-    if (!result.assets[0].canceled) {
-      setImage(result.assets[0].base64);
-      setSelected(true);
+      if (result.canceled) {
+        setShowModal(false);
+        return;
+      }
+
+      if (!result.assets[0].canceled) {
+        setImage(result.assets[0].base64);
+        setSelected(true);
+      }
+
+      if (onBlur) onBlur();
+
+      setShowModal(false);
+    } catch (error) {
+      alert(error.message);
     }
+  };
 
-    if (onBlur) onBlur();
+  const pickImageFromCamera = async () => {
+    if (view) return;
+    try {
+      const permissionResult =
+        await ImagePicker.requestCameraPermissionsAsync();
+
+      if (permissionResult.granted === false) {
+        alert("Permission to access camera roll is required!");
+        return;
+      }
+
+      let pickerResult = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: aspectRatio,
+        quality: 1,
+        base64: true,
+      });
+
+      if (pickerResult.canceled) {
+        setShowModal(false);
+        return;
+      }
+
+      if (!pickerResult.assets[0].canceled) {
+        setImage(pickerResult.assets[0].base64);
+        setSelected(true);
+      }
+
+      setShowModal(false);
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   useEffect(() => {
@@ -76,7 +124,7 @@ function ImagePickerUI({
           </View>
         </>
       ) : (
-        <TouchableWithoutFeedback onPress={() => pickImage()}>
+        <TouchableWithoutFeedback onPress={() => setShowModal(true)}>
           <View style={styles.container}>
             <Image
               style={styles.image}
@@ -86,6 +134,23 @@ function ImagePickerUI({
           </View>
         </TouchableWithoutFeedback>
       )}
+      <CustomModalBottom
+        visible={showModal}
+        onClose={() => setShowModal(false)}
+      >
+        <TouchableOpacity
+          style={styles.selectContainer}
+          onPress={pickImageFromGallary}
+        >
+          <Text style={styles.selectOption}>Gallary</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.selectContainer}
+          onPress={pickImageFromCamera}
+        >
+          <Text style={styles.selectOption}>Camera</Text>
+        </TouchableOpacity>
+      </CustomModalBottom>
     </View>
   );
 }
@@ -136,6 +201,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     width: 198,
     textAlign: "center",
+  },
+  selectContainer: {
+    width: "100%",
+    padding: 14,
+  },
+  selectOption: {
+    fontSize: 14,
+    color: "#434343",
   },
 });
 
