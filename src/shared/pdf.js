@@ -11,6 +11,7 @@ const generateHtml = async ({
   firstName,
   lastName,
   nickName,
+  dob,
   address,
   city,
   province,
@@ -186,9 +187,14 @@ const generateHtml = async ({
           justify-content: flex-start;
           align-items: center;
         }
+        .user-image-container {
+          display: flex;
+          justify-content: flex-end;
+          align-items: flex-start;
+        }
         .user-image {
-          width: 20%;
-          margin-right: 20px;
+          width: 40%;
+          margin-left: 20px;
           border: 1px solid #707070;
         }
         .name {
@@ -263,15 +269,48 @@ const generateHtml = async ({
       <h1 class="header-title">ChildID App</h1>
     </header>
     <main>
-      <section>
+      <section  class="row">
         <div class="main-details">
-          <img src="data:image/jpeg;base64,${image1}" class="user-image"/>
-          <img src="data:image/jpeg;base64,${image2}" class="user-image"/>
-          <div style="margin-left: 10px;">
-            <p class="name">${firstName} ${lastName} (${nickName})</p>
-            <p class="other-details">1997/12/05</p>
-            <p class="other-details">${address}, ${city}, ${province}, ${country}</p>
-            <p class="other-details">Zip code: ${postalCode}</p>
+          <div class="column">
+            <h2 class="sub-title">Personal Information</h2>
+
+            <div class="row content-mt sr-mb">
+              <div class="sub-row sr-w-1">
+                <label>Name</label> <lable>:</lable> 
+              </div>
+              <div>
+                <label>${firstName} ${lastName} (${nickName})</label>
+              </div>
+            </div>
+            <div class="row content-mt sr-mb">
+              <div class="sub-row sr-w-1">
+                <label>Birthday</label> <lable>:</lable> 
+              </div>
+              <div>
+                <label>${dob.replace(/-/g, "/")}</label>
+              </div>
+            </div>
+            <div class="row content-mt sr-mb">
+              <div class="sub-row sr-w-1">
+                <label>Address</label> <lable>:</lable> 
+              </div>
+              <div>
+                <label>${address}, ${city}, ${province}, ${country}</label>
+              </div>
+            </div>
+            <div class="row content-mt sr-mb">
+              <div class="sub-row sr-w-1">
+                <label>Zip Code</label> <lable>:</lable> 
+              </div>
+              <div>
+                <label>${postalCode}</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="column user-image-container">
+            <img src="data:image/jpeg;base64,${image1}" class="user-image"/>
+            <img src="data:image/jpeg;base64,${image2}" class="user-image"/>
           </div>
         </div>
       </section>
@@ -479,14 +518,7 @@ let generatePdf = async (props, share = false) => {
       }
     }
   } catch (error) {
-    console.error("🚀 ~ file: pdf.js:343 ~ generatePdf ~ error", error.message);
-    if (Platform.OS !== "ios") {
-      ToastAndroid.showWithGravity(
-        error.message,
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
-    }
+    alert(error.message);
   }
 };
 
