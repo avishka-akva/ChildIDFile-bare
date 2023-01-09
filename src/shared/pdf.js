@@ -463,11 +463,27 @@ let generatePdf = async (props, share = false) => {
       height: 1123,
     });
 
+    const PDF_NAME = `${props.firstName}_${props.lastName}_${new Date()
+      .toJSON()
+      .slice(0, 10)
+      .replace(/-/g, "_")}.pdf`;
+
     if (share) {
-      await shareAsync(file.uri, { UTI: ".pdf", mimeType: "application/pdf" });
+      const newURI = FileSystem.cacheDirectory + PDF_NAME;
+      await FileSystem.moveAsync({
+        from: file.uri,
+        to: newURI,
+      });
+      await shareAsync(newURI, { UTI: ".pdf", mimeType: "application/pdf" });
     } else {
       if (Platform.OS === "ios") {
-        await shareAsync(file.uri, {
+        const newURI = FileSystem.cacheDirectory + PDF_NAME;
+        await FileSystem.moveAsync({
+          from: file.uri,
+          to: newURI,
+        });
+
+        await shareAsync(newURI, {
           UTI: ".pdf",
           mimeType: "application/pdf",
         });
@@ -485,10 +501,7 @@ let generatePdf = async (props, share = false) => {
 
         const destinationUri = await StorageAccessFramework.createFileAsync(
           permission.directoryUri,
-          `${props.firstName}_${props.firstName}_${new Date()
-            .toJSON()
-            .slice(0, 10)
-            .replace(/-/g, "_")}`,
+          PDF_NAME,
           "application/pdf"
         );
 
