@@ -109,6 +109,8 @@ function TrustedContact({ index, setEditStartedTrue }) {
         setContactEditIndex(null);
       }}
       onSaveCancel={() => {
+        tempTrustedContacts[index] = { ...trustedContacts[index] };
+        setTempTrustedContacts([...tempEmergencyContacts]);
         setContactEditIndex(null);
       }}
       onOpen={(index) => {
@@ -191,7 +193,7 @@ function TrustedContact({ index, setEditStartedTrue }) {
             fontSize: 16,
             color: "#434343",
             textAlign: "center",
-            marginVertical: 24
+            marginVertical: 24,
           }}
         >
           Please Add one or up to 10 Trusted Contacts
