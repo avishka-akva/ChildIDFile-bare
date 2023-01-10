@@ -77,7 +77,7 @@ function Accordion({
 
             <TouchableWithoutFeedback onPress={() => onOpen(null)}>
               <View style={styles.backgroundCircle}>
-                <Icon name="chevron-down" color={COLOR.primary} size={16} />
+                <Icon name="chevron-up" color={COLOR.primary} size={16} />
               </View>
             </TouchableWithoutFeedback>
           </View>
