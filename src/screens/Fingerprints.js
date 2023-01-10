@@ -8,6 +8,7 @@ import { globleStyles } from "../shared/style";
 import { setFingerPrint } from "../redux/childSlice";
 import Card from "../components/Card";
 import { COLOR } from "../shared/const";
+import generatePdf from "../shared/pdf";
 
 function Fingerprints({ index, setEditStartedTrue }) {
   const { fingerPrint } = useSelector((state) => state.currentChild);
@@ -16,6 +17,10 @@ function Fingerprints({ index, setEditStartedTrue }) {
 
   const onBlur = () => {
     setEditStartedTrue(index);
+  };
+
+  const onDownlod = (id) => {
+    generatePdf("finger", null, true);
   };
 
   return (
@@ -30,7 +35,7 @@ function Fingerprints({ index, setEditStartedTrue }) {
         view={view}
         onBlur={onBlur}
         description="Upload a fingerPrint image of your child"
-        aspectRatio={[16,9]}
+        aspectRatio={[16, 9]}
       />
       <Text style={[globleStyles.body, { marginTop: 40 }]}>
         Want to create the image for your child's fingerprints?
@@ -40,7 +45,10 @@ function Fingerprints({ index, setEditStartedTrue }) {
           <Text style={[globleStyles.body, { fontSize: 13, width: 250 }]}>
             Download blank PDF Fingerprint Card here to create your own image
           </Text>
-          <TouchableOpacity style={styles.iconContainer} onPress={() => {}}>
+          <TouchableOpacity
+            style={styles.iconContainer}
+            onPress={() => onDownlod()}
+          >
             <Feather name="download" size={14} color={COLOR.primary} />
           </TouchableOpacity>
         </View>

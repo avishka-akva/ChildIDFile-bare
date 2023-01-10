@@ -92,7 +92,7 @@ function Home({ navigation }) {
           Are you sure, you want to delete this profile?
         </Text>
         <View style={globleStyles.modalIcon}>
-          <AntDesign name="exclamationcircleo" size={54} color="red" />
+          <AntDesign name="exclamationcircleo" size={54} color={COLOR.primary} />
         </View>
         <View style={globleStyles.modalFooter}>
           <CustomButton
@@ -130,12 +130,12 @@ function Home({ navigation }) {
 
   const onDownlod = (id) => {
     const child = childrenList.find((childItem) => childItem.id === id);
-    generatePdf(child);
+    generatePdf("main", child);
   };
 
   const onShare = (id) => {
     const child = childrenList.find((childItem) => childItem.id === id);
-    generatePdf(child, true);
+    generatePdf("main", child, true);
   };
 
   const renderChildItem = ({ item }) => {

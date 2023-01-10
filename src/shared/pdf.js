@@ -4,6 +4,18 @@ import { Platform, ToastAndroid } from "react-native";
 import * as FileSystem from "expo-file-system";
 import { StorageAccessFramework } from "expo-file-system";
 import { CHARACTERISTICS_OPTIONS } from "./const";
+import {
+  INDEX_LEFT,
+  INDEX_RIGHT,
+  LITTEL_LEFT,
+  LITTEL_RIGHT,
+  MIDDEL_LEFT,
+  MIDDEL_RIGHT,
+  RING_LEFT,
+  RING_RIGHT,
+  THUMB_LEFT,
+  THUMB_RIGHT,
+} from "./fingerprints";
 // import { Asset } from "expo-asset";
 // import * as ImageManipulator from "expo-image-manipulator";
 // import exampleImage from "../../assets/pdfLogo.png";
@@ -168,6 +180,8 @@ const generateHtml = async ({
       content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0"
     />
     <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@100;400&display=swap');
+
         *,
         *::before,
         *::after {
@@ -178,7 +192,7 @@ const generateHtml = async ({
         }
         body
         {
-          font-family: Segoe-UI;
+          font-family: 'Sofia Sans', sans-serif !important;
         }
         header {
           padding: 30px;
@@ -573,9 +587,164 @@ const generateHtml = async ({
   }
 };
 
-let generatePdf = async (props, share = false) => {
+const fingers = [
+  { name: "Thumb Finger", leftFinger: THUMB_LEFT, rightFinger: THUMB_RIGHT },
+  { name: "Index Finger", leftFinger: INDEX_LEFT, rightFinger: INDEX_RIGHT },
+  { name: "Middle Finger", leftFinger: MIDDEL_LEFT, rightFinger: MIDDEL_RIGHT },
+  { name: "Ring Finger", leftFinger: RING_LEFT, rightFinger: RING_RIGHT },
+  { name: "Little Finger", leftFinger: LITTEL_LEFT, rightFinger: LITTEL_RIGHT },
+];
+
+const genarateFingerHtml = async () => {
+  const head = `
+  <head>
+    <meta charset="utf-8" />
+    <title>My Birth Letter</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0"
+    />
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@100;400&display=swap');
+
+        *,
+        *::before,
+        *::after {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+          font-size: 16px;
+        }
+        body
+        {
+          font-family: 'Sofia Sans', sans-serif !important;
+          background: #FFFFFF;
+        }
+        main {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+          flex-wrap: wrap;
+          row-gap: 40px;
+          margin-top: 40px;
+          background: #FFFFFF;
+        }
+        h1 {
+          color: "#434343";
+          font-size: 18px;
+          margin-bottom: 6px;
+          font-weight: normal;
+        }
+        .des {
+          color: "#000000";
+          font-size: 14px;
+        }
+        .card {
+          border-radius: 18px;
+          background: #FFFFFF;
+          box-shadow: 0 3px 6px #C8C8C8; 
+          width: 30%;
+          padding: 18px;
+        }
+        .box-title {
+          text-align: center;
+          color: "#000000";
+          font-size: 16px;
+          font-weight: normal;
+        }
+        .dash-box-container {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+        }
+        .dash-box-item {
+        }
+        .dash-box {
+          width: 65px;
+          height: 75px;
+          border-radius: 10px;
+          border: 2px dashed #A352EB;
+        }
+        .finger-side {
+          text-align: center;
+          color: "#9C9C9C";
+          font-size: 14px;
+          margin-bottom: 5px;
+        }
+        .left-finger {
+          width: 38px;
+          height: 38px;
+          margin-right: 10px;
+        }
+        .right-finger {
+          width: 38px;
+          height: 38px;
+        }
+      </style>
+    </head>
+  `;
+
+  return `
+  <html>
+    ${head}
+    <body>
+      <header>
+        <h1>Fingerprints</h1>
+        <p class="des">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      </header>
+      <main>
+        ${fingers
+          .map(
+            (finger) =>
+              `<div class="card">
+                <h3 class="box-title">${finger.name}</h3>
+                <div class="dash-box-container">
+                  <div class="dash-box-item">
+                    <p class="finger-side">L</p>
+                    <div class="dash-box"></div>
+                  </div>
+                  <div style="padding-top: 20px;">
+                    ${finger.leftFinger}
+                    ${finger.rightFinger}
+                  </div>
+                  <div class="dash-box-item">
+                    <p class="finger-side">R</p>
+                    <div class="dash-box"></div>
+                  </div>
+                </div>
+              </div>`
+          )
+          .join(" ")}
+      </main>
+    </body>
+  </html>
+  `;
+};
+
+let generatePdf = async (type = "main", props, share = false) => {
   try {
-    const html = await generateHtml(props);
+    let html;
+
+    let PDF_NAME = "childId.pdf";
+
+    switch (type) {
+      case "main":
+        html = await generateHtml(props);
+        PDF_NAME = `${props.firstName}_${props.lastName}_${new Date()
+          .toJSON()
+          .slice(0, 10)
+          .replace(/-/g, "_")}.pdf`;
+        break;
+      case "finger":
+        PDF_NAME = "finger_print.pdf";
+        html = await genarateFingerHtml();
+        break;
+      default:
+        html = await generateHtml(props);
+        break;
+    }
 
     const file = await printToFileAsync({
       html: html,
@@ -583,11 +752,6 @@ let generatePdf = async (props, share = false) => {
       width: 794,
       height: 1123,
     });
-
-    const PDF_NAME = `${props.firstName}_${props.lastName}_${new Date()
-      .toJSON()
-      .slice(0, 10)
-      .replace(/-/g, "_")}.pdf`;
 
     if (share) {
       const newURI = FileSystem.cacheDirectory + PDF_NAME;
