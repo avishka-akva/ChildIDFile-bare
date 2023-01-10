@@ -18,8 +18,13 @@ import {
   setProvince,
   setCountry,
 } from "../redux/childSlice";
+import { COLOR } from "../shared/const";
 
-function PersonalInformation({setEditStartedTrue, validate}) {
+function PersonalInformation({
+  setEditStartedTrue,
+  validate,
+  removeNameFromErrorList,
+}) {
   const currentChild = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
 
@@ -61,6 +66,9 @@ function PersonalInformation({setEditStartedTrue, validate}) {
   const onCountrChangeText = (value) => {
     dispatch(setCountry(value));
   };
+
+  const isDobInValid = validate("dob");
+
   return (
     <View style={styles.main}>
       <Text style={[globleStyles.title, styles.title]}>
@@ -101,11 +109,21 @@ function PersonalInformation({setEditStartedTrue, validate}) {
           style={styles.mainContainer}
           onPress={() => setShowDatePicker(true)}
         >
-          <View style={[globleStyles.input, styles.datePickerContainer]}>
+          <View
+            style={[
+              globleStyles.input,
+              styles.datePickerContainer,
+              isDobInValid ? { borderColor: COLOR.danger } : {},
+            ]}
+          >
             <Text style={[globleStyles.inputText, styles.datePickerText]}>
               {currentChild?.dob}
             </Text>
-            <AntDesign name="calendar" size={13} color="#707070" />
+            <AntDesign
+              name="calendar"
+              size={13}
+              color={isDobInValid ? COLOR.danger : "#707070"}
+            />
           </View>
         </TouchableWithoutFeedback>
         {showDatePicker && (
@@ -119,7 +137,10 @@ function PersonalInformation({setEditStartedTrue, validate}) {
               setShowDatePicker(false);
               setDate(currentDate);
               dispatch(setDateOfBirth(currentDate.toISOString().slice(0, 10)));
-              onBlur()
+              onBlur();
+              if (isDobInValid) {
+                removeNameFromErrorList("dob");
+              }
             }}
           />
         )}

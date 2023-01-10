@@ -70,6 +70,10 @@ function ChildProfile({ navigation, route }) {
     setErrorList((previousValue) => [...previousValue, name]);
   };
 
+  const removeNameFromErrorList = (name) => {
+    setErrorList((previousValue) => previousValue.filter((n) => n !== name));
+  };
+
   const getFeildValidation = (name) => {
     return errorList.includes(name);
   };
@@ -82,6 +86,7 @@ function ChildProfile({ navigation, route }) {
           setEditStartedTrue={setEditStartedTrue}
           setEditStartedFalse={setEditStartedFalse}
           validate={getFeildValidation}
+          removeNameFromErrorList={removeNameFromErrorList}
         />
       ),
       validation: () => {
@@ -94,6 +99,7 @@ function ChildProfile({ navigation, route }) {
           if (!currentChild.firstName) addNameToErrorList("firstName");
           if (!currentChild.lastName) addNameToErrorList("lastName");
           if (!currentChild.nickName) addNameToErrorList("nickName");
+          if (!currentChild.dob) addNameToErrorList("dob");
           return false;
         }
 
@@ -323,7 +329,11 @@ function ChildProfile({ navigation, route }) {
             Are you sure, do you want to exit?
           </Text>
           <View style={globleStyles.modalIcon}>
-            <AntDesign name="exclamationcircleo" size={54} color={COLOR.primary} />
+            <AntDesign
+              name="exclamationcircleo"
+              size={54}
+              color={COLOR.primary}
+            />
           </View>
           <View style={globleStyles.modalFooter}>
             <CustomButton
@@ -339,7 +349,9 @@ function ChildProfile({ navigation, route }) {
             />
             <CustomButton
               onPress={onExit}
-              text={childManage.view || currentStepIndex === 0 ? "Yes" : "Yes, Save"}
+              text={
+                childManage.view || currentStepIndex === 0 ? "Yes" : "Yes, Save"
+              }
               buttonStyle={[
                 globleStyles.buttonPrimary,
                 { backgroundColor: COLOR.primary, width: 116, height: 36 },
