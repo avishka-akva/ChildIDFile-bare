@@ -693,8 +693,9 @@ const genarateFingerHtml = async () => {
     <body>
       <header>
         <h1>Fingerprints</h1>
-        <p class="des">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-      </header>
+        <p class="des">Please print this document, use an ink pad and place your child's finger print in the relevant boxes. Then scan the 
+        document and upload back to the application.</p>
+        </header>
       <main>
         ${fingers
           .map(
@@ -751,7 +752,7 @@ let generatePdf = async (type = "main", props, share = false) => {
       html: html,
       base64: false,
       width: 794,
-      height: 1123,
+      height: type === "finger" ? 400 : 1123,
     });
 
     if (share) {
