@@ -20,7 +20,7 @@ function Fingerprints({ index, setEditStartedTrue }) {
   };
 
   const onDownlod = (id) => {
-    generatePdf("finger", null, true);
+    generatePdf("finger");
   };
 
   return (
