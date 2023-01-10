@@ -681,6 +681,7 @@ const genarateFingerHtml = async () => {
         .right-finger {
           width: 38px;
           height: 38px;
+          transform: scaleX(-1);
         }
       </style>
     </head>

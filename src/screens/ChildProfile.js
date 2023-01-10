@@ -323,7 +323,7 @@ function ChildProfile({ navigation, route }) {
             Are you sure, do you want to exit?
           </Text>
           <View style={globleStyles.modalIcon}>
-            <AntDesign name="exclamationcircleo" size={54} color="red" />
+            <AntDesign name="exclamationcircleo" size={54} color={COLOR.primary} />
           </View>
           <View style={globleStyles.modalFooter}>
             <CustomButton
