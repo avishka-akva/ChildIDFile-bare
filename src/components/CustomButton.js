@@ -34,6 +34,7 @@ function CustomButton({
             : {
                 color,
                 fontSize,
+                textAlign: "center"
               }
         }
       >
