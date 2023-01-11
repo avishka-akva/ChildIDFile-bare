@@ -50,7 +50,7 @@ function ChildProfile({ navigation, route }) {
   const _view = route?.params?.view;
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [editStarted, setEditStarted] = useState(true);
+  const [editStarted, setEditStarted] = useState(false);
 
   const [errorList, setErrorList] = useState([]);
 
@@ -80,6 +80,7 @@ function ChildProfile({ navigation, route }) {
 
   const steps = [
     {
+      required: true,
       compnent: (
         <PersonalInformation
           index={0}
@@ -144,6 +145,7 @@ function ChildProfile({ navigation, route }) {
       ),
     },
     {
+      required: true,
       compnent: (
         <EmergencyContact
           index={5}
@@ -161,6 +163,7 @@ function ChildProfile({ navigation, route }) {
       },
     },
     {
+      required: true,
       compnent: (
         <TrustedContact
           index={6}
@@ -386,7 +389,7 @@ function ChildProfile({ navigation, route }) {
                     : "Continue"
                   : editStarted
                   ? "Save & Proceed"
-                  : "Skip to Next Section"
+                  : steps[currentStepIndex].required ? "Next Section" : "Skip to Next Section"
               }
               buttonStyle={globleStyles.buttonPrimary}
               fontSize={12}
