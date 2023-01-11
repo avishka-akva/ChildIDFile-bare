@@ -92,7 +92,11 @@ function Home({ navigation }) {
           Are you sure, you want to delete this profile?
         </Text>
         <View style={globleStyles.modalIcon}>
-          <AntDesign name="exclamationcircleo" size={54} color={COLOR.primary} />
+          <AntDesign
+            name="exclamationcircleo"
+            size={54}
+            color={COLOR.primary}
+          />
         </View>
         <View style={globleStyles.modalFooter}>
           <CustomButton
@@ -331,8 +335,8 @@ function Home({ navigation }) {
               </MenuTrigger>
               <MenuOptions
                 customStyles={{
-                  optionsContainer: { width: 180 },
-                  optionWrapper: { padding: 10 },
+                  optionsContainer: { width: 185, padding: 5 },
+                  optionWrapper: { width: 170,padding: 10 },
                 }}
               >
                 <MenuOption
