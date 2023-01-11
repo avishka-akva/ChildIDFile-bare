@@ -20,6 +20,14 @@ import {
 // import * as ImageManipulator from "expo-image-manipulator";
 // import exampleImage from "../../assets/pdfLogo.png";
 
+const fingers = [
+  { name: "Thumb Finger", leftFinger: THUMB_LEFT, rightFinger: THUMB_RIGHT },
+  { name: "Index Finger", leftFinger: INDEX_LEFT, rightFinger: INDEX_RIGHT },
+  { name: "Middle Finger", leftFinger: MIDDEL_LEFT, rightFinger: MIDDEL_RIGHT },
+  { name: "Ring Finger", leftFinger: RING_LEFT, rightFinger: RING_RIGHT },
+  { name: "Little Finger", leftFinger: LITTEL_LEFT, rightFinger: LITTEL_RIGHT },
+];
+
 const generateHtml = async ({
   firstName,
   lastName,
@@ -234,9 +242,10 @@ const generateHtml = async ({
           align-items: center;
         }
         .user-image-container {
-          display: flex;
-          justify-content: flex-end;
-          align-items: flex-start;
+          display: flex !important;
+          justify-content: flex-end !important;
+          align-items: center !important;
+          width: 100%;
         }
         .user-image {
           width: 40%;
@@ -257,6 +266,7 @@ const generateHtml = async ({
         }
         .column {
           flex: 1;
+          align-self: stretch;
         }
         table {
           border-collapse: collapse;
@@ -302,6 +312,76 @@ const generateHtml = async ({
         }
         .p-des {
           line-height: 18px; 
+        }
+
+        .dash-box {
+          width: 40%;
+          height: 175px;
+          border-radius: 10px;
+          border: 2px dashed #A352EB;
+          margin-left: 20px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .dash-box > p {
+          margin: 20px;
+          text-align: center;
+          color: #434343;
+        }
+
+        .main {
+          width: 95%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+          flex-wrap: wrap;
+          row-gap: 40px;
+          margin-top: 40px;
+          background: #FFFFFF;
+        }
+        .card {
+          border-radius: 18px;
+          background: #FFFFFF;
+          box-shadow: 0 3px 6px #C8C8C8; 
+          width: 30%;
+          padding: 18px;
+        }
+        .box-title {
+          text-align: center;
+          color: "#000000";
+          font-size: 16px;
+          font-weight: normal;
+        }
+        .dash-box-container {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+        }
+        .dash-box-item {
+          width: 65px;
+          height: 75px;
+          border-radius: 10px;
+          border: 2px dashed #A352EB;
+        }
+        .finger-side {
+          text-align: center;
+          color: "#9C9C9C";
+          font-size: 14px;
+          margin-bottom: 5px;
+        }
+        .left-finger {
+          width: 38px;
+          height: 38px;
+          margin-right: 10px;
+        }
+        .right-finger {
+          width: 38px;
+          height: 38px;
+          transform: scaleX(-1);
         }
       </style>
     </head>
@@ -405,7 +485,6 @@ const generateHtml = async ({
     </header>
     <main>
       <section  class="row">
-        <div class="main-details">
           <div class="column">
             <h2 class="sub-title">Personal Information</h2>
 
@@ -444,10 +523,17 @@ const generateHtml = async ({
           </div>
 
           <div class="column user-image-container">
-            <img src="data:image/jpeg;base64,${image1}" class="user-image"/>
-            <img src="data:image/jpeg;base64,${image2}" class="user-image"/>
+            ${
+              image1
+                ? `<img src="data:image/jpeg;base64,${image1}" class="user-image"/>`
+                : `<div class="dash-box"><p>Paste your child's photo here</p></div>`
+            }
+            ${
+              image2
+                ? `<img src="data:image/jpeg;base64,${image2}" class="user-image"/>`
+                : `<div class="dash-box"><p>Paste your child's photo here</p></div>`
+            }
           </div>
-        </div>
       </section>
       <section class="row">
         <div class="column">
@@ -576,7 +662,34 @@ const generateHtml = async ({
 
       <section class="page-break">
         <h2 class="sub-title">Fingerprints</h2>
-        <img src="data:image/jpeg;base64,${fingerPrint}" class="fingerprints-image content-mt"/>
+        ${
+          fingerPrint
+            ? `<img src="data:image/jpeg;base64,${fingerPrint}" class="fingerprints-image content-mt"/>`
+            : `<div class="main">
+                ${fingers
+                  .map(
+                    (finger) =>
+                      `<div class="card">
+                        <h3 class="box-title">${finger.name}</h3>
+                        <div class="dash-box-container">
+                          <div>
+                            <p class="finger-side">L</p>
+                            <div class="dash-box-item"></div>
+                          </div>
+                          <div style="padding-top: 20px;">
+                            ${finger.leftFinger}
+                            ${finger.rightFinger}
+                          </div>
+                          <div>
+                            <p class="finger-side">R</p>
+                            <div class="dash-box-item"></div>
+                          </div>
+                        </div>
+                      </div>`
+                  )
+                  .join(" ")}
+              </div>`
+        }
       </section>
     </main>
   </body>
@@ -586,14 +699,6 @@ const generateHtml = async ({
     throw error;
   }
 };
-
-const fingers = [
-  { name: "Thumb Finger", leftFinger: THUMB_LEFT, rightFinger: THUMB_RIGHT },
-  { name: "Index Finger", leftFinger: INDEX_LEFT, rightFinger: INDEX_RIGHT },
-  { name: "Middle Finger", leftFinger: MIDDEL_LEFT, rightFinger: MIDDEL_RIGHT },
-  { name: "Ring Finger", leftFinger: RING_LEFT, rightFinger: RING_RIGHT },
-  { name: "Little Finger", leftFinger: LITTEL_LEFT, rightFinger: LITTEL_RIGHT },
-];
 
 const genarateFingerHtml = async () => {
   const head = `
