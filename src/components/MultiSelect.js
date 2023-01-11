@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   optionSelectedItems: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 10,
+    paddingVertical: 6,
     backgroundColor: "#A352EBC2",
     margin: 4,
     borderRadius: 25,
