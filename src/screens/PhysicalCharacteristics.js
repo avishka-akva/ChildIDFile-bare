@@ -136,13 +136,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#70707014",
     shadowColor: "#70707014",
-    shadowOffset: {
-      width: 0,
-      height: 11,
-    },
-    shadowOpacity: 0.5,
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.15,
     shadowRadius: 3,
-    elevation: 3,
+    elevation: 2,
   },
 });
 

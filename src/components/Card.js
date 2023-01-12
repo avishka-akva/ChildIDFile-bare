@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 
 function Card({ children, style = {} }) {
-  return <View style={[styles.card,style]}>{children}</View>;
+  return <View style={[styles.card, style]}>{children}</View>;
 }
 
 const styles = StyleSheet.create({
@@ -13,13 +13,10 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     marginHorizontal: 6,
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 11,
-    },
-    shadowOpacity: 0.55,
-    shadowRadius: 18,
-    elevation: 3,
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
+    elevation: 2,
   },
 });
 
