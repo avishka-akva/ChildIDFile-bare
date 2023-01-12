@@ -6,6 +6,7 @@ import {
   View,
   Text,
   Keyboard,
+  Platform,
 } from "react-native";
 import * as Progress from "react-native-progress";
 import { AntDesign } from "@expo/vector-icons";
@@ -268,25 +269,25 @@ function ChildProfile({ navigation, route }) {
       }
     }
 
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => {
-        dispatch(toggleExit());
-        return true;
-      }
-    );
-
-    const keyboardDidShowSubscription = Keyboard.addListener(
-      "keyboardDidShow",
-      () => {
-        dispatch(setShowFooter(false));
-      }
-    );
-
-    return () => {
-      backHandler.remove();
-      keyboardDidShowSubscription?.remove();
-    };
+    if (Platform.OS !== "ios") {
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        () => {
+          dispatch(toggleExit());
+          return true;
+        }
+      );
+      const keyboardDidShowSubscription = Keyboard.addListener(
+        "keyboardDidShow",
+        () => {
+          dispatch(setShowFooter(false));
+        }
+      );
+      return () => {
+        backHandler.remove();
+        keyboardDidShowSubscription?.remove();
+      };
+    }
   }, []);
 
   const progress = (currentStepIndex + 1) / steps.length;
@@ -389,7 +390,9 @@ function ChildProfile({ navigation, route }) {
                     : "Continue"
                   : editStarted
                   ? "Save & Proceed"
-                  : steps[currentStepIndex].required ? "Next Section" : "Skip to Next Section"
+                  : steps[currentStepIndex].required
+                  ? "Next Section"
+                  : "Skip to Next Section"
               }
               buttonStyle={globleStyles.buttonPrimary}
               fontSize={12}

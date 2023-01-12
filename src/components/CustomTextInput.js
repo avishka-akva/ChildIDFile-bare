@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { TextInput, Text, View, Keyboard } from "react-native";
+import { TextInput, Text, View, Keyboard, Platform } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { globleStyles } from "../shared/style";
 import { setShowFooter } from "../redux/childManageSlice";
@@ -39,14 +39,16 @@ function CustomTextInput({
   };
 
   useEffect(() => {
-    const keyboardDidHideSubscription = Keyboard.addListener(
-      "keyboardDidHide",
-      keyboardDidHideCallback
-    );
+    if (Platform.OS !== "ios") {
+      const keyboardDidHideSubscription = Keyboard.addListener(
+        "keyboardDidHide",
+        keyboardDidHideCallback
+      );
 
-    return () => {
-      keyboardDidHideSubscription?.remove();
-    };
+      return () => {
+        keyboardDidHideSubscription?.remove();
+      };
+    }
   }, []);
 
   useEffect(() => {

@@ -97,7 +97,6 @@ function PhysicalCharacteristics({ index, setEditStartedTrue }) {
           label={"Approximate Height"}
           value={currentChild.height}
           onChangeText={onHeightChange}
-          marginBottom={0}
           onBlur={onBlur}
         />
         <CustomTextInput
