@@ -36,6 +36,7 @@ function Fingerprints({ index, setEditStartedTrue }) {
         onBlur={onBlur}
         description="Upload a fingerPrint image of your child"
         aspectRatio={[16, 9]}
+        finger
       />
       <Text style={[globleStyles.body, { marginTop: 40 }]}>
         Want to create the image for your child's fingerprints?

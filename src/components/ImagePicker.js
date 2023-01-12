@@ -19,6 +19,7 @@ function ImagePickerUI({
   description = "",
   onBlur,
   aspectRatio = [4, 4],
+  finger = false,
 }) {
   const [selected, setSelected] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -93,6 +94,8 @@ function ImagePickerUI({
     }
   }, []);
 
+  const height = finger ? 180 : 263;
+
   return (
     <View style={styles.main}>
       {selected ? (
@@ -110,7 +113,7 @@ function ImagePickerUI({
             </TouchableWithoutFeedback>
           )}
 
-          <View style={{ height: 263, borderRadius: 18 }}>
+          <View style={{ height, borderRadius: 18 }}>
             <Image
               style={{
                 width: "100%",
