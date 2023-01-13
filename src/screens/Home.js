@@ -36,6 +36,7 @@ const width = (Dimensions.get("window").width - 4 * 10) / 2;
 
 function EmptyHomeView() {
   const style = {
+    felx: 1,
     color: "#707070",
     fontSize: 16,
     marginTop: 28,
@@ -51,7 +52,10 @@ function EmptyHomeView() {
         justifyContent: "center",
       }}
     >
-      <Image source={require("../assets/homeImage.png")} />
+      <Image
+        style={{ width: 200, height: 200 }}
+        source={require("../assets/homeImage.png")}
+      />
       <Text style={style}>
         ChildIDFile helps you create and store an easily shared file for each of
         your children. This file will include information law enforcement may
@@ -336,7 +340,7 @@ function Home({ navigation }) {
               <MenuOptions
                 customStyles={{
                   optionsContainer: { width: 185, padding: 5 },
-                  optionWrapper: { width: 170,padding: 10 },
+                  optionWrapper: { width: 170, padding: 10 },
                 }}
               >
                 <MenuOption
