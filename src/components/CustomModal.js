@@ -1,4 +1,4 @@
-import { StyleSheet, View, Modal } from "react-native";
+import { StyleSheet, View, Modal, Dimensions } from "react-native";
 
 function CustomModal({ children, transparent = true, visible, setVisible }) {
   return (
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#FFFFFF",
     paddingVertical: 28,
-    paddingHorizontal: 52,
+    paddingHorizontal: Dimensions.get("window").width / 10,
     borderRadius: 8,
     width: "90%",
   },

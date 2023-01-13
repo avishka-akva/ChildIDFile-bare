@@ -71,7 +71,7 @@ export const globleStyles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
   },
   modalText: {
     color: "#434343",
