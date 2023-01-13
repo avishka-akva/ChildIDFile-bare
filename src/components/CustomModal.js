@@ -1,4 +1,4 @@
-import { StyleSheet, View, Modal, Dimensions } from "react-native";
+import { StyleSheet, View, Modal, Dimensions, Pressable } from "react-native";
 
 function CustomModal({ children, transparent = true, visible, setVisible }) {
   return (
@@ -7,9 +7,9 @@ function CustomModal({ children, transparent = true, visible, setVisible }) {
       visible={visible}
       onRequestClose={setVisible}
     >
-      <View style={styles.modalBackground}>
+      <Pressable onPress={setVisible} style={styles.modalBackground}>
         <View style={styles.modalContainner}>{children}</View>
-      </View>
+      </Pressable>
     </Modal>
   );
 }

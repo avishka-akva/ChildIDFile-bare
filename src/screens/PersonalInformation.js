@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { AntDesign } from "@expo/vector-icons";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import Card from "../components/Card";
@@ -18,6 +16,7 @@ import {
   setProvince,
   setCountry,
 } from "../redux/childSlice";
+import DatePicker from "../components/DatePicker";
 import { COLOR } from "../shared/const";
 
 function PersonalInformation({
@@ -27,9 +26,6 @@ function PersonalInformation({
 }) {
   const currentChild = useSelector((state) => state.currentChild);
   const dispatch = useDispatch();
-
-  const [date, setDate] = useState(new Date(1598051730000));
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const onBlur = () => {
     setEditStartedTrue();
@@ -103,47 +99,19 @@ function PersonalInformation({
       </Card>
       <Card>
         <Text style={[globleStyles.body, globleStyles.inputLable]}>
-          Date of Birth *
+          Date of Birth <Text style={{ color: COLOR.danger }}>*</Text>
         </Text>
-        <TouchableWithoutFeedback
-          style={styles.mainContainer}
-          onPress={() => setShowDatePicker(true)}
-        >
-          <View
-            style={[
-              globleStyles.input,
-              styles.datePickerContainer,
-              isDobInValid ? { borderColor: COLOR.danger } : {},
-            ]}
-          >
-            <Text style={[globleStyles.inputText, styles.datePickerText]}>
-              {currentChild?.dob}
-            </Text>
-            <AntDesign
-              name="calendar"
-              size={13}
-              color={isDobInValid ? COLOR.danger : "#707070"}
-            />
-          </View>
-        </TouchableWithoutFeedback>
-        {showDatePicker && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
-            mode={"date"}
-            is24Hour={true}
-            onChange={(event, selectedDate) => {
-              const currentDate = selectedDate;
-              setShowDatePicker(false);
-              setDate(currentDate);
-              dispatch(setDateOfBirth(currentDate.toISOString().slice(0, 10)));
-              onBlur();
-              if (isDobInValid) {
-                removeNameFromErrorList("dob");
-              }
-            }}
-          />
-        )}
+        <DatePicker
+          value={currentChild?.dob}
+          onChange={(selectedDate) => {
+            dispatch(setDateOfBirth(selectedDate.toISOString().slice(0, 10)));
+            onBlur();
+            if (isDobInValid) {
+              removeNameFromErrorList("dob");
+            }
+          }}
+          error={isDobInValid}
+        />
       </Card>
       <Card>
         <CustomTextInput
@@ -188,15 +156,6 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: 12,
-  },
-  datePickerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  datePickerText: {
-    flex: 1,
-    color: "#868282",
-    fontSize: 14,
   },
 });
 
