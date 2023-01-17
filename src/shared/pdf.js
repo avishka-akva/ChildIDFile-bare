@@ -225,6 +225,9 @@ const generateHtml = async ({
         }
         section {
           margin-top: 40px;
+          -webkit-column-break-inside: avoid;
+          page-break-inside: avoid;
+          break-inside: avoid;
         }
         .page-break {
           break-inside: avoid;
@@ -615,7 +618,7 @@ const generateHtml = async ({
           </div>
         </div>
       </section>
-      <section>
+      <section class="page-break">
         <h2 class="sub-title">Emergency Contact Information</h2>
         ${getEmergencyContactTable()}
       </section>
@@ -853,12 +856,29 @@ let generatePdf = async (type = "main", props, share = false) => {
         break;
     }
 
-    const file = await printToFileAsync({
-      html: html,
-      base64: false,
-      width: 794,
-      height: type === "finger" ? 400 : 1123,
-    });
+    let FilePrintOptions = {};
+
+    if (Platform.OS === "ios") {
+      FilePrintOptions = {
+        html: html,
+        base64: false,
+        margins: {
+          left: 20,
+          top: 20,
+          right: 20,
+          bottom: 20,
+        },
+      };
+    } else {
+      FilePrintOptions = {
+        html: html,
+        base64: false,
+        width: 794,
+        height: type === "finger" ? 400 : 1123,
+      };
+    }
+
+    const file = await printToFileAsync(FilePrintOptions);
 
     if (share) {
       const newURI = FileSystem.cacheDirectory + PDF_NAME;
