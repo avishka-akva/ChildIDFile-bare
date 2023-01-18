@@ -73,7 +73,13 @@ function CustomTextInput({
           onChangeText={onChangeText}
           value={value}
           multiline
-          numberOfLines={numberOfLines}
+          numberOfLines={Platform.OS === "ios" ? null : numberOfLines}
+          minHeight={
+            Platform.OS === "ios" && numberOfLines ? 20 * numberOfLines : null
+          }
+          maxHeight={
+            Platform.OS === "ios" && numberOfLines ? 20 * numberOfLines : null
+          }
           ref={(ref) => {
             localInputRef && (localInputRef.current = ref);
           }}

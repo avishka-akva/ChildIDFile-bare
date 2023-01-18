@@ -61,6 +61,7 @@ export const globleStyles = StyleSheet.create({
     fontFamily: "Segoe-UI",
     color: "#868282",
     fontSize: 14,
+    lineHeight: 18,
   },
   inputText: {
     fontFamily: "Segoe-UI",
