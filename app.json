@@ -18,14 +18,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.childidfile"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.ChildIDFile.akvasoft"
+      "package": "com.childidfile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -37,7 +38,7 @@
     },
     "androidStatusBar": {
       "backgroundColor": "#FFFFFF",
-      "barStyle":"dark-content",
+      "barStyle": "dark-content",
       "translucent": false
     }
   }
