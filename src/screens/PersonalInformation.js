@@ -18,6 +18,7 @@ import {
 } from "../redux/childSlice";
 import DatePicker from "../components/DatePicker";
 import { COLOR } from "../shared/const";
+import { formatDate } from "../shared/date";
 
 function PersonalInformation({
   setEditStartedTrue,
@@ -104,7 +105,7 @@ function PersonalInformation({
         <DatePicker
           value={currentChild?.dob}
           onChange={(selectedDate) => {
-            dispatch(setDateOfBirth(selectedDate.toISOString().slice(0, 10)));
+            dispatch(setDateOfBirth(formatDate(selectedDate)));
             onBlur();
             if (isDobInValid) {
               removeNameFromErrorList("dob");

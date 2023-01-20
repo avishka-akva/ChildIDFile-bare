@@ -224,7 +224,7 @@ const generateHtml = async ({
           font-size: 28px;  
         }
         section {
-          margin-top: 40px;
+          margin-top: 20px;
           -webkit-column-break-inside: avoid;
           page-break-inside: avoid;
           break-inside: avoid;
@@ -504,7 +504,7 @@ const generateHtml = async ({
                 <label>Birthday</label> <lable>:</lable> 
               </div>
               <div>
-                <label>${dob.replace(/-/g, "/")}</label>
+                <label>${dob}</label>
               </div>
             </div>
             <div class="row content-mt sr-mb">
