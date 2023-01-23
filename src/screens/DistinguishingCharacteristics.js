@@ -57,20 +57,23 @@ function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
           />
         </View>
         <CustomTextInput
+          label={"Describe selected options or add other details"}
+          value={otherCharacteristic}
+          onChangeText={onOtherChange}
+          multiline={true}
+          numberOfLines={7}
+          marginBottom={0}
+          onBlur={onBlur}
+          placeholder={
+            "Provide grayed examples of Distinguishing features such as: \nScar/tattoo on neck \nChild is autistic \nChild has asthma and uses inhaler \nChild is deaf"
+          }
+        />
+        <CustomTextInput
           label={"Special Needs"}
           value={specialNeeds}
           onChangeText={onSpecialNeedsChange}
           multiline={true}
           numberOfLines={6}
-          onBlur={onBlur}
-        />
-        <CustomTextInput
-          label={"Other"}
-          value={otherCharacteristic}
-          onChangeText={onOtherChange}
-          multiline={true}
-          numberOfLines={6}
-          marginBottom={0}
           onBlur={onBlur}
         />
       </Card>

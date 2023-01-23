@@ -35,7 +35,7 @@ function UploadPhoto({ index, setEditStartedTrue }) {
         setImage={(uri) => dispatch(setImage2(uri))}
         view={view}
         onBlur={onBlur}
-        description="Upload close up face image of your child"
+        description="Upload standing image of your child"
       />
     </View>
   );

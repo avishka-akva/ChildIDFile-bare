@@ -55,7 +55,7 @@ function MedicalInformation({ index, setEditStartedTrue }) {
           onBlur={onBlur}
         />
         <CustomTextInput
-          label={"Office"}
+          label={"Clinic Name"}
           value={currentChild.physicianOffice}
           onChangeText={onPhysicianOfficeChange}
           onBlur={onBlur}
@@ -82,6 +82,7 @@ function MedicalInformation({ index, setEditStartedTrue }) {
           numberOfLines={4}
           marginBottom={0}
           onBlur={onBlur}
+          placeholder="e.g. uses inhaler, diabetic requires insulin"
         />
       </Card>
     </View>

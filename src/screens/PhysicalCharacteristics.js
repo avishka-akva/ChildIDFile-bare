@@ -80,6 +80,7 @@ function PhysicalCharacteristics({ index, setEditStartedTrue }) {
           value={currentChild.race}
           onChangeText={onRaceChange}
           onBlur={onBlur}
+          placeholder="Best describe appearance"
         />
         <CustomTextInput
           label={"Hair Color"}
@@ -98,6 +99,7 @@ function PhysicalCharacteristics({ index, setEditStartedTrue }) {
           value={currentChild.height}
           onChangeText={onHeightChange}
           onBlur={onBlur}
+          placeholder="e.g. 5 foot 2 inches, 157 cm"
         />
         <CustomTextInput
           label={"Approximate Weight"}
@@ -105,6 +107,7 @@ function PhysicalCharacteristics({ index, setEditStartedTrue }) {
           onChangeText={onWeightChange}
           marginBottom={0}
           onBlur={onBlur}
+          placeholder="e.g. 60 pounds, 60lbs, or 27kg"
         />
       </Card>
     </View>
