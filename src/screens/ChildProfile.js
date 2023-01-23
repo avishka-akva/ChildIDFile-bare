@@ -95,12 +95,10 @@ function ChildProfile({ navigation, route }) {
         if (
           currentChild.firstName === "" ||
           currentChild.lastName === "" ||
-          currentChild.nickName === "" ||
           currentChild.dob === ""
         ) {
           if (!currentChild.firstName) addNameToErrorList("firstName");
           if (!currentChild.lastName) addNameToErrorList("lastName");
-          if (!currentChild.nickName) addNameToErrorList("nickName");
           if (!currentChild.dob) addNameToErrorList("dob");
           return false;
         }

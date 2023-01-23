@@ -73,7 +73,7 @@ function PersonalInformation({
       </Text>
       <Card>
         <CustomTextInput
-          label={"First Name"}
+          label={"Child's First Name(s)"}
           required
           error={validate("firstName")}
           value={currentChild?.firstName}
@@ -81,7 +81,7 @@ function PersonalInformation({
           onBlur={onBlur}
         />
         <CustomTextInput
-          label={"Last Name"}
+          label={"Child's Last Name(s)"}
           required
           error={validate("lastName")}
           value={currentChild?.lastName}
@@ -89,8 +89,7 @@ function PersonalInformation({
           onBlur={onBlur}
         />
         <CustomTextInput
-          label={"Nickname"}
-          required
+          label={"Child's Nickname"}
           error={validate("nickName")}
           value={currentChild?.nickName}
           onChangeText={onNickNameChangeText}
@@ -100,7 +99,7 @@ function PersonalInformation({
       </Card>
       <Card>
         <Text style={[globleStyles.body, globleStyles.inputLable]}>
-          Date of Birth <Text style={{ color: COLOR.danger }}>*</Text>
+          Child's Date of Birth <Text style={{ color: COLOR.danger }}>*</Text>
         </Text>
         <DatePicker
           value={currentChild?.dob}
@@ -116,7 +115,7 @@ function PersonalInformation({
       </Card>
       <Card>
         <CustomTextInput
-          label={"Address"}
+          label={"Child's Address"}
           value={currentChild.address}
           onChangeText={onAddressChangeText}
           onBlur={onBlur}
