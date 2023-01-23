@@ -14,11 +14,78 @@ import {
 import { setTrustedContactsError } from "../redux/childManageSlice";
 import {
   COLOR,
-  CONTACT_INIT_OBJ,
+  TRUSTED_CONTACT_INIT_OBJ,
   MAXIMUM_TRUSTED_CONTACT_COUNT,
 } from "../shared/const";
-import ContactForm from "../components/ContactForm";
 import CustomModal from "../components/CustomModal";
+import CustomTextInput from "../components/CustomTextInput";
+
+function ContactForm({ index, onInputChanged, onBlur, values }) {
+  const {
+    name,
+    relationship,
+    primaryPhoneNumber,
+    secondaryPhoneNumber,
+    address,
+  } = values;
+  return (
+    <>
+      <CustomTextInput
+        label={"Trusted contact/ location"}
+        required
+        value={name}
+        onChangeText={(value) =>
+          onInputChanged({
+            index,
+            propertyName: "name",
+            value,
+          })
+        }
+        onBlur={onBlur ? onBlur : () => {}}
+      />
+      <CustomTextInput
+        label={"Relationship"}
+        value={relationship}
+        onChangeText={(value) =>
+          onInputChanged({
+            index,
+            propertyName: "relationship",
+            value,
+          })
+        }
+        onBlur={onBlur ? onBlur : () => {}}
+      />
+      <CustomTextInput
+        label={"Primary Phone Number "}
+        value={primaryPhoneNumber}
+        keyboardType="phone-pad"
+        onChangeText={(value) =>
+          onInputChanged({
+            index,
+            propertyName: "primaryPhoneNumber",
+            value,
+          })
+        }
+        onBlur={onBlur ? onBlur : () => {}}
+      />
+      <CustomTextInput
+        label={"Address"}
+        value={address}
+        onChangeText={(value) =>
+          onInputChanged({
+            index,
+            propertyName: "address",
+            value,
+          })
+        }
+        multiline={true}
+        numberOfLines={4}
+        marginBottom={0}
+        onBlur={onBlur ? onBlur : () => {}}
+      />
+    </>
+  );
+}
 
 function TrustedContact({ index, setEditStartedTrue }) {
   const dispatch = useDispatch();
@@ -28,7 +95,7 @@ function TrustedContact({ index, setEditStartedTrue }) {
   const [openIndex, setOpenIndex] = useState(null);
   const [contactEditIndex, setContactEditIndex] = useState(null);
   const [tempTrustedContacts, setTempTrustedContacts] = useState([
-    { ...CONTACT_INIT_OBJ },
+    { ...TRUSTED_CONTACT_INIT_OBJ },
   ]);
 
   const onBlur = () => {
@@ -55,11 +122,7 @@ function TrustedContact({ index, setEditStartedTrue }) {
     const index = tempTrustedContacts.length - 1;
 
     // validation
-    const { name, relationship, primaryPhoneNumber } =
-      tempTrustedContacts[index];
-    if (!name || !relationship || !primaryPhoneNumber) {
-      return;
-    }
+    if (!tempTrustedContacts[index].name) return;
 
     if (tempTrustedContacts.length > trustedContacts.length) {
       dispatch(addNewTrusedContact(tempTrustedContacts[index]));
@@ -81,7 +144,7 @@ function TrustedContact({ index, setEditStartedTrue }) {
   };
 
   const onAddAdditional = () => {
-    setTempTrustedContacts([...tempTrustedContacts, { ...CONTACT_INIT_OBJ }]);
+    setTempTrustedContacts([...tempTrustedContacts, { ...TRUSTED_CONTACT_INIT_OBJ }]);
     setContactEditIndex(null);
   };
 

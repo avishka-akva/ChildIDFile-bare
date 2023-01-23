@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  CONTACT_INIT_OBJ,
   MAXIMUM_EMERGENCY_CONTACT_COUNT,
   MAXIMUM_TRUSTED_CONTACT_COUNT,
 } from "../shared/const";
