@@ -336,7 +336,9 @@ function Home({ navigation }) {
   return (
     <SafeAreaView style={globleStyles.container}>
       <View style={styles.mainTextContainer}>
-        <Text style={styles.mainText}>Welcome</Text>
+        <Text style={styles.mainText}>
+          {childrenList.length > 0 ? "Saved Child Profiles" : "Welcome"}
+        </Text>
         <View style={styles.mainRight}>
           {childrenList.length > 0 && (
             <Text style={styles.childrenCount}>{childrenList.length}</Text>
@@ -440,7 +442,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   mainText: {
-    color: "#000",
+    color: "#434343",
     fontSize: 28,
     fontFamily: "SegoeUI-SemiBold",
   },
