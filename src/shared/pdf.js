@@ -1,4 +1,4 @@
-import { printToFileAsync } from "expo-print";
+import { printToFileAsync, printAsync, Orientation } from "expo-print";
 import { shareAsync } from "expo-sharing";
 import { Platform, ToastAndroid } from "react-native";
 import * as FileSystem from "expo-file-system";
@@ -856,31 +856,26 @@ let generatePdf = async (type = "main", props, share = false) => {
         break;
     }
 
-    let FilePrintOptions = {};
+    let FilePrintOptions = { html: html, base64: false };
 
     if (Platform.OS === "ios") {
-      FilePrintOptions = {
-        html: html,
-        base64: false,
-        margins: {
-          left: 20,
-          top: 20,
-          right: 20,
-          bottom: 20,
-        },
+      FilePrintOptions.margins = {
+        left: 20,
+        top: 20,
+        right: 20,
+        bottom: 20,
       };
     } else {
-      FilePrintOptions = {
-        html: html,
-        base64: false,
-        width: 794,
-        height: type === "finger" ? 400 : 1123,
-      };
+      if (type === "finger") {
+        FilePrintOptions.orientation = Orientation.landscape;
+      } else {
+        FilePrintOptions.width = 794;
+        FilePrintOptions.height = 1123;
+      }
     }
 
-    const file = await printToFileAsync(FilePrintOptions);
-
-    if (share) {
+    if (share || Platform.OS === "ios") {
+      const file = await printToFileAsync(FilePrintOptions);
       const newURI = FileSystem.cacheDirectory + PDF_NAME;
       await FileSystem.moveAsync({
         from: file.uri,
@@ -888,59 +883,40 @@ let generatePdf = async (type = "main", props, share = false) => {
       });
       await shareAsync(newURI, { UTI: ".pdf", mimeType: "application/pdf" });
     } else {
-      if (Platform.OS === "ios") {
-        const newURI = FileSystem.cacheDirectory + PDF_NAME;
-        await FileSystem.moveAsync({
-          from: file.uri,
-          to: newURI,
-        });
+      const file = await printAsync(FilePrintOptions);
+      // const downloadDir =
+      //   StorageAccessFramework.getUriForDirectoryInRoot("Download");
+      // const permission =
+      //   await StorageAccessFramework.requestDirectoryPermissionsAsync(
+      //     downloadDir
+      //   );
 
-        await shareAsync(newURI, {
-          UTI: ".pdf",
-          mimeType: "application/pdf",
-        });
-      } else {
-        const downloadDir =
-          StorageAccessFramework.getUriForDirectoryInRoot("Download");
-        const permission =
-          await StorageAccessFramework.requestDirectoryPermissionsAsync(
-            downloadDir
-          );
+      // if (!permission.granted) {
+      //   return false;
+      // }
 
-        if (!permission.granted) {
-          return false;
-        }
+      // const destinationUri = await StorageAccessFramework.createFileAsync(
+      //   permission.directoryUri,
+      //   PDF_NAME,
+      //   "application/pdf"
+      // );
 
-        const destinationUri = await StorageAccessFramework.createFileAsync(
-          permission.directoryUri,
-          PDF_NAME,
-          "application/pdf"
-        );
+      // const content = await StorageAccessFramework.readAsStringAsync(file.uri, {
+      //   encoding: FileSystem.EncodingType.Base64,
+      // });
 
-        const content = await StorageAccessFramework.readAsStringAsync(
-          file.uri,
-          {
-            encoding: FileSystem.EncodingType.Base64,
-          }
-        );
+      // await StorageAccessFramework.writeAsStringAsync(destinationUri, content, {
+      //   encoding: FileSystem.EncodingType.Base64,
+      // });
 
-        await StorageAccessFramework.writeAsStringAsync(
-          destinationUri,
-          content,
-          {
-            encoding: FileSystem.EncodingType.Base64,
-          }
-        );
+      // let newFolder = permission.directoryUri.split("Download");
+      // newFolder = newFolder[1].substring(3);
 
-        let newFolder = permission.directoryUri.split("Download");
-        newFolder = newFolder[1].substring(3);
-
-        ToastAndroid.showWithGravity(
-          `Saved to Download/${newFolder} folder`,
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER
-        );
-      }
+      // ToastAndroid.showWithGravity(
+      //   `Saved to Download/${newFolder} folder`,
+      //   ToastAndroid.SHORT,
+      //   ToastAndroid.CENTER
+      // );
     }
   } catch (error) {
     alert(error.message);
