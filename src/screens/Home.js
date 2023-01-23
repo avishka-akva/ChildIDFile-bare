@@ -30,15 +30,15 @@ import {
   PRIVACY_POLICY_URL,
   TERMS_AND_CONDITION_URL,
 } from "../shared/const";
+import BulletList from "../components/BulletList";
 
 const spacing = 5;
 const width = (Dimensions.get("window").width - 4 * 10) / 2;
 
 function EmptyHomeView() {
   const style = {
-    felx: 1,
     color: "#707070",
-    fontSize: 16,
+    fontSize: 14,
     marginTop: 28,
     textAlign: "center",
     fontFamily: "Segoe-UI",
@@ -56,14 +56,23 @@ function EmptyHomeView() {
         style={{ width: 200, height: 200 }}
         source={require("../assets/homeImage.png")}
       />
+      <BulletList
+        containerStyle={{ marginTop: 20 }}
+        childStyle={{
+          width: "95%",
+          color: "#707070",
+          fontSize: 14,
+          fontFamily: "Segoe-UI",
+        }}
+        pointSize={14}
+        pointColor="#707070"
+        options={[
+          "ChildIDFile helps you create an information file for each of your children, which can be easily shared.",
+          "This file includes information that law enforcement may find useful in the immediate search for a missing child.",
+          "The file can include up to 3 emergency contacts, 10 trusted contacts/locations, and other useful identifying features.",
+        ]}
+      />
       <Text style={style}>
-        ChildIDFile helps you create and store an easily shared file for each of
-        your children. This file will include information law enforcement may
-        find useful in the immediate search for a missing child, to include up
-        to 3 emergency contacts, 10 trusted contacts/locations, and other useful
-        identifyingfeatures.
-      </Text>
-      <Text style={{ ...style, fontFamily: "SegoeUI-Italic" }}>
         It is up to you how much to save and have ready. The data you enter and
         file you create lives on your phone or device only.
       </Text>
@@ -432,7 +441,7 @@ const styles = StyleSheet.create({
   },
   mainText: {
     color: "#000",
-    fontSize: 36,
+    fontSize: 28,
     fontFamily: "SegoeUI-SemiBold",
   },
   mainRight: {
