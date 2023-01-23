@@ -9,6 +9,7 @@ import { setFingerPrint } from "../redux/childSlice";
 import Card from "../components/Card";
 import { COLOR } from "../shared/const";
 import generatePdf from "../shared/pdf";
+import BulletList from "../components/BulletList";
 
 function Fingerprints({ index, setEditStartedTrue }) {
   const { fingerPrint } = useSelector((state) => state.currentChild);
@@ -26,24 +27,29 @@ function Fingerprints({ index, setEditStartedTrue }) {
   return (
     <View style={styles.main}>
       <Text style={[globleStyles.title, styles.title]}>Fingerprints</Text>
-      <Text style={[globleStyles.body]}>
-        Remember to use a high-resolution images and update it every 6 months.
-      </Text>
-      <ImagePickerUI
-        image={fingerPrint}
-        setImage={(uri) => dispatch(setFingerPrint(uri))}
-        view={view}
-        onBlur={onBlur}
-        description="Upload a fingerPrint image of your child"
-        aspectRatio={[16, 9]}
-        finger
-      />
-      <Text style={[globleStyles.body, { marginTop: 40 }]}>
+      <Text style={[globleStyles.body, { color: "#3F3F3F" }]}>
         Want to create the image for your child's fingerprints?
       </Text>
-      <Card style={{ borderRadius: 2 }}>
+      <BulletList
+        containerStyle={{ marginTop: 5, marginBottom: 15 }}
+        childStyle={{
+          width: "95%",
+          color: "#9B9B9B",
+          fontSize: 12,
+          fontFamily: "Segoe-UI",
+        }}
+        center
+        pointSize={12}
+        pointColor="#9B9B9B"
+        options={[
+          "Download and print the fingerprint card",
+          "Place the child's fingerprint on the printed card",
+          "Take a high resolution image of the card with fingerprints",
+        ]}
+      />
+      <Card>
         <View style={styles.downloadContainer}>
-          <Text style={[globleStyles.body, { fontSize: 13, width: 250 }]}>
+          <Text style={[globleStyles.body, styles.downloadText]}>
             Download blank PDF Fingerprint Card here to create your own image
           </Text>
           <TouchableOpacity
@@ -54,6 +60,19 @@ function Fingerprints({ index, setEditStartedTrue }) {
           </TouchableOpacity>
         </View>
       </Card>
+
+      <Text style={[globleStyles.body, { marginTop: 30, color: "#3F3F3F" }]}>
+        Do you have an image of your child's fingerprints?
+      </Text>
+      <ImagePickerUI
+        image={fingerPrint}
+        setImage={(uri) => dispatch(setFingerPrint(uri))}
+        view={view}
+        onBlur={onBlur}
+        description="Upload Fingerprint Image Here"
+        aspectRatio={[16, 9]}
+        finger
+      />
     </View>
   );
 }
@@ -66,9 +85,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   downloadContainer: {
-    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
   },
   iconContainer: {
     width: 28,
@@ -78,6 +95,12 @@ const styles = StyleSheet.create({
     borderColor: COLOR.primary,
     alignItems: "center",
     justifyContent: "center",
+  },
+  downloadText: {
+    fontSize: 13,
+    width: 250,
+    textAlign: "center",
+    marginBottom: 14,
   },
 });
 
