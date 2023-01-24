@@ -7,6 +7,7 @@ import {
   Text,
   Keyboard,
   Platform,
+  KeyboardAvoidingView,
 } from "react-native";
 import * as Progress from "react-native-progress";
 import { AntDesign } from "@expo/vector-icons";
@@ -291,7 +292,12 @@ function ChildProfile({ navigation, route }) {
   const progress = (currentStepIndex + 1) / steps.length;
 
   return (
-    <View style={{ flex: 1 }}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : ""}
+      style={{
+        flex: 1,
+      }}
+    >
       <ScrollView
         style={{
           width: "100%",
@@ -319,7 +325,6 @@ function ChildProfile({ navigation, route }) {
         </View>
 
         {renderStep()}
-
         <CustomModal
           transparent
           visible={childManage.exit}
@@ -405,7 +410,7 @@ function ChildProfile({ navigation, route }) {
           )}
         </View>
       )}
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
