@@ -17,8 +17,93 @@ import {
   CONTACT_INIT_OBJ,
   MAXIMUM_EMERGENCY_CONTACT_COUNT,
 } from "../shared/const";
-import ContactForm from "../components/ContactForm";
 import CustomModal from "../components/CustomModal";
+import CustomTextInput from "../components/CustomTextInput";
+
+function ContactForm({ index, onInputChanged, onBlur, values, validate = () => false, }) {
+  const {
+    name,
+    relationship,
+    primaryPhoneNumber,
+    secondaryPhoneNumber,
+    address,
+  } = values;
+  return (
+    <>
+      <CustomTextInput
+        label={"Contact Name"}
+        required
+        value={name}
+        onChangeText={(value) =>
+          onInputChanged({
+            index,
+            propertyName: "name",
+            value,
+          })
+        }
+        onBlur={onBlur ? onBlur : () => {}}
+        error={validate("name")}
+      />
+      <CustomTextInput
+        label={"Relationship"}
+        required
+        value={relationship}
+        onChangeText={(value) =>
+          onInputChanged({
+            index,
+            propertyName: "relationship",
+            value,
+          })
+        }
+        onBlur={onBlur ? onBlur : () => {}}
+        error={validate("relationship")}
+      />
+      <CustomTextInput
+        label={"Primary Phone Number "}
+        required
+        value={primaryPhoneNumber}
+        keyboardType="phone-pad"
+        onChangeText={(value) =>
+          onInputChanged({
+            index,
+            propertyName: "primaryPhoneNumber",
+            value,
+          })
+        }
+        onBlur={onBlur ? onBlur : () => {}}
+        error={validate("primaryPhoneNumber")}
+      />
+      <CustomTextInput
+        label={"Secondary Phone Number"}
+        value={secondaryPhoneNumber}
+        keyboardType="phone-pad"
+        onChangeText={(value) =>
+          onInputChanged({
+            index,
+            propertyName: "secondaryPhoneNumber",
+            value,
+          })
+        }
+        onBlur={onBlur ? onBlur : () => {}}
+      />
+      <CustomTextInput
+        label={"Address"}
+        value={address}
+        onChangeText={(value) =>
+          onInputChanged({
+            index,
+            propertyName: "address",
+            value,
+          })
+        }
+        multiline={true}
+        numberOfLines={4}
+        marginBottom={0}
+        onBlur={onBlur ? onBlur : () => {}}
+      />
+    </>
+  );
+}
 
 function EmergencyContact({ index, setEditStartedTrue }) {
   const dispatch = useDispatch();
@@ -30,6 +115,7 @@ function EmergencyContact({ index, setEditStartedTrue }) {
   const [tempEmergencyContacts, setTempEmergencyContacts] = useState([
     { ...CONTACT_INIT_OBJ },
   ]);
+  const [errorList, setErrorList] = useState([]);
 
   const onBlur = () => {
     setEditStartedTrue(index);
@@ -51,6 +137,15 @@ function EmergencyContact({ index, setEditStartedTrue }) {
     }
   };
 
+  const addToErrorList = (name) => {
+    if(getFeildValidation(name)) return;
+    setErrorList((previousValue) => [...previousValue, name]);
+  };
+
+  const getFeildValidation = (name) => {
+    return errorList.includes(name);
+  };
+
   const onSaveDetails = () => {
     const index = tempEmergencyContacts.length - 1;
 
@@ -58,8 +153,13 @@ function EmergencyContact({ index, setEditStartedTrue }) {
     const { name, relationship, primaryPhoneNumber } =
       tempEmergencyContacts[index];
     if (!name || !relationship || !primaryPhoneNumber) {
+      if(!name) addToErrorList('name');
+      if(!relationship) addToErrorList('relationship');
+      if(!primaryPhoneNumber) addToErrorList('primaryPhoneNumber');
       return;
     }
+    // clear error list
+    if (errorList.length) setErrorList([]);
 
     if (tempEmergencyContacts.length > emergencyContacts.length) {
       dispatch(addNewEmergencyContact(tempEmergencyContacts[index]));
@@ -137,6 +237,7 @@ function EmergencyContact({ index, setEditStartedTrue }) {
           values={values}
           onInputChanged={onInputChanged}
           onBlur={onBlur}
+          validate={getFeildValidation}
         />
       </Card>
     );

@@ -20,7 +20,13 @@ import {
 import CustomModal from "../components/CustomModal";
 import CustomTextInput from "../components/CustomTextInput";
 
-function ContactForm({ index, onInputChanged, onBlur, values }) {
+function ContactForm({
+  index,
+  onInputChanged,
+  onBlur,
+  values,
+  isNameEmpty = false,
+}) {
   const {
     name,
     relationship,
@@ -42,6 +48,7 @@ function ContactForm({ index, onInputChanged, onBlur, values }) {
           })
         }
         onBlur={onBlur ? onBlur : () => {}}
+        error={isNameEmpty}
       />
       <CustomTextInput
         label={"Relationship"}
@@ -97,6 +104,7 @@ function TrustedContact({ index, setEditStartedTrue }) {
   const [tempTrustedContacts, setTempTrustedContacts] = useState([
     { ...TRUSTED_CONTACT_INIT_OBJ },
   ]);
+  const [isNameEmpty, setIsNameEmpty] = useState(false);
 
   const onBlur = () => {
     setEditStartedTrue(index);
@@ -122,7 +130,13 @@ function TrustedContact({ index, setEditStartedTrue }) {
     const index = tempTrustedContacts.length - 1;
 
     // validation
-    if (!tempTrustedContacts[index].name) return;
+    if (!tempTrustedContacts[index].name) {
+      setIsNameEmpty(true);
+      return;
+    }
+    // clear validation 
+    setIsNameEmpty(false);
+
 
     if (tempTrustedContacts.length > trustedContacts.length) {
       dispatch(addNewTrusedContact(tempTrustedContacts[index]));
@@ -144,7 +158,10 @@ function TrustedContact({ index, setEditStartedTrue }) {
   };
 
   const onAddAdditional = () => {
-    setTempTrustedContacts([...tempTrustedContacts, { ...TRUSTED_CONTACT_INIT_OBJ }]);
+    setTempTrustedContacts([
+      ...tempTrustedContacts,
+      { ...TRUSTED_CONTACT_INIT_OBJ },
+    ]);
     setContactEditIndex(null);
   };
 
@@ -197,6 +214,7 @@ function TrustedContact({ index, setEditStartedTrue }) {
           values={values}
           onInputChanged={onInputChanged}
           onBlur={onBlur}
+          isNameEmpty={isNameEmpty}
         />
       </Card>
     );
