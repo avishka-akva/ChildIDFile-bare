@@ -48,3 +48,9 @@ export const formatDate = (dateObj) => {
 
   return `${MONTHS_NAME_SHORT[month]} ${getDate(date)}, ${year}`;
 };
+
+export const getAge = (dob) => {
+  const birthYear = parseInt(dob.split(" ")[2]);
+  const currentYear = new Date().getFullYear();
+  return currentYear - birthYear;
+};
