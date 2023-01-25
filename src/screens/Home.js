@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,6 +9,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Linking,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector, useDispatch } from "react-redux";
@@ -87,6 +88,10 @@ function Home({ navigation }) {
   const [deleteModelOpen, setDeleteModelOpen] = useState(false);
   const [selected, setSelected] = useState(null);
 
+  const [flatListScroll, setFlatListScroll] = useState("down");
+
+  const flatListRef = useRef();
+
   const onDelete = (id) => {
     setSelected(id);
     setDeleteModelOpen(true);
@@ -155,113 +160,18 @@ function Home({ navigation }) {
     generatePdf("main", child, true);
   };
 
-  const renderChildItem = ({ item }) => {
+  const RenderChildItem = ({ item }) => {
     return (
-      <View
-        key={item.id}
-        style={[
-          styles.item,
-          {
-            padding: 16,
-            borderRadius: 20,
-            width: width,
-            marginVertical: spacing,
-            marginHorizontal: spacing,
-          },
-        ]}
-      >
-        {item.incomplete && (
+      <View key={item.id} style={styles.item}>
+        {/* {item.incomplete && (
           <View style={styles.incompleteContainer}>
             <Text style={[styles.incompleteText, { fontSize: 6 }]}>
               Incomplete
             </Text>
           </View>
-        )}
-        <Image
-          style={styles.itemImage}
-          source={
-            item.image1
-              ? { uri: `data:image/jpg;base64,${item.image1}` }
-              : require("../assets/userImage.png")
-          }
-        />
-        <View style={[styles.itemNameContainer, { marginTop: 14 }]}>
-          <Text style={[styles.itemName, { marginRight: 5, fontSize: 16 }]}>
-            {`${item.firstName} ${item.lastName}`}
-          </Text>
-          <TouchableOpacity
-            style={{ width: 12, height: 12 }}
-            onPress={() => onEdit(item.id)}
-          >
-            <MaterialIcons
-              name="edit"
-              size={12}
-              color="#434343"
-              style={{ position: "absolute", right: -12 }}
-            />
-          </TouchableOpacity>
-        </View>
-        <Text style={[styles.itemNickName, { fontSize: 14, marginTop: 4 }]}>
-          {item.nickName}
-        </Text>
-        {!item.incomplete && item.specialNeeds && (
-          <Text
-            style={[styles.itemDescription, { fontSize: 12, marginTop: 4 }]}
-          >
-            {item.specialNeeds}
-          </Text>
-        )}
+        )} */}
 
-        <CustomButton
-          onPress={() => onEdit(item.id, !item.incomplete)}
-          text={item.incomplete ? "Complete" : "View"}
-          buttonStyle={[
-            globleStyles.buttonPrimary,
-            {
-              backgroundColor: COLOR.primary,
-              width: 80,
-              height: 28,
-              marginTop: 22,
-            },
-          ]}
-          backgroundColor={COLOR.primary}
-          textStyle={{ fontSize: 10, color: "#FFF" }}
-        />
-        <View style={[styles.itemFooter, { justifyContent: "space-around" }]}>
-          <TouchableOpacity
-            style={[styles.iconContainer, { width: 24, height: 24 }]}
-            onPress={() => onShare(item.id)}
-          >
-            <Feather name="external-link" size={12} color="#B6B6B6" />
-          </TouchableOpacity>
-          {!item.incomplete && (
-            <TouchableOpacity
-              style={[styles.iconContainer, { width: 24, height: 24 }]}
-              onPress={() => onDownlod(item.id)}
-            >
-              <Feather name="download" size={12} color="#B6B6B6" />
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            style={[styles.iconContainer, { width: 24, height: 24 }]}
-            onPress={() => onDelete(item.id)}
-          >
-            <AntDesign name="delete" size={12} color="#B6B6B6" />
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  };
-
-  const renderSingleColumnItems = () => {
-    return childrenList.map((item) => {
-      return (
-        <View key={item.id} style={styles.item}>
-          {item.incomplete && (
-            <View style={styles.incompleteContainer}>
-              <Text style={styles.incompleteText}>Incomplete</Text>
-            </View>
-          )}
+        <View style={styles.itemHeader}>
           <Image
             style={styles.itemImage}
             source={
@@ -270,65 +180,69 @@ function Home({ navigation }) {
                 : require("../assets/userImage.png")
             }
           />
-          <View style={styles.itemNameContainer}>
-            <Text
-              style={styles.itemName}
-            >{`${item.firstName} ${item.lastName}`}</Text>
+          <Text style={styles.itemName}>
+            {`${item.firstName} ${item.lastName}`}
+          </Text>
+        </View>
+        <View style={styles.itemFooter}>
+          <View style={styles.itemAction}>
             <TouchableOpacity
-              style={{ width: 14, height: 14 }}
+              style={[styles.iconContainer, { marginRight: 28 }]}
               onPress={() => onEdit(item.id)}
             >
-              <MaterialIcons
-                name="edit"
-                size={14}
-                color="#434343"
-                style={{ position: "absolute", right: -12 }}
-              />
+              <MaterialIcons name="edit" size={16} color="#B6B6B6" />
             </TouchableOpacity>
-          </View>
-          <Text style={styles.itemNickName}>{item.nickName}</Text>
-          {item.specialNeeds && (
-            <Text style={styles.itemDescription}>{item.specialNeeds}</Text>
-          )}
-          <View style={styles.itemFooter}>
-            <TouchableOpacity
-              style={styles.iconContainer}
-              onPress={() => onShare(item.id)}
-            >
-              <Feather name="external-link" size={14} color="#B6B6B6" />
-            </TouchableOpacity>
+
             {!item.incomplete && (
               <TouchableOpacity
-                style={styles.iconContainer}
-                onPress={() => onDownlod(item.id)}
+                style={[styles.iconContainer, { marginRight: 28 }]}
+                onPress={() => onShare(item.id)}
               >
-                <Feather name="download" size={14} color="#B6B6B6" />
+                <Feather name="external-link" size={16} color="#B6B6B6" />
               </TouchableOpacity>
             )}
+
             <TouchableOpacity
               style={styles.iconContainer}
               onPress={() => onDelete(item.id)}
             >
-              <AntDesign name="delete" size={14} color="#B6B6B6" />
+              <AntDesign name="delete" size={16} color="#B6B6B6" />
             </TouchableOpacity>
-            <CustomButton
-              onPress={() => onEdit(item.id, !item.incomplete)}
-              text={item.incomplete ? "Complete" : "View"}
-              buttonStyle={[
-                globleStyles.buttonPrimary,
-                {
-                  backgroundColor: COLOR.primary,
-                  width: 96,
-                  height: 36,
-                  marginRight: 0,
-                },
-              ]}
-              color="#FFFFFF"
-            />
           </View>
+          <CustomButton
+            onPress={() => onEdit(item.id, !item.incomplete)}
+            text={item.incomplete ? "Complete" : "View"}
+            buttonStyle={[
+              globleStyles.buttonPrimary,
+              {
+                backgroundColor: COLOR.primary,
+                width: 100,
+                height: 38,
+                marginTop: 22,
+              },
+            ]}
+            backgroundColor={COLOR.primary}
+            textStyle={{ fontSize: 14, color: COLOR.white, fontWeight: "600" }}
+          />
         </View>
-      );
-    });
+      </View>
+    );
+  };
+
+  const RenderSingleColumnItems = () =>
+    childrenList.map((item, index) => (
+      <RenderChildItem key={index} item={item} />
+    ));
+
+  const onPressFlatListDown = () => {
+    if (flatListScroll === "down") {
+      flatListRef.current?.scrollToEnd();
+      setFlatListScroll("up");
+      return;
+    }
+
+    flatListRef.current?.scrollToIndex({ index: 0 });
+    setFlatListScroll("down");
   };
 
   useEffect(() => {}, []);
@@ -401,18 +315,30 @@ function Home({ navigation }) {
               justifyContent: "center",
             }}
           >
-            {renderSingleColumnItems()}
+            <RenderSingleColumnItems />
           </ScrollView>
         ) : (
           <View style={styles.childrenListContainer}>
             <FlatList
+              ref={flatListRef}
               style={styles.list}
               data={childrenList}
-              renderItem={renderChildItem}
-              contentContainerStyle={{ justifyContent: "space-around" }}
-              numColumns={2}
-              columnWrapperStyle={{ flexShrink: 1 }}
+              renderItem={RenderChildItem}
+              contentContainerStyle={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
             />
+            <TouchableWithoutFeedback onPress={onPressFlatListDown}>
+              <View style={styles.backgroundCircle}>
+                <Feather
+                  name={`chevron-${flatListScroll}`}
+                  style={{ marginTop: flatListScroll === "down" ? 5 : 0 }}
+                  color={COLOR.primary}
+                  size={40}
+                />
+              </View>
+            </TouchableWithoutFeedback>
           </View>
         )
       ) : (
@@ -439,7 +365,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 24,
     marginTop: 12,
-    marginBottom: 12,
+    marginBottom: 24,
   },
   mainText: {
     color: "#434343",
@@ -474,34 +400,40 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   item: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "white",
+    width: 276,
+    // height: 287,
+    backgroundColor: COLOR.white,
     borderRadius: 36,
-    padding: 28,
     marginVertical: 12,
-    marginHorizontal: 6,
+    // marginHorizontal: 6,
     shadowColor: "#000",
     shadowOffset: { width: 1, height: 2 },
     shadowOpacity: 0.15,
     shadowRadius: 3,
     elevation: 2,
   },
+  itemHeader: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: COLOR.primary,
+    borderRadius: 36,
+    height: 144,
+  },
   itemImage: {
-    width: 46,
-    height: 46,
-    borderRadius: 46 / 2,
+    width: 78,
+    height: 78,
+    borderRadius: 78 / 2,
+    borderColor: COLOR.white,
+    borderWidth: 3,
     backgroundColor: "#F5F5F5",
     resizeMode: "center",
-  },
-  itemNameContainer: {
-    marginTop: 16,
-    flexDirection: "row",
-    alignItems: "center",
+    marginBottom: 6,
   },
   itemName: {
-    color: "#434343",
-    fontSize: 22,
+    color: COLOR.white,
+    fontSize: 24,
+    fontWeight: "400",
+    lineHeight: 28,
   },
   itemNickName: {
     color: "#797979",
@@ -514,13 +446,13 @@ const styles = StyleSheet.create({
     marginTop: 8,
     textAlign: "center",
   },
-  itemFooter: {
-    width: "90%",
-    marginTop: 12,
+  itemAction: {
     flexDirection: "row",
+  },
+  itemFooter: {
     alignItems: "center",
-    justifyContent: "space-around",
-    paddingRight: 0,
+    justifyContent: "center",
+    padding: 22,
   },
   iconContainer: {
     width: 28,
@@ -550,6 +482,19 @@ const styles = StyleSheet.create({
   },
   menuOptionIcon: {
     marginRight: 6,
+  },
+  backgroundCircle: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: COLOR.white,
+    borderWidth: 1,
+    borderColor: COLOR.primary,
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+    position: "absolute",
+    bottom: 5,
+    right: 20,
   },
 });
 
