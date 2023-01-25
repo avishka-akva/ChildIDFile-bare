@@ -8,6 +8,7 @@ import { MenuProvider } from "react-native-popup-menu";
 
 import store, { persistor } from "./src/redux/store";
 import ChildId from "./src/ChildID";
+import Auth from "./src/screens/Auth";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -21,26 +22,26 @@ export default function App() {
   const [localAuth, setLocalAuth] = useState(false);
 
   const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded && localAuth) {
+    if (fontsLoaded) {
       await SplashScreen.hideAsync();
     }
-  }, [fontsLoaded, localAuth]);
+  }, [fontsLoaded]);
 
   onLayoutRootView();
 
-  useEffect(() => {
-    async function authenticate() {
-      const result = await LocalAuthentication.authenticateAsync();
-      if (result.success) {
-        setLocalAuth(true);
-      }
+  const authenticate = async () => {
+    const result = await LocalAuthentication.authenticateAsync();
+    if (result.success) {
+      setLocalAuth(true);
     }
+  };
 
-    authenticate();
-  }, []);
-
-  if (!fontsLoaded || !localAuth) {
+  if (!fontsLoaded) {
     return null;
+  }
+
+  if (!localAuth) {
+    return <Auth onAuthClick={authenticate}/>;
   }
 
   return (
