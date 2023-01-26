@@ -33,8 +33,6 @@ import {
 } from "../shared/const";
 import BulletList from "../components/BulletList";
 
-const spacing = 5;
-const width = (Dimensions.get("window").width - 4 * 10) / 2;
 
 function EmptyHomeView() {
   const style = {
@@ -244,8 +242,6 @@ function Home({ navigation }) {
     flatListRef.current?.scrollToIndex({ index: 0 });
     setFlatListScroll("down");
   };
-
-  useEffect(() => {}, []);
 
   return (
     <SafeAreaView style={globleStyles.container}>

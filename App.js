@@ -20,6 +20,7 @@ export default function App() {
   });
 
   const [localAuth, setLocalAuth] = useState(false);
+  const [securityLevel, setSecurityLevel] = useState(0);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -30,18 +31,36 @@ export default function App() {
   onLayoutRootView();
 
   const authenticate = async () => {
-    const result = await LocalAuthentication.authenticateAsync();
-    if (result.success) {
-      setLocalAuth(true);
+    try {
+      const result = await LocalAuthentication.authenticateAsync();
+      if (result.success) {
+        setLocalAuth(true);
+      }
+    } catch (error) {
+      console.log("🚀 ~ file: App.js:39 ~ authenticate ~ error", error);
     }
   };
+
+  const getAuthenticate = async () => {
+    const _securityLevel = await LocalAuthentication.getEnrolledLevelAsync();
+
+    if (_securityLevel === 0) {
+      setLocalAuth(true);
+    } else {
+      setSecurityLevel(_securityLevel);
+    }
+  };
+
+  useEffect(() => {
+    getAuthenticate();
+  }, []);
 
   if (!fontsLoaded) {
     return null;
   }
 
   if (!localAuth) {
-    return <Auth onAuthClick={authenticate}/>;
+    return <Auth onAuthClick={authenticate} securityLevel={securityLevel} />;
   }
 
   return (
