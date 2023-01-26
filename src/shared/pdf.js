@@ -156,7 +156,6 @@ const generateHtml = async ({
             <th style="width:150px;">Name</th>
             <th style="width:150px;">Relationship</th>
             <th style="width:200px;">Primary Phone Number</th>
-            <th style="width:220px;">Secondary Phone Number</th>
             <th>Address</th>
           </tr>
         </thead>
@@ -169,7 +168,6 @@ const generateHtml = async ({
         <td>${element.name}</td>
         <td>${element.relationship}</td>
         <td>${element.primaryPhoneNumber}</td>
-        <td>${element.secondaryPhoneNumber}</td>
         <td>${element.address}</td>
       </tr>
       `;
@@ -190,7 +188,7 @@ const generateHtml = async ({
       content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0"
     />
     <style type="text/css">
-        @import url('https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@100;400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;600;700&family=Sofia+Sans:wght@100&display=swap');
 
         @page {
           margin: 24px;
@@ -205,7 +203,7 @@ const generateHtml = async ({
         }
         body
         {
-          font-family: 'Sofia Sans', sans-serif !important;
+          font-family: 'Inter', sans-serif !important;
         }
         header {
           padding-bottom: 20px;
@@ -238,7 +236,7 @@ const generateHtml = async ({
           color: #434343;
         }
         section {
-          margin-top: 10px;
+          margin-top: 12px;
           -webkit-column-break-inside: avoid;
           page-break-inside: avoid;
           break-inside: avoid;
@@ -408,7 +406,7 @@ const generateHtml = async ({
           transform: scaleX(-1);
         }
         .footer {
-          margin-top: 20px;
+          margin-top: 35px;
           display: flex;
           justify-content: flex-end;
           align-items: center;
@@ -442,7 +440,7 @@ const generateHtml = async ({
                 <label>Name</label> <lable>:</lable> 
               </div>
               <div>
-                <label>${firstName} ${lastName} (${nickName})</label>
+                <label>${firstName} ${lastName}${nickName ? ` (${nickName})` : ""})</label>
               </div>
             </div>
             <div class="row content-mt sr-mb">
@@ -539,7 +537,7 @@ const generateHtml = async ({
             </div>
           </div>
         </div>
-        <div class="column main-card">
+        <div class="column main-card" style="margin-left: 2px;">
           <h2 class="sub-title">Distinguishing Characteristics</h2>
           <div class="main-card-content">
             <div class="row content-mt sr-mb">
@@ -569,7 +567,7 @@ const generateHtml = async ({
           </div>
         </div>
       </section>
-      <section class="page-break">
+      <section>
         <h2 class="sub-title">Emergency Contact Information</h2>
         ${getEmergencyContactTable()}
       </section>
@@ -631,8 +629,6 @@ const generateHtml = async ({
                             <div class="dash-box-item"></div>
                           </div>
                           <div style="padding-top: 20px;">
-                            ${finger.leftFinger}
-                            ${finger.rightFinger}
                           </div>
                           <div>
                             <p class="finger-side">R</p>
@@ -669,7 +665,7 @@ const genarateFingerHtml = async () => {
       content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0"
     />
     <style type="text/css">
-        @import url('https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@100;400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;600;700&family=Sofia+Sans:wght@100&display=swap');
 
         *,
         *::before,
@@ -681,7 +677,7 @@ const genarateFingerHtml = async () => {
         }
         body
         {
-          font-family: 'Sofia Sans', sans-serif !important;
+          font-family: 'Inter', sans-serif !important;
           background: #FFFFFF;
         }
         main {

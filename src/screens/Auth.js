@@ -72,7 +72,7 @@ function Auth({ onAuthClick, securityLevel }) {
           {securityLevel === 1
             ? "Use PIN, Pattern or Password to Authenticate"
             : securityLevel === 2
-            ? "Use Fingerprint of FaceID to Authenticate"
+            ? "Use Fingerprint or FaceID to Authenticate"
             : ""}
         </Text>
         <CustomButton
