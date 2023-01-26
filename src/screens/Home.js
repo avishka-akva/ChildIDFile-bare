@@ -303,6 +303,12 @@ function Home({ navigation }) {
           </View>
         </View>
       </View>
+      {childrenList.length > 0 && (
+        <View style={{ height: 12, width: "100%", overflow: "hidden" }}>
+          <View style={styles.bottomBoxShadow}></View>
+        </View>
+      )}
+
       {childrenList.length ? (
         childrenList.length <= 2 ? (
           <ScrollView
@@ -366,7 +372,18 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 24,
     marginTop: 12,
-    marginBottom: 24,
+    marginBottom: 12,
+  },
+  bottomBoxShadow: {
+    width: "100%",
+    height: 1,
+    backgroundColor: "#D3D3D3",
+    shadowColor: "#000",
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 3,
+    marginBottom: 12,
   },
   mainText: {
     color: "#434343",
