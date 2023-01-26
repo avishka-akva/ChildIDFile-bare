@@ -328,6 +328,7 @@ function Home({ navigation }) {
                 justifyContent: "center",
                 alignItems: "center",
               }}
+              onEndReached={() => setFlatListScroll("up")}
             />
             <TouchableWithoutFeedback onPress={onPressFlatListDown}>
               <View style={styles.backgroundCircle}>
@@ -405,7 +406,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLOR.white,
     borderRadius: 36,
     marginVertical: 12,
-    // marginHorizontal: 6,
+    marginHorizontal: 3,
     shadowColor: "#000",
     shadowOffset: { width: 1, height: 2 },
     shadowOpacity: 0.15,

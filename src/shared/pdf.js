@@ -1,8 +1,7 @@
 import { printToFileAsync, printAsync, Orientation } from "expo-print";
 import { shareAsync } from "expo-sharing";
-import { Platform, ToastAndroid } from "react-native";
+import { Platform } from "react-native";
 import * as FileSystem from "expo-file-system";
-import { StorageAccessFramework } from "expo-file-system";
 import { CHARACTERISTICS_OPTIONS } from "./const";
 import {
   INDEX_LEFT,
@@ -21,6 +20,7 @@ import { getAge } from "./date";
 // import { Asset } from "expo-asset";
 // import * as ImageManipulator from "expo-image-manipulator";
 // import exampleImage from "../../assets/pdfLogo.png";
+// import { StorageAccessFramework } from "expo-file-system";
 
 const fingers = [
   { name: "Thumb Finger", leftFinger: THUMB_LEFT, rightFinger: THUMB_RIGHT },
@@ -707,8 +707,8 @@ const genarateFingerHtml = async () => {
         .card {
           border-radius: 18px;
           background: #FFFFFF;
-          box-shadow: 0 3px 6px #C8C8C8; 
-          width: 30%;
+          border: 1px solid #C8C8C8;
+          width: 300px;
           padding: 18px;
         }
         .box-title {
