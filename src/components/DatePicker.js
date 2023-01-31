@@ -68,6 +68,7 @@ function DatePicker({ value, onChange, error = false }) {
             is24Hour={true}
             display="spinner"
             onChange={_onChangeIos}
+            maximumDate={new Date()}
           />
           <View style={globleStyles.modalFooter}>
             <CustomButton
@@ -101,6 +102,7 @@ function DatePicker({ value, onChange, error = false }) {
           is24Hour={true}
           style={globleStyles.input}
           onChange={_onChange}
+          maximumDate={new Date()}
         />
       ) : null}
     </>
