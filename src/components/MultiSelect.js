@@ -77,9 +77,9 @@ function MultiSelect({ options, values = [], onItemChanged, view }) {
             <Text style={[globleStyles.body, { marginRight: 8 }]}>
               Select Options...
             </Text>
-            {values.length > 0 && (
+            {/* {values.length > 0 && (
               <Text style={globleStyles.body}>({values.length}) Selected</Text>
-            )}
+            )} */}
           </View>
           <Icon name="chevron-down" color={"#707070"} size={16} />
         </View>
@@ -114,7 +114,7 @@ function MultiSelect({ options, values = [], onItemChanged, view }) {
                 onPress={() => onItemPress(option.id)}
               >
                 <View style={styles.item}>
-                  <Text style={globleStyles.body}>{option.name}</Text>
+                  <Text style={[globleStyles.body, {color: isSelected ? COLOR.primary : "#707070"}]}>{option.name}</Text>
                   {isSelected && (
                     <AntDesign name="check" size={16} color={COLOR.primary} />
                   )}
