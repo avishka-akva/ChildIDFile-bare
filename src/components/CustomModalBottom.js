@@ -1,4 +1,4 @@
-import { View, Modal, Pressable } from "react-native";
+import { View, Modal, Pressable, Platform } from "react-native";
 
 function CustomModalBottom({
   children,
@@ -17,6 +17,10 @@ function CustomModalBottom({
     modalContainnerStyles.paddingHorizontal = 28;
     modalContainnerStyles.borderTopLeftRadius = 18;
     modalContainnerStyles.borderTopRightRadius = 18;
+  }
+
+  if (Platform.OS === "ios") {
+    modalContainnerStyles.paddingBottom = 28;
   }
 
   return (

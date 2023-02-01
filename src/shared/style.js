@@ -81,4 +81,42 @@ export const globleStyles = StyleSheet.create({
   modalIcon: {
     marginVertical: 33,
   },
+  badgeContainer: {
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: COLOR.danger,
+    borderRadius: 19,
+  },
+  badgeContainerPrimary: {
+    borderColor: COLOR.primary,
+  },
+  badgeText: {
+    color: COLOR.danger,
+    fontSize: 8,
+    marginVertical: 3,
+    marginHorizontal: 8,
+  },
+  badgeTextPrimary: {
+    color: COLOR.primary,
+  },
+  rowSpaceBetween: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  rowSpaceAround: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  rowEnd: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  rowCenter: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

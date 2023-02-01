@@ -100,7 +100,7 @@ function Home({ navigation }) {
       <CustomModal
         transparent
         visible={deleteModelOpen}
-        setVisible={() => {
+        onClose={() => {
           setDeleteModelOpen(false);
         }}
       >
@@ -162,8 +162,8 @@ function Home({ navigation }) {
     return (
       <View key={item.id} style={styles.item}>
         {/* {item.incomplete && (
-          <View style={styles.incompleteContainer}>
-            <Text style={[styles.incompleteText, { fontSize: 6 }]}>
+          <View style={globleStyles.badgeContainer}>
+            <Text style={[globleStyles.badgeText, { fontSize: 6 }]}>
               Incomplete
             </Text>
           </View>
@@ -476,19 +476,6 @@ const styles = StyleSheet.create({
     borderColor: "#B6B6B6",
     alignItems: "center",
     justifyContent: "center",
-  },
-  incompleteContainer: {
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#EA304E",
-    borderRadius: 19,
-    marginBottom: 12,
-  },
-  incompleteText: {
-    color: "#EA304E",
-    fontSize: 8,
-    marginVertical: 3,
-    marginHorizontal: 8,
   },
   menuOption: {
     flexDirection: "row",

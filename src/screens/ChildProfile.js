@@ -328,7 +328,7 @@ function ChildProfile({ navigation, route }) {
         <CustomModal
           transparent
           visible={childManage.exit}
-          setVisible={() => {
+          onClose={() => {
             dispatch(toggleExit());
           }}
         >
