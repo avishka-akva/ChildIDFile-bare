@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableWithoutFeedback, Pressable } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
+import { AntDesign } from "@expo/vector-icons";
 
 import Card from "../components/Card";
 import { globleStyles } from "../shared/style";
 import CustomButton from "../components/CustomButton";
-import Accordion from "../components/Accordion";
+
 import {
   setTrusedContactValues,
   addNewTrusedContact,
@@ -19,6 +20,7 @@ import {
 } from "../shared/const";
 import CustomModal from "../components/CustomModal";
 import CustomTextInput from "../components/CustomTextInput";
+import BulletList from "../components/BulletList";
 
 function ContactForm({
   index,
@@ -94,145 +96,233 @@ function ContactForm({
   );
 }
 
-function TrustedContact({ index, setEditStartedTrue }) {
-  const dispatch = useDispatch();
-  const { trustedContacts } = useSelector((state) => state.currentChild);
-  const { trustedContactsError } = useSelector((state) => state.childManage);
+function AddNewContact({ onSubmit }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [addContact, setAddContact] = useState({ ...TRUSTED_CONTACT_INIT_OBJ });
+  const [errorList, setErrorList] = useState([]);
 
-  const [openIndex, setOpenIndex] = useState(null);
-  const [contactEditIndex, setContactEditIndex] = useState(null);
-  const [tempTrustedContacts, setTempTrustedContacts] = useState([
-    { ...TRUSTED_CONTACT_INIT_OBJ },
-  ]);
-  const [isNameEmpty, setIsNameEmpty] = useState(false);
+  const onModalClose = () => setIsModalOpen(false);
 
-  const onBlur = () => {
-    setEditStartedTrue(index);
+  const onAddInputChanged = ({ propertyName, value }) => {
+    const newValue = { ...addContact };
+    newValue[propertyName] = value;
+    setAddContact(newValue);
   };
 
-  const onErrorModelColse = () => {
-    dispatch(setTrustedContactsError(false));
+  const addToErrorList = (name) => {
+    if (getFeildValidation(name)) return;
+    setErrorList((previousValue) => [...previousValue, name]);
   };
 
-  const onInputChanged = ({ index, propertyName, value }) => {
-    try {
-      if (contactEditIndex !== index) setContactEditIndex(index);
-
-      let newTempTrustedContacts = [...tempTrustedContacts];
-      newTempTrustedContacts[index][propertyName] = value;
-      setTempTrustedContacts(newTempTrustedContacts);
-    } catch (error) {
-      console.error("🚀 ~ file: TrustedContact.js:39 ~ ", error);
-    }
+  const getFeildValidation = (name) => {
+    return errorList.includes(name);
   };
 
-  const onSaveDetails = () => {
-    const index = tempTrustedContacts.length - 1;
-
+  const _onSubmit = () => {
     // validation
-    if (!tempTrustedContacts[index].name) {
-      setIsNameEmpty(true);
+    if (!addContact.name) {
+      addToErrorList("name");
       return;
     }
-    // clear validation 
-    setIsNameEmpty(false);
+    // clear error list
+    if (errorList.length) setErrorList([]);
 
-
-    if (tempTrustedContacts.length > trustedContacts.length) {
-      dispatch(addNewTrusedContact(tempTrustedContacts[index]));
-    } else {
-      dispatch(
-        setTrusedContactValues({
-          index,
-          values: { ...tempTrustedContacts[index] },
-        })
-      );
-    }
-
-    if (tempTrustedContacts.length === MAXIMUM_TRUSTED_CONTACT_COUNT) {
-      setOpenIndex(index);
-    } else {
-      setOpenIndex(null);
-    }
-    setContactEditIndex(null);
+    onSubmit({ ...addContact });
+    onModalClose();
+    setAddContact({ ...TRUSTED_CONTACT_INIT_OBJ });
   };
 
-  const onAddAdditional = () => {
-    setTempTrustedContacts([
-      ...tempTrustedContacts,
-      { ...TRUSTED_CONTACT_INIT_OBJ },
-    ]);
-    setContactEditIndex(null);
-  };
-
-  const onItemsDelete = (name) => {
-    setTempTrustedContacts(
-      tempTrustedContacts.filter((item) => item.name !== name)
-    );
-    dispatch(removeTrusedContactValues(name));
-  };
-
-  const viewItem = (index, values) => (
-    <Accordion
-      key={index}
-      index={index}
-      title={values.name}
-      open={index === openIndex}
-      isEdit={index === contactEditIndex}
-      onSave={() => {
-        dispatch(
-          setTrusedContactValues({
-            index: contactEditIndex,
-            values: { ...tempTrustedContacts[index] },
-          })
-        );
-        setContactEditIndex(null);
-      }}
-      onSaveCancel={() => {
-        tempTrustedContacts[index] = { ...trustedContacts[index] };
-        setTempTrustedContacts([...tempEmergencyContacts]);
-        setContactEditIndex(null);
-      }}
-      onOpen={(index) => {
-        setOpenIndex(index);
-      }}
-      onDelete={() => onItemsDelete(values.name)}
-    >
-      <ContactForm
-        index={index}
-        values={values}
-        onInputChanged={onInputChanged}
+  return (
+    <>
+      <CustomButton
+        onPress={() => setIsModalOpen(true)}
+        text={"Add New Contact"}
+        buttonStyle={[
+          globleStyles.buttonPrimary,
+          {
+            backgroundColor: COLOR.primary,
+            height: 36,
+          },
+        ]}
       />
-    </Accordion>
-  );
 
-  const editItem = (index, values) => {
-    return (
-      <Card key={index}>
+      <CustomModal
+        visible={isModalOpen}
+        onClose={onModalClose}
+        alignItems="stretch"
+        paddingHorizontal={28}
+        backgroundClose={false}
+      >
+        <View style={[globleStyles.rowSpaceBetween, { marginBottom: 22 }]}>
+          <Text>Add New Contact</Text>
+          <TouchableWithoutFeedback onPress={onModalClose}>
+            <AntDesign name="close" size={12} color="#000" />
+          </TouchableWithoutFeedback>
+        </View>
         <ContactForm
-          index={index}
-          values={values}
-          onInputChanged={onInputChanged}
-          onBlur={onBlur}
-          isNameEmpty={isNameEmpty}
+          values={addContact}
+          onInputChanged={onAddInputChanged}
+          validate={getFeildValidation}
         />
-      </Card>
-    );
+
+        <View style={[globleStyles.rowEnd, { marginTop: 22 }]}>
+          <CustomButton
+            onPress={_onSubmit}
+            text={"Save Details"}
+            buttonStyle={[
+              globleStyles.buttonPrimary,
+              {
+                backgroundColor: COLOR.primary,
+                width: 116,
+                height: 36,
+              },
+            ]}
+          />
+        </View>
+      </CustomModal>
+    </>
+  );
+}
+
+function ContactModal({
+  isModalOpen,
+  onModalClose,
+  selectedIdex,
+  contacts,
+  onItemDelete,
+  onSubmit,
+}) {
+  const [contactValues, setContactValues] = useState({
+    ...TRUSTED_CONTACT_INIT_OBJ,
+  });
+  const [isEditStarted, setIsEditStarted] = useState(false);
+
+  const onInputChanged = ({ propertyName, value }) => {
+    const newValue = { ...contactValues };
+    newValue[propertyName] = value;
+    setContactValues(newValue);
+  };
+
+  const _onSubmit = () => {
+    // validation
+    const { name, relationship, primaryPhoneNumber } = contactValues;
+    if (!name || !relationship || !primaryPhoneNumber) {
+      return;
+    }
+
+    onSubmit(selectedIdex, { ...contactValues });
+    onModalClose();
+    setContactValues({ ...TRUSTED_CONTACT_INIT_OBJ });
+  };
+
+  const _onDelete = () => {
+    onItemDelete(selectedIdex);
+    onModalClose();
   };
 
   useEffect(() => {
-    if (trustedContacts.length > 0) {
-      const currentContact = trustedContacts.map((contact) => ({
-        ...contact,
-      }));
-      setTempTrustedContacts(currentContact);
-    }
-  }, []);
+    setContactValues({
+      ...contacts[selectedIdex],
+    });
+    setIsEditStarted(false);
+  }, [selectedIdex, isModalOpen]);
 
-  const isSave =
-    tempTrustedContacts.length > trustedContacts.length ||
-    (contactEditIndex !== 0 &&
-      contactEditIndex === tempTrustedContacts.length - 1);
+  return (
+    <CustomModal
+      visible={isModalOpen}
+      onClose={onModalClose}
+      alignItems="stretch"
+      paddingHorizontal={28}
+      backgroundClose={false}
+    >
+      <View style={[globleStyles.rowSpaceBetween, { marginBottom: 22 }]}>
+        <Text>Add New Contact</Text>
+        <TouchableWithoutFeedback onPress={onModalClose}>
+          <AntDesign name="close" size={12} color="#000" />
+        </TouchableWithoutFeedback>
+      </View>
+
+      <ContactForm
+        values={contactValues}
+        onInputChanged={onInputChanged}
+        onBlur={() => {
+          if (!isEditStarted) setIsEditStarted(true);
+        }}
+      />
+
+      <View style={[globleStyles.rowSpaceAround, { marginTop: 22 }]}>
+        <CustomButton
+          onPress={_onDelete}
+          text={"Delete"}
+          buttonStyle={[
+            globleStyles.buttonPrimary,
+            {
+              backgroundColor: COLOR.primary,
+              width: 116,
+              height: 36,
+            },
+          ]}
+        />
+        <CustomButton
+          onPress={_onSubmit}
+          text={"Save Details"}
+          buttonStyle={[
+            globleStyles.buttonPrimary,
+            {
+              backgroundColor: isEditStarted ? COLOR.primary : "#dddddd",
+              width: 116,
+              height: 36,
+            },
+          ]}
+          disabled={!isEditStarted}
+        />
+      </View>
+    </CustomModal>
+  );
+}
+
+function TrustedContact({ index, setEditStartedTrue }) {
+  const dispatch = useDispatch();
+  const { trustedContacts } = useSelector((state) => state.currentChild);
+
+  const [selectedIdex, setSelectedIdex] = useState(0);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+
+  const onItemDelete = (index) => {
+    dispatch(removeTrusedContactValues(index));
+  };
+
+  const ViewItem = ({ index, values }) => (
+    <Pressable
+      key={index}
+      onPress={() => {
+        setSelectedIdex(index);
+        setIsContactModalOpen(true);
+      }}
+    >
+      <Card>
+        <View style={[globleStyles.rowSpaceBetween, { marginBottom: 8 }]}>
+          <Text>Contact {index + 1}</Text>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              onItemDelete(index);
+            }}
+          >
+            <AntDesign name="close" size={12} color="#000" />
+          </TouchableWithoutFeedback>
+        </View>
+        <Text style={[globleStyles.body, { marginBottom: 4 }]}>
+          Name : {values.name}
+        </Text>
+        <Text style={[globleStyles.body, { marginBottom: 4 }]}>
+          Relationship : {values.relationship}
+        </Text>
+        <Text style={globleStyles.body}>
+          Primary Phone Number : {values.primaryPhoneNumber}
+        </Text>
+      </Card>
+    </Pressable>
+  );
 
   return (
     <View style={styles.main}>
@@ -244,49 +334,50 @@ function TrustedContact({ index, setEditStartedTrue }) {
           {trustedContacts.length}/{MAXIMUM_TRUSTED_CONTACT_COUNT} added
         </Text>
       </View>
-      {tempTrustedContacts.map((contactItem, index) => {
-        if (
-          trustedContacts.length < MAXIMUM_TRUSTED_CONTACT_COUNT &&
-          tempTrustedContacts.length - 1 === index
-        ) {
-          return editItem(index, contactItem);
-        }
-        return viewItem(index, contactItem);
-      })}
 
-      {trustedContacts.length < MAXIMUM_TRUSTED_CONTACT_COUNT && (
-        <View style={styles.addButtonContainer}>
-          <CustomButton
-            onPress={isSave ? onSaveDetails : onAddAdditional}
-            text={isSave ? "Save Details" : "Add Additional Contacts"}
-            backgroundColor={COLOR.primary}
-            buttonWidth={"100%"}
+      <View style={styles.titleContainer}>
+        <Text style={[globleStyles.title, styles.subTitle]}>
+          Added Contact List
+        </Text>
+        <AddNewContact
+          onSubmit={(values) => dispatch(addNewTrusedContact(values))}
+        />
+      </View>
+
+      {trustedContacts.length > 0 ? (
+        trustedContacts.map((contactItem, index) => (
+          <ViewItem index={index} values={contactItem} />
+        ))
+      ) : (
+        <View>
+          <BulletList
+            containerStyle={{ marginTop: 20 }}
+            childStyle={{
+              width: "95%",
+              color: "#707070",
+              fontSize: 14,
+              fontFamily: "Segoe-UI",
+            }}
+            pointSize={14}
+            pointColor="#707070"
+            options={[
+              "Please Add Trusted Contacts (Parents/Guardians)",
+              "In this section, you can add up to 10 additional Trusted Contacts or Locations where your child may be",
+            ]}
           />
         </View>
       )}
 
-      <CustomModal
-        visible={trustedContactsError}
-        setVisible={onErrorModelColse}
-      >
-        <Text
-          style={{
-            fontSize: 16,
-            color: "#434343",
-            textAlign: "center",
-            marginVertical: 24,
-          }}
-        >
-          Please Add one or up to 10 Trusted Contacts
-        </Text>
-        <CustomButton
-          onPress={onErrorModelColse}
-          text={"Continue"}
-          backgroundColor={COLOR.primary}
-          buttonWidth={130}
-          buttonHeight={40}
-        />
-      </CustomModal>
+      <ContactModal
+        selectedIdex={selectedIdex}
+        isModalOpen={isContactModalOpen}
+        onModalClose={() => setIsContactModalOpen(false)}
+        contacts={trustedContacts}
+        onItemDelete={onItemDelete}
+        onSubmit={(index, values) =>
+          dispatch(setTrusedContactValues({ index, values }))
+        }
+      />
     </View>
   );
 }

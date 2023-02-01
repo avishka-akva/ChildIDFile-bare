@@ -140,9 +140,7 @@ const childSlice = createSlice({
     },
     removeTrusedContactValues(state, action) {
       if (state.trustedContacts.length > 0) {
-        state.trustedContacts = state.trustedContacts.filter(
-          (item) => item.name !== action.payload
-        );
+        state.trustedContacts.splice(action.payload,1);
       }
     },
     setImage1(state, action) {
