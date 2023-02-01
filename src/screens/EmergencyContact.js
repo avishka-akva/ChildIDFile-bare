@@ -120,7 +120,7 @@ function ContactForm({
   );
 }
 
-function AddNewContact({ onBlur, onSubmit }) {
+function AddNewContact({ onSubmit }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addContact, setAddContact] = useState({ ...CONTACT_INIT_OBJ });
   const [errorList, setErrorList] = useState([]);
@@ -189,7 +189,6 @@ function AddNewContact({ onBlur, onSubmit }) {
         <ContactForm
           values={addContact}
           onInputChanged={onAddInputChanged}
-          onBlur={onBlur}
           validate={getFeildValidation}
         />
 
@@ -213,7 +212,6 @@ function AddNewContact({ onBlur, onSubmit }) {
 }
 
 function ContactModal({
-  onBlur,
   isModalOpen,
   onModalClose,
   selectedIdex,
@@ -224,6 +222,7 @@ function ContactModal({
   const [contactValues, setContactValues] = useState({
     ...CONTACT_INIT_OBJ,
   });
+  const [isEditStarted, setIsEditStarted] = useState(false);
 
   const onInputChanged = ({ propertyName, value }) => {
     const newValue = { ...contactValues };
@@ -252,6 +251,7 @@ function ContactModal({
     setContactValues({
       ...emergencyContacts[selectedIdex],
     });
+    setIsEditStarted(false)
   }, [selectedIdex, isModalOpen]);
 
   return (
@@ -260,6 +260,7 @@ function ContactModal({
       onClose={onModalClose}
       alignItems="stretch"
       paddingHorizontal={28}
+      backgroundClose={false}
     >
       <View style={[globleStyles.rowSpaceBetween, { marginBottom: 22 }]}>
         <Text>Add New Contact</Text>
@@ -271,7 +272,9 @@ function ContactModal({
       <ContactForm
         values={contactValues}
         onInputChanged={onInputChanged}
-        onBlur={onBlur}
+        onBlur={() => {
+          if (!isEditStarted) setIsEditStarted(true)
+        }}
       />
 
       <View style={[globleStyles.rowSpaceAround, { marginTop: 22 }]}>
@@ -293,11 +296,12 @@ function ContactModal({
           buttonStyle={[
             globleStyles.buttonPrimary,
             {
-              backgroundColor: COLOR.primary,
+              backgroundColor: isEditStarted ? COLOR.primary : "#dddddd",
               width: 116,
               height: 36,
             },
           ]}
+          disabled={!isEditStarted}
         />
       </View>
     </CustomModal>
@@ -310,10 +314,6 @@ function EmergencyContact({ index, setEditStartedTrue }) {
 
   const [selectedIdex, setSelectedIdex] = useState(0);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
-
-  const onBlur = () => {
-    setEditStartedTrue(index);
-  };
 
   const onItemDelete = (index) => {
     dispatch(removeEmergencyContactValues(index));
@@ -367,7 +367,6 @@ function EmergencyContact({ index, setEditStartedTrue }) {
         </Text>
         <AddNewContact
           onSubmit={(values) => dispatch(addNewEmergencyContact(values))}
-          onBlur={onBlur}
         />
       </View>
 

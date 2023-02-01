@@ -10,6 +10,7 @@ function CustomButton({
   buttonHeight = 48,
   color = "#fff",
   fontSize = 16,
+  disabled = false,
 }) {
   return (
     <TouchableOpacity
@@ -26,6 +27,7 @@ function CustomButton({
               height: buttonHeight,
             }
       }
+      disabled={disabled}
     >
       <Text
         style={
@@ -34,7 +36,7 @@ function CustomButton({
             : {
                 color,
                 fontSize,
-                textAlign: "center"
+                textAlign: "center",
               }
         }
       >
