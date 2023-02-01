@@ -9,6 +9,7 @@ import {
 import { Feather as Icon } from "@expo/vector-icons";
 import { COLOR } from "../shared/const";
 import Card from "./Card";
+import { globleStyles } from "../shared/style";
 
 function Accordion({
   index,
@@ -16,10 +17,6 @@ function Accordion({
   onOpen,
   title,
   children,
-  onDelete,
-  isEdit,
-  onSave,
-  onSaveCancel,
 }) {
   const height = open ? "auto" : 0;
   // const bottomRadius = open ? 0 : 8;
@@ -58,22 +55,19 @@ function Accordion({
               alignItems: "center",
             }}
           >
-            {isEdit ? (
-              <>
-                <TouchableOpacity onPress={() => (onSave ? onSave() : null)}>
-                  <Text style={styles.headerText}>Save</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => (onSaveCancel ? onSaveCancel() : null)}
-                >
-                  <Text style={styles.headerText}>Cancel</Text>
-                </TouchableOpacity>
-              </>
-            ) : (
-              <TouchableOpacity onPress={() => (onDelete ? onDelete() : null)}>
-                <Text style={styles.headerText}>Delete</Text>
-              </TouchableOpacity>
-            )}
+            <View
+              style={[
+                globleStyles.badgeContainer,
+                globleStyles.badgeContainerPrimary,
+                {marginRight: 12}
+              ]}
+            >
+              <Text
+                style={[globleStyles.badgeText, globleStyles.badgeTextPrimary]}
+              >
+                Contact {index + 1}
+              </Text>
+            </View>
 
             <TouchableWithoutFeedback onPress={() => onOpen(null)}>
               <View style={styles.backgroundCircle}>
