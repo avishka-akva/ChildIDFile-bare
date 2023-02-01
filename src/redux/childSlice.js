@@ -126,9 +126,7 @@ const childSlice = createSlice({
     },
     removeEmergencyContactValues(state, action) {
       if (state.emergencyContacts.length > 0) {
-        state.emergencyContacts = state.emergencyContacts.filter(
-          (item) => item.name !== action.payload
-        );
+        state.emergencyContacts.splice(action.payload,1);
       }
     },
     setTrusedContactValues(state, action) {

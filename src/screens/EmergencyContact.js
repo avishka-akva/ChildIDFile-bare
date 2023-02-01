@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Pressable,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
+import { AntDesign } from "@expo/vector-icons";
 
 import Card from "../components/Card";
 import { globleStyles } from "../shared/style";
@@ -19,8 +27,15 @@ import {
 } from "../shared/const";
 import CustomModal from "../components/CustomModal";
 import CustomTextInput from "../components/CustomTextInput";
+import BulletList from "../components/BulletList";
 
-function ContactForm({ index, onInputChanged, onBlur, values, validate = () => false, }) {
+function ContactForm({
+  index = 0,
+  onInputChanged,
+  onBlur,
+  values,
+  validate = () => false,
+}) {
   const {
     name,
     relationship,
@@ -105,40 +120,21 @@ function ContactForm({ index, onInputChanged, onBlur, values, validate = () => f
   );
 }
 
-function EmergencyContact({ index, setEditStartedTrue }) {
-  const dispatch = useDispatch();
-  const { emergencyContacts } = useSelector((state) => state.currentChild);
-  const { emergencyContactsError } = useSelector((state) => state.childManage);
-
-  const [openIndex, setOpenIndex] = useState(null);
-  const [contactEditIndex, setContactEditIndex] = useState(null);
-  const [tempEmergencyContacts, setTempEmergencyContacts] = useState([
-    { ...CONTACT_INIT_OBJ },
-  ]);
+function AddNewContact({ onBlur, onSubmit }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [addContact, setAddContact] = useState({ ...CONTACT_INIT_OBJ });
   const [errorList, setErrorList] = useState([]);
 
-  const onBlur = () => {
-    setEditStartedTrue(index);
-  };
+  const onModalClose = () => setIsModalOpen(false);
 
-  const onErrorModelColse = () => {
-    dispatch(setEmergencyContactsError(false));
-  };
-
-  const onInputChanged = ({ index, propertyName, value }) => {
-    try {
-      if (contactEditIndex !== index) setContactEditIndex(index);
-
-      let newTempEmergencyContacts = [...tempEmergencyContacts];
-      newTempEmergencyContacts[index][propertyName] = value;
-      setTempEmergencyContacts(newTempEmergencyContacts);
-    } catch (error) {
-      console.error("🚀 ~ file: EmergencyContact.js:40 ~ ", error);
-    }
+  const onAddInputChanged = ({ propertyName, value }) => {
+    const newValue = { ...addContact };
+    newValue[propertyName] = value;
+    setAddContact(newValue);
   };
 
   const addToErrorList = (name) => {
-    if(getFeildValidation(name)) return;
+    if (getFeildValidation(name)) return;
     setErrorList((previousValue) => [...previousValue, name]);
   };
 
@@ -146,116 +142,214 @@ function EmergencyContact({ index, setEditStartedTrue }) {
     return errorList.includes(name);
   };
 
-  const onSaveDetails = () => {
-    const index = tempEmergencyContacts.length - 1;
-
+  const _onSubmit = () => {
     // validation
-    const { name, relationship, primaryPhoneNumber } =
-      tempEmergencyContacts[index];
+    const { name, relationship, primaryPhoneNumber } = addContact;
     if (!name || !relationship || !primaryPhoneNumber) {
-      if(!name) addToErrorList('name');
-      if(!relationship) addToErrorList('relationship');
-      if(!primaryPhoneNumber) addToErrorList('primaryPhoneNumber');
+      if (!name) addToErrorList("name");
+      if (!relationship) addToErrorList("relationship");
+      if (!primaryPhoneNumber) addToErrorList("primaryPhoneNumber");
       return;
     }
     // clear error list
     if (errorList.length) setErrorList([]);
 
-    if (tempEmergencyContacts.length > emergencyContacts.length) {
-      dispatch(addNewEmergencyContact(tempEmergencyContacts[index]));
-    } else {
-      dispatch(
-        setEmergencyContactValues({
-          index,
-          values: { ...tempEmergencyContacts[index] },
-        })
-      );
-    }
-
-    if (tempEmergencyContacts.length === MAXIMUM_EMERGENCY_CONTACT_COUNT) {
-      setOpenIndex(index);
-    } else {
-      setOpenIndex(null);
-    }
-    setContactEditIndex(null);
+    onSubmit({ ...addContact });
+    onModalClose();
+    setAddContact({ ...CONTACT_INIT_OBJ });
   };
 
-  const onAddAdditional = () => {
-    setTempEmergencyContacts([
-      ...tempEmergencyContacts,
-      { ...CONTACT_INIT_OBJ },
-    ]);
-    setContactEditIndex(null);
-  };
-
-  const onItemsDelete = (name) => {
-    setTempEmergencyContacts(
-      tempEmergencyContacts.filter((item) => item.name !== name)
-    );
-    dispatch(removeEmergencyContactValues(name));
-  };
-
-  const viewItem = (index, values) => (
-    <Accordion
-      key={index}
-      index={index}
-      title={values.name}
-      open={index === openIndex}
-      isEdit={index === contactEditIndex}
-      onSave={() => {
-        dispatch(
-          setEmergencyContactValues({
-            index: contactEditIndex,
-            values: { ...tempEmergencyContacts[index] },
-          })
-        );
-        setContactEditIndex(null);
-      }}
-      onSaveCancel={() => {
-        tempEmergencyContacts[index] = { ...emergencyContacts[index] };
-        setTempEmergencyContacts([...tempEmergencyContacts]);
-        setContactEditIndex(null);
-      }}
-      onOpen={(index) => {
-        setOpenIndex(index);
-      }}
-      onDelete={() => onItemsDelete(values.name)}
-    >
-      <ContactForm
-        index={index}
-        values={values}
-        onInputChanged={onInputChanged}
+  return (
+    <>
+      <CustomButton
+        onPress={() => setIsModalOpen(true)}
+        text={"Add New Contact"}
+        buttonStyle={[
+          globleStyles.buttonPrimary,
+          {
+            backgroundColor: COLOR.primary,
+            height: 36,
+          },
+        ]}
       />
-    </Accordion>
-  );
 
-  const editItem = (index, values) => {
-    return (
-      <Card key={index}>
+      <CustomModal
+        visible={isModalOpen}
+        onClose={onModalClose}
+        alignItems="stretch"
+        paddingHorizontal={28}
+        backgroundClose={false}
+      >
+        <View style={[globleStyles.rowSpaceBetween, { marginBottom: 22 }]}>
+          <Text>Add New Contact</Text>
+          <TouchableWithoutFeedback onPress={onModalClose}>
+            <AntDesign name="close" size={12} color="#000" />
+          </TouchableWithoutFeedback>
+        </View>
         <ContactForm
-          index={index}
-          values={values}
-          onInputChanged={onInputChanged}
+          values={addContact}
+          onInputChanged={onAddInputChanged}
           onBlur={onBlur}
           validate={getFeildValidation}
         />
-      </Card>
-    );
+
+        <View style={[globleStyles.rowEnd, { marginTop: 22 }]}>
+          <CustomButton
+            onPress={_onSubmit}
+            text={"Save Details"}
+            buttonStyle={[
+              globleStyles.buttonPrimary,
+              {
+                backgroundColor: COLOR.primary,
+                width: 116,
+                height: 36,
+              },
+            ]}
+          />
+        </View>
+      </CustomModal>
+    </>
+  );
+}
+
+function ContactModal({
+  onBlur,
+  isModalOpen,
+  onModalClose,
+  selectedIdex,
+  emergencyContacts,
+  onItemDelete,
+  onSubmit,
+}) {
+  const [contactValues, setContactValues] = useState({
+    ...CONTACT_INIT_OBJ,
+  });
+
+  const onInputChanged = ({ propertyName, value }) => {
+    const newValue = { ...contactValues };
+    newValue[propertyName] = value;
+    setContactValues(newValue);
+  };
+
+  const _onSubmit = () => {
+    // validation
+    const { name, relationship, primaryPhoneNumber } = contactValues;
+    if (!name || !relationship || !primaryPhoneNumber) {
+      return;
+    }
+
+    onSubmit(selectedIdex, { ...contactValues });
+    onModalClose();
+    setContactValues({ ...CONTACT_INIT_OBJ });
+  };
+
+  const _onDelete = () => {
+    onItemDelete(selectedIdex);
+    onModalClose();
   };
 
   useEffect(() => {
-    if (emergencyContacts.length > 0) {
-      const currentContact = emergencyContacts.map((contact) => ({
-        ...contact,
-      }));
-      setTempEmergencyContacts(currentContact);
-    }
-  }, []);
+    setContactValues({
+      ...emergencyContacts[selectedIdex],
+    });
+  }, [selectedIdex, isModalOpen]);
 
-  const isSave =
-    tempEmergencyContacts.length > emergencyContacts.length ||
-    (contactEditIndex !== 0 &&
-      contactEditIndex === tempEmergencyContacts.length - 1);
+  return (
+    <CustomModal
+      visible={isModalOpen}
+      onClose={onModalClose}
+      alignItems="stretch"
+      paddingHorizontal={28}
+    >
+      <View style={[globleStyles.rowSpaceBetween, { marginBottom: 22 }]}>
+        <Text>Add New Contact</Text>
+        <TouchableWithoutFeedback onPress={onModalClose}>
+          <AntDesign name="close" size={12} color="#000" />
+        </TouchableWithoutFeedback>
+      </View>
+
+      <ContactForm
+        values={contactValues}
+        onInputChanged={onInputChanged}
+        onBlur={onBlur}
+      />
+
+      <View style={[globleStyles.rowSpaceAround, { marginTop: 22 }]}>
+        <CustomButton
+          onPress={_onDelete}
+          text={"Delete"}
+          buttonStyle={[
+            globleStyles.buttonPrimary,
+            {
+              backgroundColor: COLOR.primary,
+              width: 116,
+              height: 36,
+            },
+          ]}
+        />
+        <CustomButton
+          onPress={_onSubmit}
+          text={"Save Details"}
+          buttonStyle={[
+            globleStyles.buttonPrimary,
+            {
+              backgroundColor: COLOR.primary,
+              width: 116,
+              height: 36,
+            },
+          ]}
+        />
+      </View>
+    </CustomModal>
+  );
+}
+
+function EmergencyContact({ index, setEditStartedTrue }) {
+  const dispatch = useDispatch();
+  const { emergencyContacts } = useSelector((state) => state.currentChild);
+
+  const [selectedIdex, setSelectedIdex] = useState(0);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+
+  const onBlur = () => {
+    setEditStartedTrue(index);
+  };
+
+  const onItemDelete = (index) => {
+    dispatch(removeEmergencyContactValues(index));
+  };
+
+  const ViewItem = ({ index, values }) => (
+    <Pressable
+      key={index}
+      onPress={() => {
+        setSelectedIdex(index);
+        setIsContactModalOpen(true);
+      }}
+    >
+      <Card>
+        <View style={[globleStyles.rowSpaceBetween, { marginBottom: 8 }]}>
+          <Text>Contact {index + 1}</Text>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              onItemDelete(index);
+            }}
+          >
+            <AntDesign name="close" size={12} color="#000" />
+          </TouchableWithoutFeedback>
+        </View>
+        <Text style={[globleStyles.body, { marginBottom: 4 }]}>
+          Name : {values.name}
+        </Text>
+        <Text style={[globleStyles.body, { marginBottom: 4 }]}>
+          Relationship : {values.relationship}
+        </Text>
+        <Text style={globleStyles.body}>
+          Primary Phone Number : {values.primaryPhoneNumber}
+        </Text>
+      </Card>
+    </Pressable>
+  );
 
   return (
     <View style={styles.main}>
@@ -267,58 +361,50 @@ function EmergencyContact({ index, setEditStartedTrue }) {
           {emergencyContacts.length}/{MAXIMUM_EMERGENCY_CONTACT_COUNT} added
         </Text>
       </View>
-      {tempEmergencyContacts.map((contactItem, index) => {
-        if (
-          emergencyContacts.length < MAXIMUM_EMERGENCY_CONTACT_COUNT &&
-          tempEmergencyContacts.length - 1 === index
-        ) {
-          return editItem(index, contactItem);
-        }
-        return viewItem(index, contactItem);
-      })}
+      <View style={styles.titleContainer}>
+        <Text style={[globleStyles.title, styles.subTitle]}>
+          Added Contact List
+        </Text>
+        <AddNewContact
+          onSubmit={(values) => dispatch(addNewEmergencyContact(values))}
+          onBlur={onBlur}
+        />
+      </View>
 
-      {emergencyContacts.length < MAXIMUM_EMERGENCY_CONTACT_COUNT && (
-        <View style={styles.addButtonContainer}>
-          <CustomButton
-            onPress={isSave ? onSaveDetails : onAddAdditional}
-            text={isSave ? "Save Details" : "Add Additional Contacts"}
-            backgroundColor={COLOR.primary}
-            buttonWidth={"100%"}
+      {emergencyContacts.length > 0 ? (
+        emergencyContacts.map((contactItem, index) => (
+          <ViewItem index={index} values={contactItem} />
+        ))
+      ) : (
+        <View>
+          <BulletList
+            containerStyle={{ marginTop: 20 }}
+            childStyle={{
+              width: "95%",
+              color: "#707070",
+              fontSize: 14,
+              fontFamily: "Segoe-UI",
+            }}
+            pointSize={14}
+            pointColor="#707070"
+            options={[
+              "Please Add one or up to 3 Emergency Contacts (Parents/Guardians)",
+              "In the next section, you can add up to 10 additional Trusted Contacts or Locations where your child may be",
+            ]}
           />
         </View>
       )}
-      <CustomModal
-        visible={emergencyContactsError}
-        setVisible={onErrorModelColse}
-      >
-        <Text
-          style={{
-            fontSize: 16,
-            color: "#434343",
-            textAlign: "center",
-          }}
-        >
-          Please Add one or up to 3 Emergency Contacts (Parents/Guardians)
-        </Text>
-        <Text
-          style={{
-            fontSize: 14,
-            color: "#434343",
-            textAlign: "center",
-            marginVertical: 14,
-          }}
-        >
-          In the next section, you can add up to 10 additional Trusted Contacts
-          or Locations where your child may be
-        </Text>
-        <CustomButton
-          onPress={onErrorModelColse}
-          text={"Continue"}
-          backgroundColor={COLOR.primary}
-          buttonWidth={130}
-          buttonHeight={40}
-        />
-      </CustomModal>
+
+      <ContactModal
+        selectedIdex={selectedIdex}
+        isModalOpen={isContactModalOpen}
+        onModalClose={() => setIsContactModalOpen(false)}
+        emergencyContacts={emergencyContacts}
+        onItemDelete={onItemDelete}
+        onSubmit={(index, values) =>
+          dispatch(setEmergencyContactValues({ index, values }))
+        }
+      />
     </View>
   );
 }
@@ -333,7 +419,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 12,
   },
-  title: {},
+  subTitle: {
+    fontSize: 16,
+  },
   added: {
     color: "#707070",
     fontSize: 12,
