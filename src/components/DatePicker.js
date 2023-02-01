@@ -59,7 +59,7 @@ function DatePicker({ value, onChange, error = false }) {
       {Platform.OS === "ios" ? (
         <CustomModal
           visible={showDatePicker}
-          setVisible={() => setShowDatePicker(false)}
+          onClose={() => setShowDatePicker(false)}
         >
           <DateTimePicker
             testID="dateTimePicker"
