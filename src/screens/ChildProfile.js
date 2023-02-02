@@ -336,7 +336,7 @@ function ChildProfile({ navigation, route }) {
         </View>
 
         {renderStep()}
-        
+
         <CustomModal
           transparent
           visible={childManage.exit}
@@ -344,15 +344,16 @@ function ChildProfile({ navigation, route }) {
             dispatch(toggleExit());
           }}
         >
-          <Text style={globleStyles.modalText}>
-            Are you sure, do you want to exit?
-          </Text>
-          <View style={globleStyles.modalIcon}>
+          <View style={[globleStyles.rowCenter,{marginBottom: 28}]}>
             <AntDesign
               name="exclamationcircleo"
-              size={54}
+              size={26}
               color={COLOR.primary}
+              style={{marginRight: 18}}
             />
+            <Text style={globleStyles.modalText}>
+              Are you sure, do you want to exit?
+            </Text>
           </View>
           <View style={globleStyles.modalFooter}>
             <CustomButton

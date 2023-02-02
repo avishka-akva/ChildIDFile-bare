@@ -151,9 +151,10 @@ function AddNewContact({ onSubmit }) {
           globleStyles.buttonPrimary,
           {
             backgroundColor: COLOR.primary,
-            height: 36,
+            height: 32,
           },
         ]}
+        fontSize={15}
       />
 
       <CustomModal
@@ -365,7 +366,7 @@ function TrustedContact({ index, setEditStartedTrue }) {
         </Text>
       </View>
 
-      <View style={styles.titleContainer}>
+      <View style={[styles.titleContainer, {marginTop: 6}]}>
         <Text style={[globleStyles.title, styles.subTitle]}>
           Added Contact List
         </Text>
@@ -422,7 +423,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 12,
   },
-  title: {},
+  subTitle: {
+    fontSize: 18,
+  },
   added: {
     color: "#707070",
     fontSize: 12,

@@ -108,16 +108,17 @@ function Home({ navigation }) {
         onClose={() => {
           setDeleteModelOpen(false);
         }}
+        paddingHorizontal={38}
       >
-        <Text style={globleStyles.modalText}>
-          Are you sure, you want to delete this profile?
-        </Text>
-        <View style={globleStyles.modalIcon}>
+        <View style={[globleStyles.rowCenter, { marginBottom: 28 }]}>
           <AntDesign
             name="exclamationcircleo"
-            size={54}
+            size={26}
             color={COLOR.primary}
           />
+          <Text style={[globleStyles.modalText, {marginLeft: 14}]}>
+            Are you sure, you want to delete this profile?
+          </Text>
         </View>
         <View style={globleStyles.modalFooter}>
           <CustomButton
@@ -210,7 +211,13 @@ function Home({ navigation }) {
               </View>
             )}
 
-              <Text style={styles.description}>{`${item.gender === "male" ? "Son" : item.gender === "female" ? "Daughter" : "X" }`}</Text>
+            <Text style={styles.description}>{`${
+              item.gender === "male"
+                ? "Son"
+                : item.gender === "female"
+                ? "Daughter"
+                : "X"
+            }`}</Text>
             <Text style={styles.description}>{item.dob}</Text>
           </View>
           <View style={styles.itemAction}>
