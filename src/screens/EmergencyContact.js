@@ -3,9 +3,9 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   Pressable,
+  ScrollView,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";
@@ -13,7 +13,6 @@ import { AntDesign } from "@expo/vector-icons";
 import Card from "../components/Card";
 import { globleStyles } from "../shared/style";
 import CustomButton from "../components/CustomButton";
-import Accordion from "../components/Accordion";
 import {
   setEmergencyContactValues,
   addNewEmergencyContact,
@@ -124,7 +123,11 @@ function AddNewContact({ onSubmit }) {
   const [addContact, setAddContact] = useState({ ...CONTACT_INIT_OBJ });
   const [errorList, setErrorList] = useState([]);
 
-  const onModalClose = () => setIsModalOpen(false);
+  const onModalClose = () => {
+    setIsModalOpen(false);
+    setAddContact({ ...CONTACT_INIT_OBJ });
+    setErrorList([]);
+  };
 
   const onAddInputChanged = ({ propertyName, value }) => {
     const newValue = { ...addContact };
@@ -176,35 +179,46 @@ function AddNewContact({ onSubmit }) {
         visible={isModalOpen}
         onClose={onModalClose}
         alignItems="stretch"
-        paddingHorizontal={28}
+        paddingHorizontal={0}
         backgroundClose={false}
+        keyboardAvoid
       >
-        <View style={[globleStyles.rowSpaceBetween, { marginBottom: 22 }]}>
-          <Text>Add New Contact</Text>
-          <TouchableWithoutFeedback onPress={onModalClose}>
-            <AntDesign name="close" size={12} color="#000" />
-          </TouchableWithoutFeedback>
-        </View>
-        <ContactForm
-          values={addContact}
-          onInputChanged={onAddInputChanged}
-          validate={getFeildValidation}
-        />
+        <ScrollView
+          style={{
+            width: "100%",
+            backgroundColor: "#fff",
+            paddingHorizontal: 28,
+          }}
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={[globleStyles.rowSpaceBetween, { marginBottom: 22 }]}>
+            <Text>Add New Contact</Text>
+            <TouchableWithoutFeedback onPress={onModalClose}>
+              <AntDesign name="close" size={12} color="#000" />
+            </TouchableWithoutFeedback>
+          </View>
 
-        <View style={[globleStyles.rowEnd, { marginTop: 22 }]}>
-          <CustomButton
-            onPress={_onSubmit}
-            text={"Save Details"}
-            buttonStyle={[
-              globleStyles.buttonPrimary,
-              {
-                backgroundColor: COLOR.primary,
-                width: 116,
-                height: 36,
-              },
-            ]}
+          <ContactForm
+            values={addContact}
+            onInputChanged={onAddInputChanged}
+            validate={getFeildValidation}
           />
-        </View>
+          <View style={[globleStyles.rowEnd, { marginTop: 22 }]}>
+            <CustomButton
+              onPress={_onSubmit}
+              text={"Save Details"}
+              buttonStyle={[
+                globleStyles.buttonPrimary,
+                {
+                  backgroundColor: COLOR.primary,
+                  width: 116,
+                  height: 36,
+                },
+              ]}
+            />
+          </View>
+        </ScrollView>
       </CustomModal>
     </>
   );
@@ -250,7 +264,7 @@ function ContactModal({
     setContactValues({
       ...emergencyContacts[selectedIdex],
     });
-    setIsEditStarted(false)
+    setIsEditStarted(false);
   }, [selectedIdex, isModalOpen]);
 
   return (
@@ -258,51 +272,62 @@ function ContactModal({
       visible={isModalOpen}
       onClose={onModalClose}
       alignItems="stretch"
-      paddingHorizontal={28}
+      paddingHorizontal={0}
       backgroundClose={false}
+      keyboardAvoid
     >
-      <View style={[globleStyles.rowSpaceBetween, { marginBottom: 22 }]}>
-        <Text>Add New Contact</Text>
-        <TouchableWithoutFeedback onPress={onModalClose}>
-          <AntDesign name="close" size={12} color="#000" />
-        </TouchableWithoutFeedback>
-      </View>
-
-      <ContactForm
-        values={contactValues}
-        onInputChanged={onInputChanged}
-        onBlur={() => {
-          if (!isEditStarted) setIsEditStarted(true)
+      <ScrollView
+        style={{
+          width: "100%",
+          backgroundColor: "#fff",
+          paddingHorizontal: 28,
         }}
-      />
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={[globleStyles.rowSpaceBetween, { marginBottom: 22 }]}>
+          <Text>Add New Contact</Text>
+          <TouchableWithoutFeedback onPress={onModalClose}>
+            <AntDesign name="close" size={12} color="#000" />
+          </TouchableWithoutFeedback>
+        </View>
 
-      <View style={[globleStyles.rowSpaceAround, { marginTop: 22 }]}>
-        <CustomButton
-          onPress={_onDelete}
-          text={"Delete"}
-          buttonStyle={[
-            globleStyles.buttonPrimary,
-            {
-              backgroundColor: COLOR.primary,
-              width: 116,
-              height: 36,
-            },
-          ]}
+        <ContactForm
+          values={contactValues}
+          onInputChanged={onInputChanged}
+          onBlur={() => {
+            if (!isEditStarted) setIsEditStarted(true);
+          }}
         />
-        <CustomButton
-          onPress={_onSubmit}
-          text={"Save Details"}
-          buttonStyle={[
-            globleStyles.buttonPrimary,
-            {
-              backgroundColor: isEditStarted ? COLOR.primary : "#dddddd",
-              width: 116,
-              height: 36,
-            },
-          ]}
-          disabled={!isEditStarted}
-        />
-      </View>
+
+        <View style={[globleStyles.rowSpaceAround, { marginTop: 22 }]}>
+          <CustomButton
+            onPress={_onDelete}
+            text={"Delete"}
+            buttonStyle={[
+              globleStyles.buttonPrimary,
+              {
+                backgroundColor: COLOR.primary,
+                width: 116,
+                height: 36,
+              },
+            ]}
+          />
+          <CustomButton
+            onPress={_onSubmit}
+            text={"Save Details"}
+            buttonStyle={[
+              globleStyles.buttonPrimary,
+              {
+                backgroundColor: isEditStarted ? COLOR.primary : "#dddddd",
+                width: 116,
+                height: 36,
+              },
+            ]}
+            disabled={!isEditStarted}
+          />
+        </View>
+      </ScrollView>
     </CustomModal>
   );
 }
@@ -320,7 +345,6 @@ function EmergencyContact({ index, setEditStartedTrue }) {
 
   const ViewItem = ({ index, values }) => (
     <Pressable
-      key={index}
       onPress={() => {
         setSelectedIdex(index);
         setIsContactModalOpen(true);
@@ -371,7 +395,7 @@ function EmergencyContact({ index, setEditStartedTrue }) {
 
       {emergencyContacts.length > 0 ? (
         emergencyContacts.map((contactItem, index) => (
-          <ViewItem index={index} values={contactItem} />
+          <ViewItem key={index} index={index} values={contactItem} />
         ))
       ) : (
         <View>
