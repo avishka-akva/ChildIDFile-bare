@@ -145,7 +145,6 @@ function ChildProfile({ navigation, route }) {
       ),
     },
     {
-      required: true,
       compnent: (
         <EmergencyContact
           index={5}
@@ -153,17 +152,8 @@ function ChildProfile({ navigation, route }) {
           setEditStartedFalse={setEditStartedFalse}
         />
       ),
-      validation: () => {
-        if (currentChild.emergencyContacts.length === 0) {
-          dispatch(setEmergencyContactsError(true));
-          return false;
-        }
-
-        return true;
-      },
     },
     {
-      required: true,
       compnent: (
         <TrustedContact
           index={6}
@@ -171,13 +161,6 @@ function ChildProfile({ navigation, route }) {
           setEditStartedFalse={setEditStartedFalse}
         />
       ),
-      validation: () => {
-        if (currentChild.trustedContacts.length === 0) {
-          dispatch(setTrustedContactsError(true));
-          return false;
-        }
-        return true;
-      },
     },
     {
       compnent: (
