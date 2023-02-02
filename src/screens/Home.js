@@ -14,7 +14,13 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector, useDispatch } from "react-redux";
-import { Feather, AntDesign, MaterialIcons, Entypo } from "@expo/vector-icons";
+import {
+  Feather,
+  AntDesign,
+  MaterialIcons,
+  Entypo,
+  FontAwesome,
+} from "@expo/vector-icons";
 import {
   Menu,
   MenuOptions,
@@ -202,18 +208,41 @@ function Home({ navigation }) {
           <View style={styles.itemAction}>
             <CustomButton
               // onPress={() => onEdit(item.id)}
-              onPress={() => onEdit(item.id, !item.incomplete)}
+              onPress={() => onEdit(item.id)}
               text={item.incomplete ? "Complete" : "Edit"}
               buttonStyle={[globleStyles.buttonPrimary, styles.buttonStyle]}
               textStyle={styles.buttonTextStyle}
-              leftIcon={<MaterialIcons name="edit" size={16} color="#B6B6B6" />}
+              leftIcon={
+                item.incomplete ? (
+                  <Feather
+                    style={{ marginRight: 4 }}
+                    name="edit"
+                    size={14}
+                    color={COLOR.white}
+                  />
+                ) : (
+                  <MaterialIcons
+                    style={{ marginRight: 4 }}
+                    name="edit"
+                    size={14}
+                    color={COLOR.white}
+                  />
+                )
+              }
             />
             <CustomButton
               onPress={() => onShare(item.id)}
               text="Share"
               buttonStyle={[globleStyles.buttonPrimary, styles.buttonStyle]}
               textStyle={styles.buttonTextStyle}
-              leftIcon={<MaterialIcons name="edit" size={16} color="#B6B6B6" />}
+              leftIcon={
+                <FontAwesome
+                  style={{ marginRight: 4 }}
+                  name="share"
+                  size={14}
+                  color={COLOR.white}
+                />
+              }
             />
           </View>
           <Text style={styles.lastUpdate}>
@@ -348,7 +377,7 @@ function Home({ navigation }) {
               }
             />
             <TouchableWithoutFeedback onPress={onPressFlatListDown}>
-              <View style={[styles.backgroundCircle, { bottom: 80 }]}>
+              <View style={[styles.backgroundCircle, { bottom: 90 }]}>
                 <Feather
                   name={`chevron-${flatListScroll}`}
                   style={{ marginTop: flatListScroll === "down" ? 5 : 0 }}
@@ -522,10 +551,11 @@ const styles = StyleSheet.create({
     width: 60,
     borderRadius: 30,
     position: "absolute",
-    bottom: 10,
+    bottom: 20,
     right: 20,
   },
   buttonStyle: {
+    flexDirection: "row",
     backgroundColor: COLOR.primary,
     width: 100,
     height: 38,

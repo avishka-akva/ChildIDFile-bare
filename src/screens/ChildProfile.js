@@ -336,6 +336,7 @@ function ChildProfile({ navigation, route }) {
         </View>
 
         {renderStep()}
+        
         <CustomModal
           transparent
           visible={childManage.exit}

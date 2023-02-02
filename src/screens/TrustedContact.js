@@ -325,7 +325,6 @@ function TrustedContact({ index, setEditStartedTrue }) {
 
   const ViewItem = ({ index, values }) => (
     <Pressable
-      key={index}
       onPress={() => {
         setSelectedIdex(index);
         setIsContactModalOpen(true);
@@ -377,7 +376,7 @@ function TrustedContact({ index, setEditStartedTrue }) {
 
       {trustedContacts.length > 0 ? (
         trustedContacts.map((contactItem, index) => (
-          <ViewItem index={index} values={contactItem} />
+          <ViewItem key={index} index={index} values={contactItem} />
         ))
       ) : (
         <View>

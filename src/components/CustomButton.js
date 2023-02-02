@@ -11,6 +11,7 @@ function CustomButton({
   color = "#fff",
   fontSize = 16,
   disabled = false,
+  leftIcon
 }) {
   return (
     <TouchableOpacity
@@ -29,6 +30,7 @@ function CustomButton({
       }
       disabled={disabled}
     >
+      {leftIcon ? leftIcon : null}
       <Text
         style={
           textStyle
