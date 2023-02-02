@@ -167,12 +167,16 @@ function Home({ navigation }) {
       >
         <View key={item.id} style={styles.item}>
           <View style={{ flexDirection: "row" }}>
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               {item.incomplete && (
                 <View style={globleStyles.badgeContainer}>
-                  <Text style={globleStyles.badgeText}>
-                    Incomplete
-                  </Text>
+                  <Text style={globleStyles.badgeText}>Incomplete</Text>
                 </View>
               )}
             </View>
@@ -300,18 +304,32 @@ function Home({ navigation }) {
 
       {childrenList.length ? (
         childrenList.length <= 2 ? (
-          <ScrollView
-            style={{
-              paddingHorizontal: 24,
-            }}
-            contentContainerStyle={{
-              flexGrow: 1,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <RenderSingleColumnItems />
-          </ScrollView>
+          <>
+            <ScrollView
+              style={{
+                paddingHorizontal: 24,
+              }}
+              contentContainerStyle={{
+                flexGrow: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <RenderSingleColumnItems />
+            </ScrollView>
+            <TouchableWithoutFeedback
+              onPress={() => navigation.navigate("ChildProfile")}
+            >
+              <View
+                style={[
+                  styles.backgroundCircle,
+                  { backgroundColor: COLOR.primary },
+                ]}
+              >
+                <Feather name={"plus"} color={COLOR.white} size={40} />
+              </View>
+            </TouchableWithoutFeedback>
+          </>
         ) : (
           <View style={styles.childrenListContainer}>
             <FlatList
@@ -324,9 +342,13 @@ function Home({ navigation }) {
                 alignItems: "center",
               }}
               onEndReached={() => setFlatListScroll("up")}
+              onScroll={(event) =>
+                event.nativeEvent.contentOffset.y <= 0 &&
+                setFlatListScroll("down")
+              }
             />
             <TouchableWithoutFeedback onPress={onPressFlatListDown}>
-              <View style={styles.backgroundCircle}>
+              <View style={[styles.backgroundCircle, { bottom: 80 }]}>
                 <Feather
                   name={`chevron-${flatListScroll}`}
                   style={{ marginTop: flatListScroll === "down" ? 5 : 0 }}
@@ -335,19 +357,31 @@ function Home({ navigation }) {
                 />
               </View>
             </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
+              onPress={() => navigation.navigate("ChildProfile")}
+            >
+              <View
+                style={[
+                  styles.backgroundCircle,
+                  { backgroundColor: COLOR.primary },
+                ]}
+              >
+                <Feather name={"plus"} color={COLOR.white} size={40} />
+              </View>
+            </TouchableWithoutFeedback>
           </View>
         )
       ) : (
         <EmptyHomeView />
       )}
-      <View style={styles.buttonContainer}>
+      {/* <View style={styles.buttonContainer}>
         <CustomButton
           onPress={() => navigation.navigate("ChildProfile")}
           text={"Add Profile"}
           backgroundColor={COLOR.primary}
           color="#FFFFFF"
         />
-      </View>
+      </View> */}
       <DeleteModal />
     </SafeAreaView>
   );
@@ -484,11 +518,11 @@ const styles = StyleSheet.create({
     backgroundColor: COLOR.white,
     borderWidth: 1,
     borderColor: COLOR.primary,
-    height: 50,
-    width: 50,
-    borderRadius: 25,
+    height: 60,
+    width: 60,
+    borderRadius: 30,
     position: "absolute",
-    bottom: 5,
+    bottom: 10,
     right: 20,
   },
   buttonStyle: {
