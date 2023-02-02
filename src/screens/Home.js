@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,7 +6,6 @@ import {
   Image,
   FlatList,
   ScrollView,
-  Dimensions,
   TouchableOpacity,
   Linking,
   TouchableWithoutFeedback,
@@ -168,7 +167,7 @@ function Home({ navigation }) {
     return (
       <Pressable
         onPress={() => {
-          console.log("view");
+          onDownlod(item.id);
         }}
       >
         <View key={item.id} style={styles.item}>
@@ -186,7 +185,10 @@ function Home({ navigation }) {
                 </View>
               )}
             </View>
-            <TouchableOpacity onPress={() => onDelete(item.id)}>
+            <TouchableOpacity
+              style={{ padding: 5 }}
+              onPress={() => onDelete(item.id)}
+            >
               <AntDesign name="close" size={16} color="#B6B6B6" />
             </TouchableOpacity>
           </View>
@@ -194,15 +196,21 @@ function Home({ navigation }) {
             <Text style={styles.itemName}>
               {`${item.firstName} ${item.lastName}`}
             </Text>
-            <Image
-              style={styles.itemImage}
-              source={
-                item.image1
-                  ? { uri: `data:image/jpg;base64,${item.image1}` }
-                  : require("../assets/userImage.png")
-              }
-            />
-            <Text style={styles.description}>{item.nickName}</Text>
+            {item.image1 ? (
+              <Image
+                style={styles.itemImage}
+                source={{ uri: `data:image/jpg;base64,${item.image1}` }}
+              />
+            ) : (
+              <View style={styles.defaulImageContainer}>
+                <Image
+                  style={styles.defaulImage}
+                  source={require("../assets/userImage.png")}
+                />
+              </View>
+            )}
+
+              <Text style={styles.description}>{`${item.gender === "male" ? "Son" : item.gender === "female" ? "Daughter" : "X" }`}</Text>
             <Text style={styles.description}>{item.dob}</Text>
           </View>
           <View style={styles.itemAction}>
@@ -273,11 +281,11 @@ function Home({ navigation }) {
     <SafeAreaView style={globleStyles.container}>
       <View style={styles.mainTextContainer}>
         <Text style={styles.mainText}>
-          {childrenList.length > 0 ? "Saved Child Profiles" : "Welcome"}
+          {childrenList.length > 0 ? "Child Profiles" : "Welcome"}
         </Text>
         <View style={styles.mainRight}>
           {childrenList.length > 0 && (
-            <Text style={styles.childrenCount}>{childrenList.length}</Text>
+            <Text style={styles.childrenCount}>{childrenList.length}/10</Text>
           )}
           <View>
             <Menu>
@@ -386,31 +394,25 @@ function Home({ navigation }) {
                 />
               </View>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback
-              onPress={() => navigation.navigate("ChildProfile")}
-            >
-              <View
-                style={[
-                  styles.backgroundCircle,
-                  { backgroundColor: COLOR.primary },
-                ]}
+            {childrenList.length <= 10 && (
+              <TouchableWithoutFeedback
+                onPress={() => navigation.navigate("ChildProfile")}
               >
-                <Feather name={"plus"} color={COLOR.white} size={40} />
-              </View>
-            </TouchableWithoutFeedback>
+                <View
+                  style={[
+                    styles.backgroundCircle,
+                    { backgroundColor: COLOR.primary },
+                  ]}
+                >
+                  <Feather name={"plus"} color={COLOR.white} size={40} />
+                </View>
+              </TouchableWithoutFeedback>
+            )}
           </View>
         )
       ) : (
         <EmptyHomeView />
       )}
-      {/* <View style={styles.buttonContainer}>
-        <CustomButton
-          onPress={() => navigation.navigate("ChildProfile")}
-          text={"Add Profile"}
-          backgroundColor={COLOR.primary}
-          color="#FFFFFF"
-        />
-      </View> */}
       <DeleteModal />
     </SafeAreaView>
   );
@@ -439,7 +441,7 @@ const styles = StyleSheet.create({
   },
   mainText: {
     color: "#434343",
-    fontSize: 28,
+    fontSize: 24,
     fontFamily: "SegoeUI-SemiBold",
   },
   mainRight: {
@@ -459,7 +461,7 @@ const styles = StyleSheet.create({
   },
   childrenCount: {
     color: "#9B9B9B",
-    fontSize: 36,
+    fontSize: 22,
     marginRight: 12,
   },
   childrenListContainer: {
@@ -494,8 +496,22 @@ const styles = StyleSheet.create({
     borderColor: COLOR.primary,
     borderWidth: 3,
     backgroundColor: "#F5F5F5",
-    resizeMode: "center",
+    resizeMode: "contain",
     marginBottom: 6,
+  },
+  defaulImageContainer: {
+    width: 78,
+    height: 78,
+    borderRadius: 78 / 2,
+    backgroundColor: "#dddddd",
+    marginBottom: 6,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  defaulImage: {
+    width: 48,
+    height: 48,
+    resizeMode: "contain",
   },
   itemName: {
     color: "#000000",

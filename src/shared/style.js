@@ -86,7 +86,7 @@ export const globleStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLOR.danger,
     borderRadius: 19,
-    marginLeft: 14
+    marginLeft: 26
   },
   badgeContainerPrimary: {
     borderColor: COLOR.primary,
