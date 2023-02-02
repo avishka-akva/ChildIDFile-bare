@@ -34,6 +34,8 @@ const initialState = {
   image1: null,
   image2: null,
   fingerPrint: null,
+  lastEditDate: "",
+  lastEditTime: "",
 };
 
 const childSlice = createSlice({

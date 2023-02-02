@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Linking,
   TouchableWithoutFeedback,
+  Pressable,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector, useDispatch } from "react-redux";
@@ -32,7 +33,6 @@ import {
   TERMS_AND_CONDITION_URL,
 } from "../shared/const";
 import BulletList from "../components/BulletList";
-
 
 function EmptyHomeView() {
   const style = {
@@ -160,70 +160,63 @@ function Home({ navigation }) {
 
   const RenderChildItem = ({ item }) => {
     return (
-      <View key={item.id} style={styles.item}>
-        {/* {item.incomplete && (
-          <View style={globleStyles.badgeContainer}>
-            <Text style={[globleStyles.badgeText, { fontSize: 6 }]}>
-              Incomplete
-            </Text>
+      <Pressable
+        onPress={() => {
+          console.log("view");
+        }}
+      >
+        <View key={item.id} style={styles.item}>
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+              {item.incomplete && (
+                <View style={globleStyles.badgeContainer}>
+                  <Text style={globleStyles.badgeText}>
+                    Incomplete
+                  </Text>
+                </View>
+              )}
+            </View>
+            <TouchableOpacity onPress={() => onDelete(item.id)}>
+              <AntDesign name="close" size={16} color="#B6B6B6" />
+            </TouchableOpacity>
           </View>
-        )} */}
-
-        <View style={styles.itemHeader}>
-          <Image
-            style={styles.itemImage}
-            source={
-              item.image1
-                ? { uri: `data:image/jpg;base64,${item.image1}` }
-                : require("../assets/userImage.png")
-            }
-          />
-          <Text style={styles.itemName}>
-            {`${item.firstName} ${item.lastName}`}
+          <View style={styles.itemHeader}>
+            <Text style={styles.itemName}>
+              {`${item.firstName} ${item.lastName}`}
+            </Text>
+            <Image
+              style={styles.itemImage}
+              source={
+                item.image1
+                  ? { uri: `data:image/jpg;base64,${item.image1}` }
+                  : require("../assets/userImage.png")
+              }
+            />
+            <Text style={styles.description}>{item.nickName}</Text>
+            <Text style={styles.description}>{item.dob}</Text>
+          </View>
+          <View style={styles.itemAction}>
+            <CustomButton
+              // onPress={() => onEdit(item.id)}
+              onPress={() => onEdit(item.id, !item.incomplete)}
+              text={item.incomplete ? "Complete" : "Edit"}
+              buttonStyle={[globleStyles.buttonPrimary, styles.buttonStyle]}
+              textStyle={styles.buttonTextStyle}
+              leftIcon={<MaterialIcons name="edit" size={16} color="#B6B6B6" />}
+            />
+            <CustomButton
+              onPress={() => onShare(item.id)}
+              text="Share"
+              buttonStyle={[globleStyles.buttonPrimary, styles.buttonStyle]}
+              textStyle={styles.buttonTextStyle}
+              leftIcon={<MaterialIcons name="edit" size={16} color="#B6B6B6" />}
+            />
+          </View>
+          <Text style={styles.lastUpdate}>
+            Last Update on {item.lastEditDate} at {item.lastEditTime}
           </Text>
         </View>
-        <View style={styles.itemFooter}>
-          <View style={styles.itemAction}>
-            <TouchableOpacity
-              style={[styles.iconContainer, { marginRight: 28 }]}
-              onPress={() => onEdit(item.id)}
-            >
-              <MaterialIcons name="edit" size={16} color="#B6B6B6" />
-            </TouchableOpacity>
-
-            {!item.incomplete && (
-              <TouchableOpacity
-                style={[styles.iconContainer, { marginRight: 28 }]}
-                onPress={() => onShare(item.id)}
-              >
-                <Feather name="external-link" size={16} color="#B6B6B6" />
-              </TouchableOpacity>
-            )}
-
-            <TouchableOpacity
-              style={styles.iconContainer}
-              onPress={() => onDelete(item.id)}
-            >
-              <AntDesign name="delete" size={16} color="#B6B6B6" />
-            </TouchableOpacity>
-          </View>
-          <CustomButton
-            onPress={() => onEdit(item.id, !item.incomplete)}
-            text={item.incomplete ? "Complete" : "View"}
-            buttonStyle={[
-              globleStyles.buttonPrimary,
-              {
-                backgroundColor: COLOR.primary,
-                width: 100,
-                height: 38,
-                marginTop: 22,
-              },
-            ]}
-            backgroundColor={COLOR.primary}
-            textStyle={{ fontSize: 14, color: COLOR.white, fontWeight: "600" }}
-          />
-        </View>
-      </View>
+      </Pressable>
     );
   };
 
@@ -395,7 +388,7 @@ const styles = StyleSheet.create({
     color: "#707070",
     fontSize: 16,
     textAlign: "center",
-    marginTop: 20,
+    marginTop: 6,
   },
   buttonContainer: {
     padding: 24,
@@ -425,26 +418,24 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 3,
     elevation: 2,
+    padding: 18,
   },
   itemHeader: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: COLOR.primary,
-    borderRadius: 36,
-    height: 144,
   },
   itemImage: {
     width: 78,
     height: 78,
     borderRadius: 78 / 2,
-    borderColor: COLOR.white,
+    borderColor: COLOR.primary,
     borderWidth: 3,
     backgroundColor: "#F5F5F5",
     resizeMode: "center",
     marginBottom: 6,
   },
   itemName: {
-    color: COLOR.white,
+    color: "#000000",
     fontSize: 24,
     fontWeight: "400",
     lineHeight: 28,
@@ -462,6 +453,9 @@ const styles = StyleSheet.create({
   },
   itemAction: {
     flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    marginVertical: 12,
   },
   itemFooter: {
     alignItems: "center",
@@ -496,6 +490,21 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 5,
     right: 20,
+  },
+  buttonStyle: {
+    backgroundColor: COLOR.primary,
+    width: 100,
+    height: 38,
+  },
+  buttonTextStyle: {
+    fontSize: 14,
+    color: COLOR.white,
+    fontWeight: "600",
+  },
+  lastUpdate: {
+    fontSize: 11,
+    textAlign: "center",
+    fontFamily: "SegoeUI-Italic",
   },
 });
 

@@ -22,8 +22,6 @@ import {
   setView,
   setHederNameShow,
   setShowFooter,
-  setEmergencyContactsError,
-  setTrustedContactsError,
 } from "../redux/childManageSlice";
 import {
   addChild,
@@ -42,6 +40,7 @@ import UploadPhoto from "./UploadPhoto";
 import Fingerprints from "./Fingerprints";
 import CustomModal from "../components/CustomModal";
 import { COLOR } from "../shared/const";
+import { formatDate } from "../shared/date";
 
 function ChildProfile({ navigation, route }) {
   const dispatch = useDispatch();
@@ -175,15 +174,36 @@ function ChildProfile({ navigation, route }) {
 
   const getChildWithId = () => {
     const id = uuid.v4();
-    return { ...currentChild, id };
+    const date = new Date();
+    return {
+      ...currentChild,
+      id,
+      lastEditDate: formatDate(date),
+      lastEditTime: date.toLocaleTimeString(),
+    };
   };
 
   const onFinished = () => {
+    const date = new Date();
     if (childId) {
       if (currentChild.incomplete) {
-        dispatch(finishIncompleteChild({ ...currentChild, id: childId }));
+        dispatch(
+          finishIncompleteChild({
+            ...currentChild,
+            id: childId,
+            lastEditDate: formatDate(date),
+            lastEditTime: date.toLocaleTimeString(),
+          })
+        );
       } else {
-        dispatch(updateChild({ ...currentChild, id: childId }));
+        dispatch(
+          updateChild({
+            ...currentChild,
+            id: childId,
+            lastEditDate: formatDate(date),
+            lastEditTime: date.toLocaleTimeString(),
+          })
+        );
       }
     } else {
       const newChild = getChildWithId();
@@ -210,7 +230,15 @@ function ChildProfile({ navigation, route }) {
     setCurrentStepIndex((previousValue) => ++previousValue);
 
     if (childId) {
-      dispatch(updateChild({ ...currentChild, id: childId }));
+      const date = new Date();
+      dispatch(
+        updateChild({
+          ...currentChild,
+          id: childId,
+          lastEditDate: formatDate(date),
+          lastEditTime: date.toLocaleTimeString(),
+        })
+      );
     }
   };
 

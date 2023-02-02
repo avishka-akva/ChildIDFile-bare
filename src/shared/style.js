@@ -93,8 +93,8 @@ export const globleStyles = StyleSheet.create({
   badgeText: {
     color: COLOR.danger,
     fontSize: 8,
-    marginVertical: 3,
-    marginHorizontal: 8,
+    marginVertical: 2,
+    marginHorizontal: 6,
   },
   badgeTextPrimary: {
     color: COLOR.primary,

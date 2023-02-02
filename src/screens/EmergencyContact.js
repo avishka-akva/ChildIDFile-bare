@@ -19,7 +19,6 @@ import {
   addNewEmergencyContact,
   removeEmergencyContactValues,
 } from "../redux/childSlice";
-import { setEmergencyContactsError } from "../redux/childManageSlice";
 import {
   COLOR,
   CONTACT_INIT_OBJ,
