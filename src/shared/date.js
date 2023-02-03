@@ -28,17 +28,26 @@ const MONTHS_NAME_SHORT = [
   "Dec",
 ];
 
-const getDate = (dateInt) => {
+const getDate2 = (dateInt) => {
   switch (dateInt) {
-    case (1, 21, 31):
+    case 1:
+    case 21:
+    case 31:
       return dateInt + "st";
-    case (2, 22):
+    case 2:
+    case 22:
       return dateInt + "nd";
-    case (3, 23):
+    case 3:
+    case 23:
       return dateInt + "rd";
     default:
       return dateInt + "th";
   }
+};
+
+const getDate = (dateInt) => {
+  if (dateInt < 10) return "0" + dateInt;
+  return dateInt;
 };
 
 export const formatDate = (dateObj) => {
