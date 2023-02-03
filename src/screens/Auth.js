@@ -77,9 +77,10 @@ function Auth({ onAuthClick, securityLevel }) {
         </Text>
         <CustomButton
           onPress={onAuthClick}
-          text={"Authenticate"}
+          text={"Unlock"}
           backgroundColor={COLOR.primary}
           color="#FFFFFF"
+          buttonWidth={100}
         />
       </View>
     </SafeAreaView>
