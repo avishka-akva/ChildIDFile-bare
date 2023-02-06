@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { TextInput, Text, View, Keyboard, Platform } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { globleStyles } from "../shared/style";
-import { setShowFooter } from "../redux/childManageSlice";
+// import { setShowFooter } from "../redux/childManageSlice";
 import { COLOR } from "../shared/const";
 
 function CustomTextInput({
@@ -17,7 +17,7 @@ function CustomTextInput({
   error = false,
   ...props
 }) {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { view } = useSelector((state) => state.childManage);
 
   const [_error, setError] = useState(false);
@@ -26,7 +26,7 @@ function CustomTextInput({
 
   const keyboardDidHideCallback = () => {
     localInputRef.current.blur?.();
-    dispatch(setShowFooter(true));
+    // dispatch(setShowFooter(true));
   };
 
   const _onBlur = () => {

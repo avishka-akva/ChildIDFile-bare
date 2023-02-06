@@ -21,7 +21,7 @@ import {
   setUpdate,
   setView,
   setHederNameShow,
-  setShowFooter,
+  // setShowFooter,
 } from "../redux/childManageSlice";
 import {
   addChild,
@@ -52,6 +52,7 @@ function ChildProfile({ navigation, route }) {
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [editStarted, setEditStarted] = useState(false);
+  const [showFooter, setShowFooter] = useState(true);
 
   const [errorList, setErrorList] = useState([]);
 
@@ -287,15 +288,27 @@ function ChildProfile({ navigation, route }) {
           return true;
         }
       );
+      return () => {
+        backHandler.remove();
+      };
+    } else {
+      // when keybord open in ios bottom navigation is auto hiding,
+      // that's why these two addListener have been used(to show navigation).
       const keyboardDidShowSubscription = Keyboard.addListener(
         "keyboardDidShow",
         () => {
-          dispatch(setShowFooter(false));
+          setShowFooter(false);
+        }
+      );
+      const keyboardDidHideSubscription = Keyboard.addListener(
+        "keyboardDidHide",
+        () => {
+          setShowFooter(true);
         }
       );
       return () => {
-        backHandler.remove();
         keyboardDidShowSubscription?.remove();
+        keyboardDidHideSubscription?.remove();
       };
     }
   }, []);
@@ -337,6 +350,53 @@ function ChildProfile({ navigation, route }) {
 
         {renderStep()}
 
+        {Platform.OS === "ios" && !showFooter && (
+          <View
+            style={[
+              styles.footer,
+              { paddingBottom: 100, paddingHorizontal: 0 },
+            ]}
+          >
+            {currentStepIndex > 0 && (
+              <CustomButton
+                onPress={() => previosStep()}
+                text={"Back to Previous Section"}
+                buttonStyle={globleStyles.buttonOutLine}
+                color="#000"
+                fontSize={12}
+              />
+            )}
+            <View style={styles.divider}></View>
+            {currentStepIndex !== steps.length - 1 ? (
+              <CustomButton
+                onPress={() => nextStep()}
+                text={
+                  childId
+                    ? childManage.view
+                      ? "Continue"
+                      : editStarted
+                      ? "Save & Continue"
+                      : "Continue"
+                    : editStarted
+                    ? "Save & Proceed"
+                    : steps[currentStepIndex].required
+                    ? "Next Section"
+                    : "Skip to Next Section"
+                }
+                buttonStyle={globleStyles.buttonPrimary}
+                fontSize={12}
+              />
+            ) : (
+              <CustomButton
+                onPress={onFinished}
+                text={"DONE"}
+                buttonStyle={globleStyles.buttonPrimary}
+                fontSize={12}
+              />
+            )}
+          </View>
+        )}
+
         <CustomModal
           transparent
           visible={childManage.exit}
@@ -344,12 +404,12 @@ function ChildProfile({ navigation, route }) {
             dispatch(toggleExit());
           }}
         >
-          <View style={[globleStyles.rowCenter,{marginBottom: 28}]}>
+          <View style={[globleStyles.rowCenter, { marginBottom: 28 }]}>
             <AntDesign
               name="exclamationcircleo"
               size={26}
               color={COLOR.primary}
-              style={{marginRight: 18}}
+              style={{ marginRight: 18 }}
             />
             <Text style={globleStyles.modalText}>
               Are you sure, do you want to exit?
@@ -382,7 +442,9 @@ function ChildProfile({ navigation, route }) {
           </View>
         </CustomModal>
       </ScrollView>
-      {childManage.showFooter && (
+
+      {/* this View auto hide on ios */}
+      {showFooter && (
         <View style={styles.footer}>
           {currentStepIndex > 0 && (
             <CustomButton
