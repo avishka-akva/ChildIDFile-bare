@@ -4,6 +4,7 @@ import {
   Dimensions,
   Pressable,
   KeyboardAvoidingView,
+  TouchableOpacity,
 } from "react-native";
 
 function CustomModal({
@@ -21,9 +22,7 @@ function CustomModal({
     <Modal transparent={transparent} visible={visible} onRequestClose={onClose}>
       <Pressable
         onPress={() => {
-          if (backgroundClose) {
-            onClose();
-          }
+          onClose();
         }}
         style={{
           flex: 1,
@@ -39,21 +38,24 @@ function CustomModal({
               width: "90%",
             }}
           >
-            <View
-              style={{
-                alignItems,
-                backgroundColor: "#FFFFFF",
-                paddingVertical,
-                paddingHorizontal,
-                borderRadius: 18,
-                // width: "90%",
-              }}
-            >
-              {children}
-            </View>
+            <TouchableOpacity activeOpacity={1}>
+              <View
+                style={{
+                  alignItems,
+                  backgroundColor: "#FFFFFF",
+                  paddingVertical,
+                  paddingHorizontal,
+                  borderRadius: 18,
+                  // width: "90%",
+                }}
+              >
+                {children}
+              </View>
+            </TouchableOpacity>
           </KeyboardAvoidingView>
         ) : (
-          <View
+          <TouchableOpacity
+            activeOpacity={1}
             style={{
               alignItems,
               backgroundColor: "#FFFFFF",
@@ -62,9 +64,10 @@ function CustomModal({
               borderRadius: 8,
               width: "90%",
             }}
+            pointerEvents="none"
           >
             {children}
-          </View>
+          </TouchableOpacity>
         )}
       </Pressable>
     </Modal>
