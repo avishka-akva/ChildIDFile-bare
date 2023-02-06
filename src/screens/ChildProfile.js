@@ -5,7 +5,7 @@ import {
   ScrollView,
   View,
   Text,
-  Keyboard,
+  // Keyboard,
   Platform,
   KeyboardAvoidingView,
 } from "react-native";
@@ -291,32 +291,34 @@ function ChildProfile({ navigation, route }) {
       return () => {
         backHandler.remove();
       };
-    } else {
+    } 
+    // else {
       // when keybord open in ios bottom navigation is auto hiding,
       // that's why these two addListener have been used(to show navigation).
-      const keyboardDidShowSubscription = Keyboard.addListener(
-        "keyboardDidShow",
-        () => {
-          setShowFooter(false);
-        }
-      );
-      const keyboardDidHideSubscription = Keyboard.addListener(
-        "keyboardDidHide",
-        () => {
-          setShowFooter(true);
-        }
-      );
-      return () => {
-        keyboardDidShowSubscription?.remove();
-        keyboardDidHideSubscription?.remove();
-      };
-    }
+      // const keyboardDidShowSubscription = Keyboard.addListener(
+      //   "keyboardDidShow",
+      //   () => {
+      //     setShowFooter(false);
+      //   }
+      // );
+      // const keyboardDidHideSubscription = Keyboard.addListener(
+      //   "keyboardDidHide",
+      //   () => {
+      //     setShowFooter(true);
+      //   }
+      // );
+      // return () => {
+      //   keyboardDidShowSubscription?.remove();
+      //   keyboardDidHideSubscription?.remove();
+      // };
+    // }
   }, []);
 
   const progress = (currentStepIndex + 1) / steps.length;
 
   return (
     <KeyboardAvoidingView
+      keyboardVerticalOffset={80}
       behavior={Platform.OS === "ios" ? "padding" : ""}
       style={{
         flex: 1,
@@ -350,7 +352,8 @@ function ChildProfile({ navigation, route }) {
 
         {renderStep()}
 
-        {Platform.OS === "ios" && !showFooter && (
+        {/* {Platform.OS === "ios" && !showFooter && ( */}
+        {false && (
           <View
             style={[
               styles.footer,
@@ -444,7 +447,7 @@ function ChildProfile({ navigation, route }) {
       </ScrollView>
 
       {/* this View auto hide on ios */}
-      {showFooter && (
+      {true && (
         <View style={styles.footer}>
           {currentStepIndex > 0 && (
             <CustomButton
