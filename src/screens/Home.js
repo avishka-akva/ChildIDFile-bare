@@ -39,7 +39,19 @@ import {
 } from "../shared/const";
 import BulletList from "../components/BulletList";
 
-function EmptyHomeView() {
+function AddFabButton({ onPress }) {
+  return (
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View
+        style={[styles.backgroundCircle, { backgroundColor: COLOR.primary }]}
+      >
+        <Feather name={"plus"} color={COLOR.white} size={40} />
+      </View>
+    </TouchableWithoutFeedback>
+  );
+}
+
+function EmptyHomeView({ onAddClick }) {
   const style = {
     color: "#707070",
     fontSize: 14,
@@ -54,6 +66,7 @@ function EmptyHomeView() {
         paddingHorizontal: 24,
         alignItems: "center",
         justifyContent: "center",
+        flex: 1,
       }}
     >
       <Image
@@ -80,6 +93,7 @@ function EmptyHomeView() {
         It is up to you how much to save and have ready. The data you enter and
         file you create lives on your phone or device only.
       </Text>
+      <AddFabButton onPress={onAddClick} />
     </View>
   );
 }
@@ -116,7 +130,7 @@ function Home({ navigation }) {
             size={26}
             color={COLOR.primary}
           />
-          <Text style={[globleStyles.modalText, {marginLeft: 14}]}>
+          <Text style={[globleStyles.modalText, { marginLeft: 14 }]}>
             Are you sure, you want to delete this profile?
           </Text>
         </View>
@@ -284,6 +298,8 @@ function Home({ navigation }) {
     setFlatListScroll("down");
   };
 
+  const onAddClick = () => navigation.navigate("ChildProfile");
+
   return (
     <SafeAreaView style={globleStyles.container}>
       <View style={styles.mainTextContainer}>
@@ -361,18 +377,7 @@ function Home({ navigation }) {
             >
               <RenderSingleColumnItems />
             </ScrollView>
-            <TouchableWithoutFeedback
-              onPress={() => navigation.navigate("ChildProfile")}
-            >
-              <View
-                style={[
-                  styles.backgroundCircle,
-                  { backgroundColor: COLOR.primary },
-                ]}
-              >
-                <Feather name={"plus"} color={COLOR.white} size={40} />
-              </View>
-            </TouchableWithoutFeedback>
+            <AddFabButton onPress={onAddClick} />
           </>
         ) : (
           <View style={styles.childrenListContainer}>
@@ -401,24 +406,11 @@ function Home({ navigation }) {
                 />
               </View>
             </TouchableWithoutFeedback>
-            {childrenList.length <= 10 && (
-              <TouchableWithoutFeedback
-                onPress={() => navigation.navigate("ChildProfile")}
-              >
-                <View
-                  style={[
-                    styles.backgroundCircle,
-                    { backgroundColor: COLOR.primary },
-                  ]}
-                >
-                  <Feather name={"plus"} color={COLOR.white} size={40} />
-                </View>
-              </TouchableWithoutFeedback>
-            )}
+            {childrenList.length <= 10 && <AddFabButton onPress={onAddClick} />}
           </View>
         )
       ) : (
-        <EmptyHomeView />
+        <EmptyHomeView onAddClick={onAddClick} />
       )}
       <DeleteModal />
     </SafeAreaView>
@@ -432,8 +424,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 24,
-    marginTop: 12,
-    marginBottom: 12,
+    paddingTop: 12,
+    paddingBottom: 12,
+    backgroundColor: "#F7F7F7",
   },
   bottomBoxShadow: {
     width: "100%",
@@ -477,6 +470,7 @@ const styles = StyleSheet.create({
   },
   list: {
     paddingHorizontal: 8,
+    backgroundColor: "#F7F7F7",
   },
   item: {
     width: 276,

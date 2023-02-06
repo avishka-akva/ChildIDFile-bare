@@ -6,7 +6,8 @@ export const globleStyles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#FFFFFF",
+    // backgroundColor: "#FFFFFF",
+    backgroundColor: "#F7F7F7",
     // margin: 32,
   },
   title: {
