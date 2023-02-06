@@ -13,6 +13,7 @@ function CustomModal({
   onClose,
   alignItems = "center",
   paddingHorizontal = Dimensions.get("window").width / 10,
+  paddingVertical = 28,
   backgroundClose = true,
   keyboardAvoid = false,
 }) {
@@ -42,9 +43,9 @@ function CustomModal({
               style={{
                 alignItems,
                 backgroundColor: "#FFFFFF",
-                paddingVertical: 28,
+                paddingVertical,
                 paddingHorizontal,
-                borderRadius: 8,
+                borderRadius: 18,
                 // width: "90%",
               }}
             >
@@ -56,7 +57,7 @@ function CustomModal({
             style={{
               alignItems,
               backgroundColor: "#FFFFFF",
-              paddingVertical: 28,
+              paddingVertical,
               paddingHorizontal,
               borderRadius: 8,
               width: "90%",

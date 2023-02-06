@@ -181,6 +181,7 @@ function AddNewContact({ onSubmit }) {
         onClose={onModalClose}
         alignItems="stretch"
         paddingHorizontal={0}
+        paddingVertical={18}
         backgroundClose={false}
         keyboardAvoid
       >
@@ -193,10 +194,15 @@ function AddNewContact({ onSubmit }) {
           contentContainerStyle={{ flexGrow: 1 }}
           keyboardShouldPersistTaps="handled"
         >
-          <View style={[globleStyles.rowSpaceBetween, { marginBottom: 22 }]}>
+          <View style={[globleStyles.rowSpaceBetween, { marginBottom: 10 }]}>
             <Text>Add New Contact</Text>
             <TouchableWithoutFeedback onPress={onModalClose}>
-              <AntDesign name="close" size={12} color="#000" />
+              <AntDesign
+                name="close"
+                style={{ padding: 4 }}
+                size={16}
+                color="#000"
+              />
             </TouchableWithoutFeedback>
           </View>
 
@@ -286,10 +292,15 @@ function ContactModal({
         contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={[globleStyles.rowSpaceBetween, { marginBottom: 22 }]}>
-          <Text>Add New Contact</Text>
+        <View style={[globleStyles.rowSpaceBetween, { marginBottom: 10 }]}>
+          <Text>Contact Details</Text>
           <TouchableWithoutFeedback onPress={onModalClose}>
-            <AntDesign name="close" size={12} color="#000" />
+            <AntDesign
+              name="close"
+              style={{ padding: 4 }}
+              size={16}
+              color="#000"
+            />
           </TouchableWithoutFeedback>
         </View>
 
@@ -368,9 +379,15 @@ function EmergencyContact({ index, setEditStartedTrue }) {
         <Text style={[globleStyles.body, { marginBottom: 4 }]}>
           Relationship : {values.relationship}
         </Text>
-        <Text style={globleStyles.body}>
+        <Text style={[globleStyles.body, { marginBottom: 4 }]}>
           Primary Phone Number : {values.primaryPhoneNumber}
         </Text>
+        {values.secondaryPhoneNumber && <Text style={[globleStyles.body, { marginBottom: 4 }]}>
+          Secondary Phone Number : {values.secondaryPhoneNumber}
+        </Text>}
+        {values.address && <Text style={globleStyles.body}>
+          Address : {values.address}
+        </Text>}
       </Card>
     </Pressable>
   );
@@ -385,7 +402,7 @@ function EmergencyContact({ index, setEditStartedTrue }) {
           {emergencyContacts.length}/{MAXIMUM_EMERGENCY_CONTACT_COUNT} added
         </Text>
       </View>
-      <View style={[styles.titleContainer, {marginTop: 6}]}>
+      <View style={[styles.titleContainer, { marginTop: 6 }]}>
         <Text style={[globleStyles.title, styles.subTitle]}>
           Added Contact List
         </Text>
