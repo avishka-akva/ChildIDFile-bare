@@ -104,7 +104,7 @@ function Home({ navigation }) {
 
   const [deleteModelOpen, setDeleteModelOpen] = useState(false);
   const [selected, setSelected] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [flatListScroll, setFlatListScroll] = useState("down");
 
   const flatListRef = useRef();
@@ -168,14 +168,20 @@ function Home({ navigation }) {
     navigation.navigate("ChildProfile", { childId: id, view });
   };
 
-  const onDownlod = (id) => {
+  const onDownlod = async (id) => {
+    if (isLoading) return;
+    setIsLoading(true);
     const child = childrenList.find((childItem) => childItem.id === id);
-    generatePdf("main", child);
+    await generatePdf("main", child);
+    setIsLoading(false);
   };
 
-  const onShare = (id) => {
+  const onShare = async (id) => {
+    if (isLoading) return;
+    setIsLoading(true);
     const child = childrenList.find((childItem) => childItem.id === id);
-    generatePdf("main", child, true);
+    await generatePdf("main", child, true);
+    setIsLoading(false);
   };
 
   const RenderChildItem = ({ item }) => {
@@ -184,6 +190,7 @@ function Home({ navigation }) {
         onPress={() => {
           onDownlod(item.id);
         }}
+        disabled={isLoading || item.incomplete}
       >
         <View key={item.id} style={styles.item}>
           <View style={{ flexDirection: "row" }}>
@@ -262,16 +269,25 @@ function Home({ navigation }) {
             <CustomButton
               onPress={() => onShare(item.id)}
               text="Share"
-              buttonStyle={[globleStyles.buttonPrimary, styles.buttonStyle]}
-              textStyle={styles.buttonTextStyle}
+              buttonStyle={[
+                globleStyles.buttonPrimary,
+                styles.buttonStyle,
+                item.incomplete ? { backgroundColor: "#DAD7D7" } : {},
+              ]}
+              textStyle={
+                item.incomplete
+                  ? [styles.buttonTextStyle, { color: "#929090" }]
+                  : styles.buttonTextStyleƒ
+              }
               leftIcon={
                 <FontAwesome
                   style={{ marginRight: 4 }}
                   name="share"
                   size={14}
-                  color={COLOR.white}
+                  color={item.incomplete ? "#929090" : COLOR.white}
                 />
               }
+              disabled={isLoading || item.incomplete }
             />
           </View>
           <Text style={styles.lastUpdate}>
@@ -357,7 +373,7 @@ function Home({ navigation }) {
         </View>
       </View>
       {childrenList.length > 0 && (
-        <View style={{ height: 12, width: "100%", overflow: "hidden" }}>
+        <View style={{ height: 12, width: "100%", overflow: "hidden", backgroundColor: 'transparent'}}>
           <View style={styles.bottomBoxShadow}></View>
         </View>
       )}
