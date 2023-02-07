@@ -63,3 +63,9 @@ export const getAge = (dob) => {
   const currentYear = new Date().getFullYear();
   return currentYear - birthYear;
 };
+
+export const getThisYearBirthDay = (dobString) => {
+  const dateMonth = dobString.split(",")[0];
+  const currentYear = new Date().getFullYear();
+  return `${dateMonth}, ${currentYear}`;
+};

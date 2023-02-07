@@ -16,7 +16,7 @@ import {
   THUMB_LEFT,
   THUMB_RIGHT,
 } from "./fingerprints";
-import { getAge } from "./date";
+import { getAge, getThisYearBirthDay } from "./date";
 // import { Asset } from "expo-asset";
 // import * as ImageManipulator from "expo-image-manipulator";
 // import exampleImage from "../../assets/pdfLogo.png";
@@ -428,7 +428,9 @@ const generateHtml = async ({
   <body>
     <header>
       <h1 class="header-title">${firstName} ${lastName}</h1>
-      <h2 class="header-sub-title">${getAge(dob)} years old as of ${dob}</h2>
+      <h2 class="header-sub-title">${getAge(
+        dob
+      )} years old as of ${getThisYearBirthDay(dob)}</h2>
     </header>
     <main>
       <section  class="row">
@@ -440,7 +442,9 @@ const generateHtml = async ({
                 <label>Name</label> <lable>:</lable> 
               </div>
               <div>
-                <label>${firstName} ${lastName}${nickName ? ` (${nickName})` : ""})</label>
+                <label>${firstName} ${lastName}${
+      nickName ? ` (${nickName})` : ""
+    })</label>
               </div>
             </div>
             <div class="row content-mt sr-mb">
