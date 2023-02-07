@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Pressable } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import ImagePickerUI from "../components/ImagePicker";
 import { Feather } from "@expo/vector-icons";
@@ -47,19 +47,18 @@ function Fingerprints({ index, setEditStartedTrue }) {
           "Take a high resolution image of the card with fingerprints",
         ]}
       />
-      <Card>
-        <View style={styles.downloadContainer}>
-          <Text style={[globleStyles.body, styles.downloadText]}>
-            Download blank PDF Fingerprint Card here to create your own image
-          </Text>
-          <TouchableOpacity
-            style={styles.iconContainer}
-            onPress={() => onDownlod()}
-          >
-            <Feather name="download" size={14} color={COLOR.primary} />
-          </TouchableOpacity>
-        </View>
-      </Card>
+      <Pressable onPress={() => onDownlod()}>
+        <Card>
+          <View style={styles.downloadContainer}>
+            <Text style={[globleStyles.body, styles.downloadText]}>
+              Download blank PDF Fingerprint Card here to create your own image
+            </Text>
+            <View style={styles.iconContainer}>
+              <Feather name="download" size={14} color={COLOR.primary} />
+            </View>
+          </View>
+        </Card>
+      </Pressable>
 
       <Text style={[globleStyles.body, { marginTop: 30, color: "#3F3F3F" }]}>
         Do you have an image of your child's fingerprints?
