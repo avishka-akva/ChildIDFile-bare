@@ -48,3 +48,5 @@ export const TRUSTED_CONTACT_INIT_OBJ = {
 export const PRIVACY_POLICY_URL = "https://google.com";
 
 export const TERMS_AND_CONDITION_URL = "https://google.com";
+
+export const LOADING_TIME = 2500;

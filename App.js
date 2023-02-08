@@ -1,16 +1,20 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import * as LocalAuthentication from "expo-local-authentication";
 import { MenuProvider } from "react-native-popup-menu";
+import { AppState } from "react-native";
 
 import store, { persistor } from "./src/redux/store";
 import ChildId from "./src/ChildID";
 import Auth from "./src/screens/Auth";
+import { LOADING_TIME } from "./src/shared/const";
 
 SplashScreen.preventAutoHideAsync();
+
+let timeoutId = null;
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -19,16 +23,11 @@ export default function App() {
     "SegoeUI-Italic": require("./src/assets/fonts/SegoeUI-Italic.ttf"),
   });
 
+  const [appLoaded, setAppLoaded] = useState(false);
   const [localAuth, setLocalAuth] = useState(false);
   const [securityLevel, setSecurityLevel] = useState(0);
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  onLayoutRootView();
+  const appState = useRef(AppState.currentState);
 
   const authenticate = async () => {
     try {
@@ -52,7 +51,38 @@ export default function App() {
   };
 
   useEffect(() => {
+    if (fontsLoaded && appLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded, appLoaded]);
+
+  useEffect(() => {
     getAuthenticate();
+
+    setTimeout(() => setAppLoaded(true), LOADING_TIME);
+
+    const subscription = AppState.addEventListener("change", (nextAppState) => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === "active"
+      ) {
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+      }
+
+      if (nextAppState === "background") {
+        timeoutId = setTimeout(() => {
+          setLocalAuth(false);
+        }, 600000);
+      }
+
+      appState.current = nextAppState;
+    });
+
+    return () => {
+      subscription.remove();
+    };
   }, []);
 
   if (!fontsLoaded) {
