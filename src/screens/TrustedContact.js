@@ -102,7 +102,7 @@ function ContactForm({
   );
 }
 
-function AddNewContact({ onSubmit }) {
+function AddNewContact({ onSubmit, contactsCount }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addContact, setAddContact] = useState({ ...TRUSTED_CONTACT_INIT_OBJ });
   const [errorList, setErrorList] = useState([]);
@@ -142,6 +142,8 @@ function AddNewContact({ onSubmit }) {
     setAddContact({ ...TRUSTED_CONTACT_INIT_OBJ });
   };
 
+  const isDisabled = contactsCount >= MAXIMUM_TRUSTED_CONTACT_COUNT;
+
   return (
     <>
       <CustomButton
@@ -151,10 +153,12 @@ function AddNewContact({ onSubmit }) {
           globleStyles.buttonPrimary,
           {
             backgroundColor: COLOR.primary,
+            backgroundColor: isDisabled ? COLOR.disabled : COLOR.primary,
             height: 32,
           },
         ]}
         fontSize={15}
+        disabled={isDisabled}
       />
 
       <CustomModal
@@ -351,7 +355,7 @@ function TrustedContact({ index, setEditStartedTrue }) {
               onItemDelete(index);
             }}
           >
-            <AntDesign name="close" size={12} color="#000" />
+            <AntDesign name="close" size={16} color="#000" />
           </TouchableWithoutFeedback>
         </View>
         <Text style={[globleStyles.body, { marginBottom: 4 }]}>
@@ -361,11 +365,11 @@ function TrustedContact({ index, setEditStartedTrue }) {
           Relationship : {values.relationship}
         </Text>
         <Text style={[globleStyles.body, { marginBottom: 4 }]}>
-        Primary Phone Number : {values.primaryPhoneNumber}
+          Primary Phone Number : {values.primaryPhoneNumber}
         </Text>
-        {values.address && <Text style={globleStyles.body}>
-          Address : {values.address}
-        </Text>}
+        {values.address && (
+          <Text style={globleStyles.body}>Address : {values.address}</Text>
+        )}
       </Card>
     </Pressable>
   );
@@ -387,6 +391,7 @@ function TrustedContact({ index, setEditStartedTrue }) {
         </Text>
         <AddNewContact
           onSubmit={(values) => dispatch(addNewTrusedContact(values))}
+          contactsCount={trustedContacts.length}
         />
       </View>
 

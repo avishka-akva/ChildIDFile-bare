@@ -118,7 +118,7 @@ function ContactForm({
   );
 }
 
-function AddNewContact({ onSubmit }) {
+function AddNewContact({ onSubmit, contactsCount }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addContact, setAddContact] = useState({ ...CONTACT_INIT_OBJ });
   const [errorList, setErrorList] = useState([]);
@@ -161,6 +161,8 @@ function AddNewContact({ onSubmit }) {
     setAddContact({ ...CONTACT_INIT_OBJ });
   };
 
+  const isDisabled = contactsCount >= MAXIMUM_EMERGENCY_CONTACT_COUNT;
+
   return (
     <>
       <CustomButton
@@ -169,11 +171,12 @@ function AddNewContact({ onSubmit }) {
         buttonStyle={[
           globleStyles.buttonPrimary,
           {
-            backgroundColor: COLOR.primary,
+            backgroundColor: isDisabled ? COLOR.disabled : COLOR.primary,
             height: 32,
           },
         ]}
         fontSize={15}
+        disabled={isDisabled}
       />
 
       <CustomModal
@@ -331,7 +334,7 @@ function ContactModal({
             buttonStyle={[
               globleStyles.buttonPrimary,
               {
-                backgroundColor: isEditStarted ? COLOR.primary : "#dddddd",
+                backgroundColor: isEditStarted ? COLOR.primary : COLOR.disabled,
                 width: 116,
                 height: 36,
               },
@@ -370,7 +373,7 @@ function EmergencyContact({ index, setEditStartedTrue }) {
               onItemDelete(index);
             }}
           >
-            <AntDesign name="close" size={12} color="#000" />
+            <AntDesign name="close" size={16} color="#000" />
           </TouchableWithoutFeedback>
         </View>
         <Text style={[globleStyles.body, { marginBottom: 4 }]}>
@@ -382,12 +385,14 @@ function EmergencyContact({ index, setEditStartedTrue }) {
         <Text style={[globleStyles.body, { marginBottom: 4 }]}>
           Primary Phone Number : {values.primaryPhoneNumber}
         </Text>
-        {values.secondaryPhoneNumber && <Text style={[globleStyles.body, { marginBottom: 4 }]}>
-          Secondary Phone Number : {values.secondaryPhoneNumber}
-        </Text>}
-        {values.address && <Text style={globleStyles.body}>
-          Address : {values.address}
-        </Text>}
+        {values.secondaryPhoneNumber && (
+          <Text style={[globleStyles.body, { marginBottom: 4 }]}>
+            Secondary Phone Number : {values.secondaryPhoneNumber}
+          </Text>
+        )}
+        {values.address && (
+          <Text style={globleStyles.body}>Address : {values.address}</Text>
+        )}
       </Card>
     </Pressable>
   );
@@ -408,6 +413,7 @@ function EmergencyContact({ index, setEditStartedTrue }) {
         </Text>
         <AddNewContact
           onSubmit={(values) => dispatch(addNewEmergencyContact(values))}
+          contactsCount={emergencyContacts.length}
         />
       </View>
 
