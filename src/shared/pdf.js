@@ -179,6 +179,12 @@ const generateHtml = async ({
       return body;
     };
 
+    let contactMargingTop = "";
+
+    if (trustedContacts.length > 1) {
+      contactMargingTop = "margin-top: 200px;";
+    }
+
     const head = `
   <head>
     <meta charset="utf-8" />
@@ -237,12 +243,14 @@ const generateHtml = async ({
         }
         section {
           margin-top: 12px;
+        }
+        .page-break {
           -webkit-column-break-inside: avoid;
           page-break-inside: avoid;
           break-inside: avoid;
         }
-        .page-break {
-          break-inside: avoid;
+        .emerrgecy-contact {
+          ${contactMargingTop}
         }
         .sub-title {
           font-size: 20px;
@@ -576,7 +584,7 @@ const generateHtml = async ({
         ${getEmergencyContactTable()}
       </section>
 
-      <section class="page-break">
+      <section class="page-break emerrgecy-contact">
         <h2 class="sub-title">Trusted Contact Information</h2>
         ${getTrustedContactTable()}
       </section>
@@ -833,7 +841,7 @@ let generatePdf = async (type = "main", props, share = false) => {
     if (share || Platform.OS === "ios") {
       const file = await printToFileAsync(FilePrintOptions);
       let newURI = FileSystem.cacheDirectory + PDF_NAME;
-      newURI = newURI.replace( / +/g, '_') 
+      newURI = newURI.replace(/ +/g, "_");
       await FileSystem.moveAsync({
         from: file.uri,
         to: newURI,
