@@ -74,7 +74,7 @@ export default function App() {
       if (nextAppState === "background") {
         timeoutId = setTimeout(() => {
           setLocalAuth(false);
-        }, 600000);
+        }, 60000);
       }
 
       appState.current = nextAppState;

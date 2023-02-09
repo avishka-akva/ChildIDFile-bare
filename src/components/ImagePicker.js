@@ -11,6 +11,7 @@ import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { COLOR } from "../shared/const";
 import CustomModalBottom from "./CustomModalBottom";
+import * as ImageManipulator from "expo-image-manipulator";
 
 function ImagePickerUI({
   image,
@@ -24,31 +25,42 @@ function ImagePickerUI({
   const [selected, setSelected] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
+  const processImage = async (uri) => {
+    const manipulateResult = await ImageManipulator.manipulateAsync(
+      uri,
+      [{ resize: { width: 1024 } }],
+      // [],
+      {
+        compress: 0.5,
+        base64: true,
+      }
+    );
+
+    return manipulateResult.base64;
+  };
+
   const pickImageFromGallary = async () => {
     if (view) return;
     try {
       // No permissions request is necessary for launching the image library
       let result = await ImagePicker.launchImageLibraryAsync({
         // mediaTypes: ImagePicker.MediaTypeOptions.All,
+        // base64: true,
         allowsEditing: true,
         aspect: aspectRatio,
         quality: 1,
-        base64: true,
       });
 
-      if (result.canceled) {
-        setShowModal(false);
-        return;
-      }
+      setShowModal(false);
 
-      if (!result.assets[0].canceled) {
-        setImage(result.assets[0].base64);
-        setSelected(true);
-      }
+      if (result.canceled) return;
+
+      const base64Image = await processImage(result.assets[0].uri);
+      setImage(base64Image);
+
+      setSelected(true);
 
       if (onBlur) onBlur();
-
-      setShowModal(false);
     } catch (error) {
       alert(error.message);
     }
@@ -69,20 +81,15 @@ function ImagePickerUI({
         allowsEditing: true,
         aspect: aspectRatio,
         quality: 1,
-        base64: true,
+        // base64: true,
       });
 
-      if (pickerResult.canceled) {
-        setShowModal(false);
-        return;
-      }
-
-      if (!pickerResult.assets[0].canceled) {
-        setImage(pickerResult.assets[0].base64);
-        setSelected(true);
-      }
-
       setShowModal(false);
+
+      if (pickerResult.canceled) return;
+      const base64Image = await processImage(pickerResult.assets[0].uri);
+      setImage(base64Image);
+      setSelected(true);
     } catch (error) {
       alert(error.message);
     }
@@ -103,6 +110,7 @@ function ImagePickerUI({
           {!view && (
             <TouchableWithoutFeedback
               onPress={() => {
+                setImage("");
                 setSelected(false);
                 if (onBlur) onBlur();
               }}

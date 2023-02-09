@@ -263,7 +263,7 @@ const generateHtml = async ({
           width: 100%;
         }
         .user-image {
-          width: 40%;
+          width: 45%;
           margin-left: 20px;
           border: 1px solid #707070;
         }
