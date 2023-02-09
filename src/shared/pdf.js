@@ -832,7 +832,8 @@ let generatePdf = async (type = "main", props, share = false) => {
 
     if (share || Platform.OS === "ios") {
       const file = await printToFileAsync(FilePrintOptions);
-      const newURI = FileSystem.cacheDirectory + PDF_NAME;
+      let newURI = FileSystem.cacheDirectory + PDF_NAME;
+      newURI = newURI.replace( / +/g, '_') 
       await FileSystem.moveAsync({
         from: file.uri,
         to: newURI,
