@@ -2,6 +2,7 @@ export const COLOR = {
   primary: "#A352EB",
   white: "#FFFFFF",
   danger: "#EC7063",
+  disabled: "#929090",
 };
 export const CHARACTERISTICS_OPTIONS = [
   {

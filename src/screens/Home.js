@@ -276,7 +276,7 @@ function Home({ navigation }) {
               ]}
               textStyle={
                 item.incomplete
-                  ? [styles.buttonTextStyle, { color: "#929090" }]
+                  ? [styles.buttonTextStyle, { color: COLOR.disabled }]
                   : styles.buttonTextStyleƒ
               }
               leftIcon={
@@ -284,10 +284,10 @@ function Home({ navigation }) {
                   style={{ marginRight: 4 }}
                   name="share"
                   size={14}
-                  color={item.incomplete ? "#929090" : COLOR.white}
+                  color={item.incomplete ? COLOR.disabled : COLOR.white}
                 />
               }
-              disabled={isLoading || item.incomplete }
+              disabled={isLoading || item.incomplete}
             />
           </View>
           <Text style={styles.lastUpdate}>
@@ -373,7 +373,14 @@ function Home({ navigation }) {
         </View>
       </View>
       {childrenList.length > 0 && (
-        <View style={{ height: 12, width: "100%", overflow: "hidden", backgroundColor: 'transparent'}}>
+        <View
+          style={{
+            height: 12,
+            width: "100%",
+            overflow: "hidden",
+            backgroundColor: "transparent",
+          }}
+        >
           <View style={styles.bottomBoxShadow}></View>
         </View>
       )}
