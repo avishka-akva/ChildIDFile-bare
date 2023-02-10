@@ -26,7 +26,7 @@ function Fingerprints({ index, setEditStartedTrue }) {
 
   return (
     <View style={styles.main}>
-      <Text style={[globleStyles.title, styles.title]}>Fingerprints</Text>
+      <Text style={[globleStyles.title, styles.title]}>Fingerprints (Optional)</Text>
       <Text style={[globleStyles.body, { color: "#3F3F3F" }]}>
         Want to create the image for your child's fingerprints?
       </Text>

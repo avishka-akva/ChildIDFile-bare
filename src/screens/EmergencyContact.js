@@ -136,11 +136,11 @@ function AddNewContact({ onSubmit, contactsCount }) {
   };
 
   const addToErrorList = (name) => {
-    if (getFeildValidation(name)) return;
+    if (getFieldValidation(name)) return;
     setErrorList((previousValue) => [...previousValue, name]);
   };
 
-  const getFeildValidation = (name) => {
+  const getFieldValidation = (name) => {
     return errorList.includes(name);
   };
 
@@ -212,7 +212,7 @@ function AddNewContact({ onSubmit, contactsCount }) {
           <ContactForm
             values={addContact}
             onInputChanged={onAddInputChanged}
-            validate={getFeildValidation}
+            validate={getFieldValidation}
           />
           <View style={[globleStyles.rowEnd, { marginTop: 22 }]}>
             <CustomButton

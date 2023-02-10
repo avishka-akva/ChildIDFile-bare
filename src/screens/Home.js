@@ -86,7 +86,7 @@ function EmptyHomeView({ onAddClick }) {
         options={[
           "ChildIDFile helps you create an information file for each of your children, which can be easily shared.",
           "This file includes information that law enforcement may find useful in the immediate search for a missing child.",
-          "The file can include up to 3 emergency contacts, 10 trusted contacts/locations, and other useful identifying features.",
+          "And the file can include up to 3 emergency contacts, 10 trusted contacts/locations, and other useful identifying features.",
         ]}
       />
       <Text style={style}>
@@ -231,15 +231,7 @@ function Home({ navigation }) {
                 />
               </View>
             )}
-
-            <Text style={styles.description}>{`${
-              item.gender === "male"
-                ? "Son"
-                : item.gender === "female"
-                ? "Daughter"
-                : "X"
-            }`}</Text>
-            <Text style={styles.description}>{item.dob}</Text>
+            <Text style={styles.description}>Born: {item.dob}</Text>
           </View>
           <View style={styles.itemAction}>
             <CustomButton

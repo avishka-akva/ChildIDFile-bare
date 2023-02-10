@@ -102,7 +102,7 @@ function CustomTextInput({
       )}
       {_error && (
         <Text style={{ color: COLOR.danger, fontSize: 10 }}>
-          This feild is required
+          This field is required
         </Text>
       )}
     </View>

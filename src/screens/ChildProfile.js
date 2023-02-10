@@ -76,7 +76,7 @@ function ChildProfile({ navigation, route }) {
     setErrorList((previousValue) => previousValue.filter((n) => n !== name));
   };
 
-  const getFeildValidation = (name) => {
+  const getFieldValidation = (name) => {
     return errorList.includes(name);
   };
 
@@ -88,7 +88,7 @@ function ChildProfile({ navigation, route }) {
           index={0}
           setEditStartedTrue={setEditStartedTrue}
           setEditStartedFalse={setEditStartedFalse}
-          validate={getFeildValidation}
+          validate={getFieldValidation}
           removeNameFromErrorList={removeNameFromErrorList}
         />
       ),
