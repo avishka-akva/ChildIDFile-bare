@@ -153,13 +153,13 @@ function ImagePickerUI({
           style={styles.selectContainer}
           onPress={pickImageFromGallary}
         >
-          <Text style={styles.selectOption}>Gallary</Text>
+          <Text style={styles.selectOption}>Upload Photo from Library</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.selectContainer}
           onPress={pickImageFromCamera}
         >
-          <Text style={styles.selectOption}>Camera</Text>
+          <Text style={styles.selectOption}>Take Photo</Text>
         </TouchableOpacity>
       </CustomModalBottom>
     </View>
