@@ -181,7 +181,7 @@ const generateHtml = async ({
 
     let contactMargingTop = "";
 
-    if (trustedContacts.length > 1) {
+    if (Platform.OS === "ios" && trustedContacts.length > 1) {
       contactMargingTop = "margin-top: 200px;";
     }
 
