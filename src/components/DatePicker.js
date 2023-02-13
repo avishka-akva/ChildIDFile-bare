@@ -16,15 +16,27 @@ import CustomButton from "./CustomButton";
 
 function DatePicker({ value, onChange, error = false }) {
   const [date, setDate] = useState(new Date());
+  const [_error, setError] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const currentDate = new Date();
 
   const _onChange = (event, selectedDate) => {
     if (showDatePicker) setShowDatePicker(false);
+
+    if (selectedDate > currentDate) {
+      setError(true);
+    } else {
+      setError(false);
+    }
     setDate(selectedDate);
     if (onChange) onChange(selectedDate);
   };
 
   const _onChangeIos = (event, selectedDate) => {
+    if (selectedDate > currentDate) setError(true);
+    else setError(false);
+
     setDate(selectedDate);
   };
 
@@ -43,19 +55,41 @@ function DatePicker({ value, onChange, error = false }) {
           style={[
             globleStyles.input,
             styles.datePickerContainer,
-            error ? { borderColor: COLOR.danger } : {},
+            error || (_error && Platform.OS !== "ios")
+              ? { borderColor: COLOR.danger }
+              : {},
           ]}
         >
-          <Text style={[globleStyles.inputText, styles.datePickerText]}>
+          <Text
+            style={[
+              globleStyles.inputText,
+              styles.datePickerText,
+              error || (_error && Platform.OS !== "ios")
+                ? { color: COLOR.danger }
+                : {},
+            ]}
+          >
             {value}
           </Text>
           <AntDesign
             name="calendar"
             size={13}
-            color={error ? COLOR.danger : "#707070"}
+            color={
+              error || (_error && Platform.OS !== "ios")
+                ? COLOR.danger
+                : "#707070"
+            }
           />
         </View>
       </TouchableWithoutFeedback>
+      {_error && Platform.OS !== "ios" && (
+        <View style={{ width: "100%", marginBottom: 12 }}>
+          <Text style={{ color: COLOR.danger, fontSize: 11 }}>
+            Birthday should be less than the present date.
+          </Text>
+        </View>
+      )}
+
       {Platform.OS === "ios" ? (
         <CustomModal
           visible={showDatePicker}
@@ -68,8 +102,16 @@ function DatePicker({ value, onChange, error = false }) {
             is24Hour={true}
             display="spinner"
             onChange={_onChangeIos}
-            maximumDate={new Date()}
+            // maximumDate={new Date()}
           />
+          {_error && (
+            <View style={{ width: "100%", marginBottom: 12 }}>
+              <Text style={{ color: COLOR.danger, fontSize: 12 }}>
+                Birthday should be less than the present date.
+              </Text>
+            </View>
+          )}
+
           <View style={globleStyles.modalFooter}>
             <CustomButton
               onPress={() => setShowDatePicker(false)}
@@ -85,10 +127,15 @@ function DatePicker({ value, onChange, error = false }) {
               text={"Confirm"}
               buttonStyle={[
                 globleStyles.buttonPrimary,
-                { backgroundColor: COLOR.primary, width: 116, height: 36 },
+                {
+                  backgroundColor: _error ? COLOR.disabled : COLOR.primary,
+                  width: 116,
+                  height: 36,
+                },
               ]}
               backgroundColor={COLOR.primary}
               color="#FFFFFF"
+              disabled={_error}
             />
           </View>
         </CustomModal>
@@ -102,7 +149,7 @@ function DatePicker({ value, onChange, error = false }) {
           is24Hour={true}
           style={globleStyles.input}
           onChange={_onChange}
-          maximumDate={new Date()}
+          // maximumDate={new Date()}
         />
       ) : null}
     </>
