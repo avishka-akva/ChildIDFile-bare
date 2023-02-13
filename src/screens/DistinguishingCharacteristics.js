@@ -65,7 +65,7 @@ function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
           marginBottom={0}
           onBlur={onBlur}
           placeholder={
-            "Provide grayed examples of Distinguishing features such as: \nScar/tattoo on neck \nChild is autistic \nChild has asthma and uses inhaler \nChild is deaf"
+            "Provide grayed examples of Distinguishing features such as: \nScar/tattoo on neck \nBirthmark on neck"
           }
         />
         <CustomTextInput
@@ -75,6 +75,9 @@ function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
           multiline={true}
           numberOfLines={6}
           onBlur={onBlur}
+          placeholder={
+            "Provide grayed examples of Special Needs such as: \nChild is autistic \nChild has asthma and uses inhaler \nChild is deaf"
+          }
         />
       </Card>
     </View>
