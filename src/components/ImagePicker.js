@@ -8,10 +8,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
+// import * as ImagePicker from "expo-image-picker";
 import { COLOR } from "../shared/const";
 import CustomModalBottom from "./CustomModalBottom";
 import * as ImageManipulator from "expo-image-manipulator";
+import ImagePicker from "react-native-image-crop-picker";
 
 function ImagePickerUI({
   image,
@@ -42,23 +43,16 @@ function ImagePickerUI({
   const pickImageFromGallary = async () => {
     if (view) return;
     try {
-      // No permissions request is necessary for launching the image library
-      let result = await ImagePicker.launchImageLibraryAsync({
-        // mediaTypes: ImagePicker.MediaTypeOptions.All,
-        // base64: true,
-        allowsEditing: true,
-        aspect: aspectRatio,
-        quality: 1,
+      ImagePicker.openPicker({
+        width: 300,
+        height: 400,
+        cropping: true,
+        includeBase64: true,
+      }).then(async (image) => {
+        setShowModal(false);
+        setImage(image.data);
+        setSelected(true);
       });
-
-      setShowModal(false);
-
-      if (result.canceled) return;
-
-      const base64Image = await processImage(result.assets[0].uri);
-      setImage(base64Image);
-
-      setSelected(true);
 
       if (onBlur) onBlur();
     } catch (error) {
@@ -69,27 +63,16 @@ function ImagePickerUI({
   const pickImageFromCamera = async () => {
     if (view) return;
     try {
-      const permissionResult =
-        await ImagePicker.requestCameraPermissionsAsync();
-
-      if (permissionResult.granted === false) {
-        alert("Permission to access camera roll is required!");
-        return;
-      }
-
-      let pickerResult = await ImagePicker.launchCameraAsync({
-        allowsEditing: true,
-        aspect: aspectRatio,
-        quality: 1,
-        // base64: true,
+      ImagePicker.openCamera({
+        width: 300,
+        height: 400,
+        cropping: true,
+        includeBase64: true,
+      }).then((image) => {
+        setShowModal(false);
+        setImage(image.data);
+        setSelected(true);
       });
-
-      setShowModal(false);
-
-      if (pickerResult.canceled) return;
-      const base64Image = await processImage(pickerResult.assets[0].uri);
-      setImage(base64Image);
-      setSelected(true);
     } catch (error) {
       alert(error.message);
     }
