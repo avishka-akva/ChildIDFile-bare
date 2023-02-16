@@ -10,6 +10,7 @@ import {
   Linking,
   TouchableWithoutFeedback,
   Pressable,
+  Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector, useDispatch } from "react-redux";
@@ -39,11 +40,14 @@ import {
 } from "../shared/const";
 import BulletList from "../components/BulletList";
 
-function AddFabButton({ onPress }) {
+function AddFabButton({ onPress, bottom = 20 }) {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View
-        style={[styles.backgroundCircle, { backgroundColor: COLOR.primary }]}
+        style={[
+          styles.backgroundCircle,
+          { backgroundColor: COLOR.primary, bottom },
+        ]}
       >
         <Feather name={"plus"} color={COLOR.white} size={40} />
       </View>
@@ -383,6 +387,7 @@ function Home({ navigation }) {
             <ScrollView
               style={{
                 paddingHorizontal: 24,
+                width: "100%"
               }}
               contentContainerStyle={{
                 flexGrow: 1,
@@ -392,7 +397,7 @@ function Home({ navigation }) {
             >
               <RenderSingleColumnItems />
             </ScrollView>
-            <AddFabButton onPress={onAddClick} />
+            <AddFabButton onPress={onAddClick} bottom={30} />
           </>
         ) : (
           <View style={styles.childrenListContainer}>
@@ -488,7 +493,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#F7F7F7",
   },
   item: {
-    width: 276,
+    // width: 276,
+    width: Dimensions.get("window").width / 1.4,
     // height: 287,
     backgroundColor: COLOR.white,
     borderRadius: 36,
@@ -584,7 +590,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     position: "absolute",
     bottom: 20,
-    right: 20,
+    right: Dimensions.get("window").width / 30,
   },
   buttonStyle: {
     flexDirection: "row",
