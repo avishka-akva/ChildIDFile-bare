@@ -253,9 +253,9 @@ const generateHtml = async ({
           ${contactMargingTop}
         }
         .sub-title {
-          font-size: 20px;
+          font-size: 24px;
           font-weight: 300;
-          color: #000000;
+          color: #FFFFFF;
           padding: 10px;
           background: #D3B3F0;
         }
@@ -821,7 +821,6 @@ let generatePdf = async (type = "main", props, share = false) => {
     }
 
     let FilePrintOptions = { html: html, base64: false };
-
     if (Platform.OS === "ios") {
       FilePrintOptions.margins = {
         left: 20,
@@ -829,6 +828,13 @@ let generatePdf = async (type = "main", props, share = false) => {
         right: 20,
         bottom: 20,
       };
+      if (type === "finger") {
+        FilePrintOptions.height = 612;
+        FilePrintOptions.width = 792;
+      } else {
+        FilePrintOptions.width = 794;
+        FilePrintOptions.height = 1123;
+      }
     } else {
       if (type === "finger") {
         FilePrintOptions.orientation = Orientation.landscape;
@@ -884,6 +890,7 @@ let generatePdf = async (type = "main", props, share = false) => {
       // );
     }
   } catch (error) {
+    console.log("🚀 ~ file: pdf.js:911 ~ generatePdf ~ error", error);
     alert(error.message);
   }
 };
