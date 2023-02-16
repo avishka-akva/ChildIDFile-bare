@@ -28,6 +28,7 @@ function UploadPhoto({ index, setEditStartedTrue }) {
         view={view}
         onBlur={onBlur}
         description="Upload close up face image of your child"
+        aspectRatio={[3,4]}
       />
 
       <ImagePicker
@@ -36,6 +37,7 @@ function UploadPhoto({ index, setEditStartedTrue }) {
         view={view}
         onBlur={onBlur}
         description="Upload standing image of your child"
+        aspectRatio={[4,6]}
       />
     </View>
   );

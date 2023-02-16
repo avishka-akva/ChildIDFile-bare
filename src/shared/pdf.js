@@ -317,7 +317,7 @@ const generateHtml = async ({
           color: #434343;
         }
         .fingerprints-image {
-          width: 60%;
+          width: 80%;
         }
         .content-mt {
           margin-top: 10px;

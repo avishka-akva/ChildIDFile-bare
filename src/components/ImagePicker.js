@@ -20,7 +20,7 @@ function ImagePickerUI({
   view,
   description = "",
   onBlur,
-  aspectRatio = [4, 4],
+  aspectRatio = [3, 4],
   finger = false,
 }) {
   const [selected, setSelected] = useState(false);
@@ -44,8 +44,8 @@ function ImagePickerUI({
     if (view) return;
     try {
       ImagePicker.openPicker({
-        width: 300,
-        height: 400,
+        width: aspectRatio[0] * 100,
+        height: aspectRatio[1] * 100,
         cropping: true,
         includeBase64: true,
       }).then(async (image) => {
@@ -64,8 +64,8 @@ function ImagePickerUI({
     if (view) return;
     try {
       ImagePicker.openCamera({
-        width: 300,
-        height: 400,
+        width: aspectRatio[0] * 100,
+        height: aspectRatio[1] * 100,
         cropping: true,
         includeBase64: true,
       }).then((image) => {
@@ -84,7 +84,7 @@ function ImagePickerUI({
     }
   }, []);
 
-  const height = finger ? 180 : 263;
+  const height = finger ? 180 : aspectRatio[0] * 100;;
 
   return (
     <View style={styles.main}>
