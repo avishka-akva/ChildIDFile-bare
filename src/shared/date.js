@@ -64,6 +64,37 @@ export const getAge = (dob) => {
   return currentYear - birthYear;
 };
 
+export const getExactAge = (dob) => {
+  let birthDate = parseInt(dob.split(" ")[1]);
+  let birthMonth = MONTHS_NAME_SHORT.indexOf(dob.split(" ")[0]) + 1;
+  let birthYear = parseInt(dob.split(" ")[2]);
+
+  let date = new Date();
+  let currentDate = date.getDate();
+  let currentMonth = 1 + date.getMonth();
+  let currentYear = date.getFullYear();
+  let monthArray = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+  // check whether a leap year or not
+  if (currentYear % 4 === 0) {
+    monthArray[1] = 29;
+  }
+
+  if (birthDate > currentDate) {
+    currentDate = currentDate + monthArray[currentMonth - 1];
+    currentMonth = currentMonth - 1;
+  }
+  if (birthMonth > currentMonth) {
+    currentMonth = currentMonth + 12;
+    currentYear = currentYear - 1;
+  }
+  let d = currentDate - birthDate;
+  let m = currentMonth - birthMonth;
+  let y = currentYear - birthYear;
+
+  return `${y} Years ${m} Months ${d} Days`;
+};
+
 export const getThisYearBirthDay = (dobString) => {
   const dateMonth = dobString.split(",")[0];
   const currentYear = new Date().getFullYear();
