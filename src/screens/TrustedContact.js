@@ -377,8 +377,8 @@ function TrustedContact({ index, setEditStartedTrue }) {
   return (
     <View style={styles.main}>
       <View style={styles.titleContainer}>
-        <Text style={[globleStyles.title, styles.title]}>
-          Trusted Contact Information
+        <Text style={[globleStyles.title, { fontWeight: "500" }]}>
+          Initial Points of Search
         </Text>
         <Text style={styles.added}>
           {trustedContacts.length}/{MAXIMUM_TRUSTED_CONTACT_COUNT} added
@@ -412,8 +412,9 @@ function TrustedContact({ index, setEditStartedTrue }) {
             pointSize={14}
             pointColor="#707070"
             options={[
-              "Please Add Trusted Contacts (Parents/Guardians)",
-              "In this section, you can add up to 10 additional Trusted Contacts or Locations where your child may be",
+              "In this section, add up to 10 People who may know your child’s location or Places your child may be located to help law enforcement in the immediate search for your child",
+              "Please list potential alternate/disputed custodians, such as an estranged ex, if applicable",
+              "More is better. Think \"where do I want to send the police to start the search?\"",
             ]}
           />
         </View>
