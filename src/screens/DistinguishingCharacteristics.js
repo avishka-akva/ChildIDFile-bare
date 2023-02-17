@@ -65,7 +65,7 @@ function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
           marginBottom={0}
           onBlur={onBlur}
           placeholder={
-            "Provide grayed examples of Distinguishing features such as: \nScar/tattoo on neck \nBirthmark on neck"
+            "Type and style of glasses?\nType and location of tattoos?\nSize and location of scars or birthmarks?\nUnique piercings?"
           }
         />
         <CustomTextInput
@@ -73,10 +73,10 @@ function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
           value={specialNeeds}
           onChangeText={onSpecialNeedsChange}
           multiline={true}
-          numberOfLines={6}
+          numberOfLines={9}
           onBlur={onBlur}
           placeholder={
-            "Provide grayed examples of Special Needs such as: \nChild is autistic \nChild has asthma and uses inhaler \nChild is deaf"
+            "Child is autistic, has asthma, or needs inhaler?\nChild is deaf/blind/hard-of-hearing/seeing?\nChild speaks language not common to local area?\nChild is disabled? Child is missing limbs/teeth?\nChild is unable to swim/walk/run/ride a bicycle?"
           }
         />
       </Card>
