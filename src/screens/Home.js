@@ -56,10 +56,11 @@ function AddFabButton({ onPress, bottom = 20 }) {
 }
 
 function EmptyHomeView({ onAddClick }) {
+  const marginTop = Dimensions.get("window").height / 25;
   const style = {
     color: "#707070",
     fontSize: 14,
-    marginTop: 28,
+    marginTop,
     textAlign: "center",
     fontFamily: "Segoe-UI",
   };
@@ -69,16 +70,16 @@ function EmptyHomeView({ onAddClick }) {
       style={{
         paddingHorizontal: 24,
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "flex-start",
         flex: 1,
       }}
     >
       <Image
-        style={{ width: 200, height: 200 }}
+        style={{ width: 200, height: 200, marginTop }}
         source={require("../assets/homeImage.png")}
       />
       <BulletList
-        containerStyle={{ marginTop: 20 }}
+        containerStyle={{ marginTop }}
         childStyle={{
           width: "95%",
           color: "#707070",
@@ -387,7 +388,7 @@ function Home({ navigation }) {
             <ScrollView
               style={{
                 paddingHorizontal: 24,
-                width: "100%"
+                width: "100%",
               }}
               contentContainerStyle={{
                 flexGrow: 1,
