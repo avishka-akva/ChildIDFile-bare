@@ -136,9 +136,9 @@ const generateHtml = async ({
 
     let contactMargingTop = "";
 
-    if (Platform.OS === "ios" && trustedContacts.length > 1) {
-      contactMargingTop = "margin-top: 200px;";
-    }
+    // if (Platform.OS === "ios" && trustedContacts.length > 1) {
+    //   contactMargingTop = "margin-top: 200px;";
+    // }
 
     const head = `
   <head>
@@ -224,6 +224,7 @@ const generateHtml = async ({
           justify-content: flex-end !important;
           align-items: center !important;
           width: 100%;
+          padding: 10px;
         }
         .user-image {
           width: 45%;
@@ -758,7 +759,6 @@ let generatePdf = async ({
   share = false,
   printer = false,
 }) => {
-  console.log("🚀 ~ file: pdf.js:761 ~ clicked", )
   try {
     let html;
 

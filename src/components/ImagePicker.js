@@ -84,7 +84,7 @@ function ImagePickerUI({
     }
   }, []);
 
-  const height = finger ? 180 : aspectRatio[0] * 100;;
+  const height = finger ? 180 : aspectRatio[0] * 100;
 
   return (
     <View style={styles.main}>
