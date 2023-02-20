@@ -9,6 +9,7 @@ const childManageSlice = createSlice({
     hederNameShow: false,
     showFooter: true,
     trustedContactsError: false,
+    currentStepIndex: 0,
   },
   reducers: {
     setUpdate(state, action) {
@@ -29,6 +30,15 @@ const childManageSlice = createSlice({
     setTrustedContactsError(state, action) {
       state.trustedContactsError = action.payload;
     },
+    setNextStep(state) {
+      state.currentStepIndex = state.currentStepIndex + 1;
+    },
+    setPreviosStep(state) {
+      state.currentStepIndex = state.currentStepIndex - 1;
+    },
+    setCurrentStepIndex(state, action) {
+      state.currentStepIndex = action.payload;
+    },
   },
 });
 
@@ -38,7 +48,10 @@ export const {
   toggleExit,
   setHederNameShow,
   setShowFooter,
-  setTrustedContactsError
+  setTrustedContactsError,
+  setNextStep,
+  setPreviosStep,
+  setCurrentStepIndex
 } = childManageSlice.actions;
 
 export default childManageSlice.reducer;

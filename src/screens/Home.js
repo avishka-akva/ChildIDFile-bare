@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -106,6 +106,7 @@ function EmptyHomeView({ onAddClick }) {
 
 function Home({ navigation }) {
   const childrenList = useSelector((state) => state.childrenList);
+  const childManage = useSelector((state) => state.childManage);
   const dispatch = useDispatch();
 
   const [deleteModelOpen, setDeleteModelOpen] = useState(false);
@@ -245,7 +246,6 @@ function Home({ navigation }) {
           </View>
           <View style={styles.itemAction}>
             <CustomButton
-              // onPress={() => onEdit(item.id)}
               onPress={() => onEdit(item.id)}
               text={item.incomplete ? "Complete" : "Edit"}
               buttonStyle={[globleStyles.buttonPrimary, styles.buttonStyle]}
@@ -317,6 +317,12 @@ function Home({ navigation }) {
   };
 
   const onAddClick = () => navigation.navigate("ChildProfile");
+
+  useEffect(()=>{
+    if (childManage.currentStepIndex > 0) {
+      onAddClick()
+    }
+  },[])
 
   return (
     <SafeAreaView style={globleStyles.container}>

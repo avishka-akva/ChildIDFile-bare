@@ -21,7 +21,9 @@ import {
   setUpdate,
   setView,
   setHederNameShow,
-  // setShowFooter,
+  setNextStep,
+  setPreviosStep,
+  setCurrentStepIndex,
 } from "../redux/childManageSlice";
 import {
   addChild,
@@ -50,9 +52,8 @@ function ChildProfile({ navigation, route }) {
   const childId = route?.params?.childId;
   const _view = route?.params?.view;
 
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  let { currentStepIndex } = childManage;
   const [editStarted, setEditStarted] = useState(false);
-  const [showFooter, setShowFooter] = useState(true);
 
   const [errorList, setErrorList] = useState([]);
 
@@ -228,7 +229,7 @@ function ChildProfile({ navigation, route }) {
 
     if (currentStepIndex === 0) dispatch(setHederNameShow(true));
 
-    setCurrentStepIndex((previousValue) => ++previousValue);
+    dispatch(setNextStep());
 
     if (childId) {
       const date = new Date();
@@ -246,7 +247,7 @@ function ChildProfile({ navigation, route }) {
   const previosStep = () => {
     if (!currentStepIndex) return;
     if (currentStepIndex === 1) dispatch(setHederNameShow(false));
-    setCurrentStepIndex((previousValue) => --previousValue);
+    dispatch(setPreviosStep());
   };
 
   const renderStep = () => {
@@ -260,6 +261,7 @@ function ChildProfile({ navigation, route }) {
     dispatch(setUpdate(false));
     dispatch(setView(false));
     dispatch(cleanChildSlice());
+    dispatch(setCurrentStepIndex(0));
     if (!childId && currentStepIndex !== 0) {
       const newChild = getChildWithId();
       dispatch(saveIncompleteChild(newChild));
@@ -272,6 +274,7 @@ function ChildProfile({ navigation, route }) {
     if (childId) {
       const childObj = childrenList.find((child) => child.id === childId);
       dispatch(setChildSlice(childObj));
+      console.log("🚀 ~ file: ChildProfile.js:278 ~ useEffect ~ _view:", _view)
       if (_view) {
         dispatch(setView(true));
       } else {
@@ -291,26 +294,26 @@ function ChildProfile({ navigation, route }) {
       return () => {
         backHandler.remove();
       };
-    } 
+    }
     // else {
-      // when keybord open in ios bottom navigation is auto hiding,
-      // that's why these two addListener have been used(to show navigation).
-      // const keyboardDidShowSubscription = Keyboard.addListener(
-      //   "keyboardDidShow",
-      //   () => {
-      //     setShowFooter(false);
-      //   }
-      // );
-      // const keyboardDidHideSubscription = Keyboard.addListener(
-      //   "keyboardDidHide",
-      //   () => {
-      //     setShowFooter(true);
-      //   }
-      // );
-      // return () => {
-      //   keyboardDidShowSubscription?.remove();
-      //   keyboardDidHideSubscription?.remove();
-      // };
+    // when keybord open in ios bottom navigation is auto hiding,
+    // that's why these two addListener have been used(to show navigation).
+    // const keyboardDidShowSubscription = Keyboard.addListener(
+    //   "keyboardDidShow",
+    //   () => {
+    //     setShowFooter(false);
+    //   }
+    // );
+    // const keyboardDidHideSubscription = Keyboard.addListener(
+    //   "keyboardDidHide",
+    //   () => {
+    //     setShowFooter(true);
+    //   }
+    // );
+    // return () => {
+    //   keyboardDidShowSubscription?.remove();
+    //   keyboardDidHideSubscription?.remove();
+    // };
     // }
   }, []);
 
