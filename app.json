@@ -2,7 +2,7 @@
   "expo": {
     "name": "ChildIDFile",
     "slug": "ChildIDFile",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -20,7 +20,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.childidfile",
-      "buildNumber":"6"
+      "buildNumber":"7"
     },
     "android": {
       "adaptiveIcon": {
