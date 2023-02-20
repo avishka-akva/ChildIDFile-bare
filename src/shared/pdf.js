@@ -714,7 +714,7 @@ const genarateFingerHtml = async () => {
           border-radius: 18px;
           background: #FFFFFF;
           border: 1px solid #C8C8C8;
-          width: 300px;
+          width: 420px;
           padding: 18px;
         }
         .box-title {
@@ -732,10 +732,11 @@ const genarateFingerHtml = async () => {
         .dash-box-item {
         }
         .dash-box {
-          width: 65px;
-          height: 75px;
+          width: 92px;
+          height: 104px;
           border-radius: 10px;
           border: 2px dashed #A352EB;
+          margin-bottom: 5px;
         }
         .finger-side {
           text-align: center;
@@ -744,13 +745,13 @@ const genarateFingerHtml = async () => {
           margin-bottom: 5px;
         }
         .left-finger {
-          width: 38px;
-          height: 38px;
+          width: 64px;
+          height: 64px;
           margin-right: 10px;
         }
         .right-finger {
-          width: 38px;
-          height: 38px;
+          width: 64px;
+          height: 64px;
           transform: scaleX(-1);
         }
       </style>
@@ -827,8 +828,8 @@ let generatePdf = async (type = "main", props, share = false) => {
         bottom: 20,
       };
       if (type === "finger") {
-        FilePrintOptions.height = 612;
-        FilePrintOptions.width = 792;
+        FilePrintOptions.height = 794;
+        FilePrintOptions.width = 1123;
       } else {
         FilePrintOptions.width = 794;
         FilePrintOptions.height = 1123;
