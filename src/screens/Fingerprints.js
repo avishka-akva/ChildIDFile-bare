@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, ActivityIndicator } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import ImagePickerUI from "../components/ImagePicker";
 import { Feather } from "@expo/vector-icons";
@@ -60,7 +60,7 @@ function Fingerprints({ index, setEditStartedTrue }) {
               Download blank PDF Fingerprint Card here to create your own image
             </Text>
             {isLoading ? (
-              <Text>Loading...</Text>
+              <ActivityIndicator size="large" color={COLOR.primary} />
             ) : (
               <View style={styles.iconContainer}>
                 <Feather name="download" size={14} color={COLOR.primary} />

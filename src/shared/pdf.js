@@ -852,6 +852,7 @@ let generatePdf = async ({type = "main", props, share = false, setIsLoading}) =>
       });
       await shareAsync(newURI, { UTI: ".pdf", mimeType: "application/pdf" });
     } else {
+      const file = await printToFileAsync(FilePrintOptions);
       await RNFS.moveFile(
         file.uri,
         RNFS.DownloadDirectoryPath + `/${PDF_NAME}`
