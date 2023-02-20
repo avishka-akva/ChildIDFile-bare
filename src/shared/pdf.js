@@ -62,52 +62,6 @@ const generateHtml = async ({
   fingerPrint,
 }) => {
   try {
-    // not working in prod
-    // const exampleImageUri = Image.resolveAssetSource(exampleImage).uri;
-
-    // const exampleImageUri = Image.resolveAssetSource(exampleImage).uri;
-    // const base64 = await StorageAccessFramework.readAsStringAsync(exampleImageUri, { encoding: 'base64' });
-
-    // not working in prod
-    // const asset = require("../../assets/pdfLogo.png");
-    // await Asset.loadAsync(asset);
-    // const pdfLogo = Asset.fromModule(asset);
-
-    // not working in prod
-    // const [{ localUri }] = await Asset.loadAsync(
-    //   require("../../assets/pdfLogo.png")
-    // );
-
-    // not working in prod
-    // const asset = require("../../assets/pdfLogo.png");
-    // const localSrc = await copyFromAssets(asset);
-    // let src = await processLocalImage(localSrc);
-
-    // const asset = Asset.fromModule(require("../../assets/logo.png"));
-    // const image = await manipulateAsync(asset.localUri ?? asset.uri, [], {
-    //   base64: true,
-    // });
-
-    // ToastAndroid.showWithGravity(src, ToastAndroid.SHORT, ToastAndroid.CENTER);
-
-    // pdfLogo.localUri ?? pdfLogo.uri
-    // exampleImageUri
-    // let logoImage = `<img src="data:image/jpeg;base64,${image.base64}" class="logo" alt="Logo"/>`;
-    // let logoImage = `<img src="${src}" class="logo" alt="Logo"/>`;
-    // let logoImage = `<img src="${exampleImageUri}" class="logo" alt="Logo"/>`;
-
-    // if (Platform.OS === "ios") {
-    //   const logo = await ImageManipulator.manipulateAsync(
-    //     pdfLogo.localUri ?? pdfLogo.uri,
-    //     [],
-    //     {
-    //       base64: true,
-    //     }
-    //   );
-
-    //   logoImage = `<img src="data:image/jpeg;base64,${logo.base64}" class="logo"/>`;
-    // }
-
     const characteristic = characteristicOptions.map(
       (option) =>
         CHARACTERISTICS_OPTIONS.find((item) => {
@@ -798,7 +752,13 @@ const genarateFingerHtml = async () => {
   `;
 };
 
-let generatePdf = async ({type = "main", props, share = false, setIsLoading}) => {
+let generatePdf = async ({
+  type = "main",
+  props,
+  share = false,
+  printer = false,
+}) => {
+  console.log("🚀 ~ file: pdf.js:761 ~ clicked", )
   try {
     let html;
 
@@ -851,6 +811,8 @@ let generatePdf = async ({type = "main", props, share = false, setIsLoading}) =>
         to: newURI,
       });
       await shareAsync(newURI, { UTI: ".pdf", mimeType: "application/pdf" });
+    } else if (printer) {
+      await printAsync(FilePrintOptions);
     } else {
       const file = await printToFileAsync(FilePrintOptions);
       await RNFS.moveFile(
@@ -862,43 +824,8 @@ let generatePdf = async ({type = "main", props, share = false, setIsLoading}) =>
         ToastAndroid.SHORT,
         ToastAndroid.CENTER
       );
-      // const file = await printAsync(FilePrintOptions);
-      // const downloadDir =
-      //   StorageAccessFramework.getUriForDirectoryInRoot("Download");
-      // const permission =
-      //   await StorageAccessFramework.requestDirectoryPermissionsAsync(
-      //     downloadDir
-      //   );
-
-      // if (!permission.granted) {
-      //   return false;
-      // }
-
-      // const destinationUri = await StorageAccessFramework.createFileAsync(
-      //   permission.directoryUri,
-      //   PDF_NAME,
-      //   "application/pdf"
-      // );
-
-      // const content = await StorageAccessFramework.readAsStringAsync(file.uri, {
-      //   encoding: FileSystem.EncodingType.Base64,
-      // });
-
-      // await StorageAccessFramework.writeAsStringAsync(destinationUri, content, {
-      //   encoding: FileSystem.EncodingType.Base64,
-      // });
-
-      // let newFolder = permission.directoryUri.split("Download");
-      // newFolder = newFolder[1].substring(3);
-
-      // ToastAndroid.showWithGravity(
-      //   `Saved to Download/${newFolder} folder`,
-      //   ToastAndroid.SHORT,
-      //   ToastAndroid.CENTER
-      // );
     }
   } catch (error) {
-    console.log("🚀 ~ file: pdf.js:911 ~ generatePdf ~ error", error);
     alert(error.message);
   }
 };

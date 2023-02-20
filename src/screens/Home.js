@@ -11,6 +11,7 @@ import {
   TouchableWithoutFeedback,
   Pressable,
   Dimensions,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector, useDispatch } from "react-redux";
@@ -177,7 +178,11 @@ function Home({ navigation }) {
     if (isLoading) return;
     setIsLoading(true);
     const child = childrenList.find((childItem) => childItem.id === id);
-    await generatePdf({ type: "main", prop: child,});
+    await generatePdf({
+      type: "main",
+      props: child,
+      printer: Platform.OS === "android",
+    });
     setIsLoading(false);
   };
 
@@ -185,7 +190,7 @@ function Home({ navigation }) {
     if (isLoading) return;
     setIsLoading(true);
     const child = childrenList.find((childItem) => childItem.id === id);
-    await generatePdf({ type: "main", prop: child, share: true });
+    await generatePdf({ type: "main", props: child, share: true });
     setIsLoading(false);
   };
 
