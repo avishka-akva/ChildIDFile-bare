@@ -1,6 +1,6 @@
 import { printToFileAsync, printAsync, Orientation } from "expo-print";
 import { shareAsync } from "expo-sharing";
-import { Platform } from "react-native";
+import { Platform, ToastAndroid } from "react-native";
 import * as FileSystem from "expo-file-system";
 import { CHARACTERISTICS_OPTIONS } from "./const";
 import {
@@ -17,6 +17,7 @@ import {
   THUMB_RIGHT,
 } from "./fingerprints";
 import { getExactAge } from "./date";
+import RNFS from "react-native-fs";
 // import { Asset } from "expo-asset";
 // import * as ImageManipulator from "expo-image-manipulator";
 // import exampleImage from "../../assets/pdfLogo.png";
@@ -716,6 +717,7 @@ const genarateFingerHtml = async () => {
           border: 1px solid #C8C8C8;
           width: 420px;
           padding: 18px;
+          margin: 5px;
         }
         .box-title {
           text-align: center;
@@ -796,7 +798,7 @@ const genarateFingerHtml = async () => {
   `;
 };
 
-let generatePdf = async (type = "main", props, share = false) => {
+let generatePdf = async ({type = "main", props, share = false, setIsLoading}) => {
   try {
     let html;
 
@@ -811,7 +813,7 @@ let generatePdf = async (type = "main", props, share = false) => {
           .replace(/-/g, "_")}.pdf`;
         break;
       case "finger":
-        PDF_NAME = "finger_print.pdf";
+        PDF_NAME = "childIDFile_fingerprint.pdf";
         html = await genarateFingerHtml();
         break;
       default:
@@ -819,7 +821,13 @@ let generatePdf = async (type = "main", props, share = false) => {
         break;
     }
 
-    let FilePrintOptions = { html: html, base64: false };
+    let FilePrintOptions = {
+      html: html,
+      base64: false,
+      width: 794,
+      height: 1123,
+    };
+
     if (Platform.OS === "ios") {
       FilePrintOptions.margins = {
         left: 20,
@@ -827,20 +835,11 @@ let generatePdf = async (type = "main", props, share = false) => {
         right: 20,
         bottom: 20,
       };
-      if (type === "finger") {
-        FilePrintOptions.height = 794;
-        FilePrintOptions.width = 1123;
-      } else {
-        FilePrintOptions.width = 794;
-        FilePrintOptions.height = 1123;
-      }
-    } else {
-      if (type === "finger") {
-        FilePrintOptions.orientation = Orientation.landscape;
-      } else {
-        FilePrintOptions.width = 794;
-        FilePrintOptions.height = 1123;
-      }
+    }
+
+    if (type === "finger") {
+      FilePrintOptions.height = 794;
+      FilePrintOptions.width = 1123;
     }
 
     if (share || Platform.OS === "ios") {
@@ -853,7 +852,16 @@ let generatePdf = async (type = "main", props, share = false) => {
       });
       await shareAsync(newURI, { UTI: ".pdf", mimeType: "application/pdf" });
     } else {
-      const file = await printAsync(FilePrintOptions);
+      await RNFS.moveFile(
+        file.uri,
+        RNFS.DownloadDirectoryPath + `/${PDF_NAME}`
+      );
+      ToastAndroid.showWithGravity(
+        `Saved to Download folder`,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
+      // const file = await printAsync(FilePrintOptions);
       // const downloadDir =
       //   StorageAccessFramework.getUriForDirectoryInRoot("Download");
       // const permission =

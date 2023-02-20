@@ -177,7 +177,7 @@ function Home({ navigation }) {
     if (isLoading) return;
     setIsLoading(true);
     const child = childrenList.find((childItem) => childItem.id === id);
-    await generatePdf("main", child);
+    await generatePdf({ type: "main", prop: child,});
     setIsLoading(false);
   };
 
@@ -185,7 +185,7 @@ function Home({ navigation }) {
     if (isLoading) return;
     setIsLoading(true);
     const child = childrenList.find((childItem) => childItem.id === id);
-    await generatePdf("main", child, true);
+    await generatePdf({ type: "main", prop: child, share: true });
     setIsLoading(false);
   };
 

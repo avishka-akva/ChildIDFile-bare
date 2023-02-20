@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Pressable } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import ImagePickerUI from "../components/ImagePicker";
 import { Feather } from "@expo/vector-icons";
@@ -16,17 +16,23 @@ function Fingerprints({ index, setEditStartedTrue }) {
   const { view } = useSelector((state) => state.childManage);
   const dispatch = useDispatch();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const onBlur = () => {
     setEditStartedTrue(index);
   };
 
-  const onDownlod = (id) => {
-    generatePdf("finger");
+  const onDownlod = async (id) => {
+    setIsLoading(true);
+    await generatePdf({ type: "finger" });
+    setIsLoading(false);
   };
 
   return (
     <View style={styles.main}>
-      <Text style={[globleStyles.title, styles.title]}>Fingerprints (Optional)</Text>
+      <Text style={[globleStyles.title, styles.title]}>
+        Fingerprints (Optional)
+      </Text>
       <Text style={[globleStyles.body, { color: "#3F3F3F" }]}>
         Want to create the image for your child's fingerprints?
       </Text>
@@ -47,15 +53,19 @@ function Fingerprints({ index, setEditStartedTrue }) {
           "Take a high resolution image of the card with fingerprints",
         ]}
       />
-      <Pressable onPress={() => onDownlod()}>
+      <Pressable onPress={() => onDownlod()} disabled={isLoading}>
         <Card>
           <View style={styles.downloadContainer}>
             <Text style={[globleStyles.body, styles.downloadText]}>
               Download blank PDF Fingerprint Card here to create your own image
             </Text>
-            <View style={styles.iconContainer}>
-              <Feather name="download" size={14} color={COLOR.primary} />
-            </View>
+            {isLoading ? (
+              <Text>Loading...</Text>
+            ) : (
+              <View style={styles.iconContainer}>
+                <Feather name="download" size={14} color={COLOR.primary} />
+              </View>
+            )}
           </View>
         </Card>
       </Pressable>
