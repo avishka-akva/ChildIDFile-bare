@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, ActivityIndicator } from "react-native";
 
 function CustomButton({
   onPress,
@@ -11,7 +11,8 @@ function CustomButton({
   color = "#fff",
   fontSize = 16,
   disabled = false,
-  leftIcon
+  leftIcon,
+  loading = false,
 }) {
   return (
     <TouchableOpacity
@@ -30,7 +31,7 @@ function CustomButton({
       }
       disabled={disabled}
     >
-      {leftIcon ? leftIcon : null}
+      {leftIcon ? loading ? <ActivityIndicator style={{ marginRight: 4 }} size="small" color={color} /> : leftIcon : null}
       <Text
         style={
           textStyle

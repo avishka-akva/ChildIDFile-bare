@@ -12,6 +12,7 @@ import {
   Pressable,
   Dimensions,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector, useDispatch } from "react-redux";
@@ -111,7 +112,9 @@ function Home({ navigation }) {
 
   const [deleteModelOpen, setDeleteModelOpen] = useState(false);
   const [selected, setSelected] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isShareLoading, setIsShareLoading] = useState(false);
+  const [isDownloadLoading, setIsDownloadLoading] = useState(false);
+  const [loadingId, setLoadingId] = useState(null);
   const [flatListScroll, setFlatListScroll] = useState("down");
 
   const flatListRef = useRef();
@@ -176,23 +179,25 @@ function Home({ navigation }) {
   };
 
   const onDownlod = async (id) => {
-    if (isLoading) return;
-    setIsLoading(true);
+    if (isShareLoading) return;
+    setLoadingId(id);
+    setIsDownloadLoading(true);
     const child = childrenList.find((childItem) => childItem.id === id);
     await generatePdf({
       type: "main",
       props: child,
       printer: Platform.OS === "android",
     });
-    setIsLoading(false);
+    setIsDownloadLoading(false);
   };
 
   const onShare = async (id) => {
-    if (isLoading) return;
-    setIsLoading(true);
+    if (isShareLoading) return;
+    setLoadingId(id);
+    setIsShareLoading(true);
     const child = childrenList.find((childItem) => childItem.id === id);
     await generatePdf({ type: "main", props: child, share: true });
-    setIsLoading(false);
+    setIsShareLoading(false);
   };
 
   const RenderChildItem = ({ item }) => {
@@ -201,10 +206,17 @@ function Home({ navigation }) {
         onPress={() => {
           onDownlod(item.id);
         }}
-        disabled={isLoading || item.incomplete}
+        disabled={isShareLoading || item.incomplete}
       >
         <View key={item.id} style={styles.item}>
           <View style={{ flexDirection: "row" }}>
+            {isDownloadLoading && item.id == loadingId && (
+              <ActivityIndicator
+                style={{ marginRight: 4 }}
+                size="small"
+                color={COLOR.primary}
+              />
+            )}
             <View
               style={{
                 flex: 1,
@@ -289,7 +301,8 @@ function Home({ navigation }) {
                   color={item.incomplete ? COLOR.disabled : COLOR.white}
                 />
               }
-              disabled={isLoading || item.incomplete}
+              disabled={isShareLoading || item.incomplete}
+              loading={isShareLoading && item.id == loadingId}
             />
           </View>
           <Text style={styles.lastUpdate}>
@@ -318,11 +331,11 @@ function Home({ navigation }) {
 
   const onAddClick = () => navigation.navigate("ChildProfile");
 
-  useEffect(()=>{
+  useEffect(() => {
     if (childManage.currentStepIndex > 0) {
-      onAddClick()
+      onAddClick();
     }
-  },[])
+  }, []);
 
   return (
     <SafeAreaView style={globleStyles.container}>
