@@ -92,6 +92,12 @@ export const getExactAge = (dob) => {
   let m = currentMonth - birthMonth;
   let y = currentYear - birthYear;
 
+  if (y == 0) {
+    if (m == 0) return `${d} Days`;
+
+    return `${m} Months ${d} Days`;
+  }
+
   return `${y} Years ${m} Months ${d} Days`;
 };
 

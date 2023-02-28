@@ -565,6 +565,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "400",
     lineHeight: 28,
+    marginBottom: 6,
   },
   itemNickName: {
     color: "#797979",

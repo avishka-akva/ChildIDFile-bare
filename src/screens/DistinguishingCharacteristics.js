@@ -62,7 +62,6 @@ function DistinguishingCharacteristics({ index, setEditStartedTrue }) {
           onChangeText={onOtherChange}
           multiline={true}
           numberOfLines={7}
-          marginBottom={0}
           onBlur={onBlur}
           placeholder={
             "Type and style of glasses?\nType and location of tattoos?\nSize and location of scars or birthmarks?\nUnique piercings?"

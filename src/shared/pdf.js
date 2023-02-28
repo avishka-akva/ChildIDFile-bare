@@ -392,7 +392,7 @@ const generateHtml = async ({
   <body>
     <header>
       <h1 class="header-title">${firstName} ${lastName}</h1>
-      <h2 class="header-sub-title">${getExactAge(dob)} years old</h2>
+      <h2 class="header-sub-title">${getExactAge(dob)} old</h2>
     </header>
     <main>
       <section  class="row">

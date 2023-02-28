@@ -15,6 +15,7 @@ function CustomTextInput({
   required = false,
   onBlur,
   error = false,
+  placeholderTextColor = "#A9A9A9",
   ...props
 }) {
   // const dispatch = useDispatch();
@@ -86,6 +87,7 @@ function CustomTextInput({
           {...props}
           editable={!view}
           onBlur={_onBlur}
+          placeholderTextColor = {placeholderTextColor}
         />
       ) : (
         <TextInput
@@ -98,6 +100,7 @@ function CustomTextInput({
             localInputRef && (localInputRef.current = ref);
           }}
           onBlur={_onBlur}
+          placeholderTextColor = {placeholderTextColor}
         />
       )}
       {_error && (
