@@ -45,7 +45,7 @@ function ContactForm({
   return (
     <>
       <CustomTextInput
-        label={"Trusted contact/ location"}
+        label={"Trusted Contact/Location"}
         required
         value={name}
         onChangeText={(value) =>
