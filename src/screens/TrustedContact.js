@@ -57,6 +57,7 @@ function ContactForm({
         }
         onBlur={onBlur ? onBlur : () => {}}
         error={isNameEmpty}
+        maxLength={60}
       />
       <CustomTextInput
         label={"Relationship"}
@@ -69,6 +70,7 @@ function ContactForm({
           })
         }
         onBlur={onBlur ? onBlur : () => {}}
+        maxLength={60}
       />
       <CustomTextInput
         label={"Primary Phone Number "}
@@ -82,6 +84,7 @@ function ContactForm({
           })
         }
         onBlur={onBlur ? onBlur : () => {}}
+        maxLength={15}
       />
       <CustomTextInput
         label={"Address"}
@@ -97,6 +100,7 @@ function ContactForm({
         numberOfLines={4}
         marginBottom={0}
         onBlur={onBlur ? onBlur : () => {}}
+        maxLength={200}
       />
     </>
   );
